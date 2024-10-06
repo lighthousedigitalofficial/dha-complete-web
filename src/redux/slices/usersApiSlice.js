@@ -1,7 +1,8 @@
 import { apiSlice } from "./apiSlice";
 import { USERS_URL } from "../constants";
+import {USER_ADDRESSES_URL} from "../constants"
 
-export const userApiSlice = apiSlice.injectEndpoints({
+export const usersApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		login: builder.mutation({
 			query: (data) => ({
@@ -11,11 +12,26 @@ export const userApiSlice = apiSlice.injectEndpoints({
 			}),
 		}),
 		register: builder.mutation({
-			query: (data) => ({
-				url: `${USERS_URL}/register`,
+			query: (userData) => ({
+				url: USERS_URL, // Use the full URL or relative path as defined in constants
 				method: "POST",
+				body: userData,
+			}),
+		}),
+		registerAddress: builder.mutation({
+			query: (addressData) => ({
+				url: `${USER_ADDRESSES_URL}`,
+				method: "POST",
+				body: addressData,
+			}),
+		}),
+		updateUserAddress: builder.mutation({
+			query: (data) => ({
+				url: `${USER_ADDRESSES_URL}/${id}`,
+				method: "PUT",
 				body: data,
 			}),
+			invalidatesTags: ["User"],
 		}),
 		logout: builder.mutation({
 			query: (token) => ({
@@ -52,14 +68,33 @@ export const userApiSlice = apiSlice.injectEndpoints({
 			}),
 			keepUnusedDataFor: 5,
 		}),
+
+		getUserAddressDetails: builder.query({
+			query: (id) => ({
+				url: `${USER_ADDRESSES_URL}/all/${id}`,
+			}),
+			keepUnusedDataFor: 5,
+		}),
+		getAllUserDetails: builder.query({
+			query: (id) => ({
+				url: `${USERS_URL}/all/${id}`,
+			}),
+			keepUnusedDataFor: 5,
+		}),
 		updateUser: builder.mutation({
 			query: (data) => ({
-				url: `${USERS_URL}/${data.userId}`,
+				url: `${USERS_URL}/${data.id}`,
 				method: "PUT",
 				body: data,
 			}),
 			invalidatesTags: ["User"],
 		}),
+
+		getUserById: builder.query({
+			query: (id) => ({
+			  url: `${USERS_URL}/${id}`,
+			}),
+		  }),
 	}),
 });
 
@@ -67,9 +102,14 @@ export const {
 	useLoginMutation,
 	useLogoutMutation,
 	useRegisterMutation,
+	useRegisterAddressMutation,
+	useUpdateUserAddressMutation,
 	useProfileMutation,
+	useGetUserAddressDetailsQuery,
 	useGetUsersQuery,
 	useDeleteUserMutation,
 	useUpdateUserMutation,
 	useGetUserDetailsQuery,
-} = userApiSlice;
+	useGetAllUserDetailsQuery,
+	useGetUserByIdQuery,
+} = usersApiSlice;
