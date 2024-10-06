@@ -8,8 +8,10 @@ const DashboardLayout = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		// Redirect if the user is not authenticated or not an admin
-		if (user === null || (user && user.role !== "admin")) {
+		if (!user) {
+			// Redirect to login if not authenticated
+			navigate("/login");
+		} else if (user.role !== "admin") {
 			navigate("/");
 		}
 	}, [navigate, user]);
