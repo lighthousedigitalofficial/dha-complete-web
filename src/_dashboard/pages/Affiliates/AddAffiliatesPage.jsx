@@ -1,33 +1,29 @@
-import React, { useState } from "react";
-import FormInput from "../../_components/Form/FormInput/FormInput";
+import { useForm } from 'react-hook-form';
+import { useCreateAffiliateMutation } from '../../../redux/slices/affiliates';
+// import { useCreateAffiliateMutation } from '../features/affiliates/affiliatesApi'; // Adjust the import based on your file structure
 
 const AddAffiliatesPage = ({ initialData = {} }) => {
-  const [name, setName] = useState(initialData.name || "");
-  const [status, setStatus] = useState(initialData.status || "active");
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    defaultValues: {
+      name: initialData.name || "",
+      status: initialData.status || "active"
+    }
+  });
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!name.trim()) newErrors.name = "Affiliate name is required.";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const [createAffiliate, { isLoading, isSuccess, isError }] = useCreateAffiliateMutation();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      const formData = {
-        name,
-        status,
-      };
-      console.log("Affiliate Data:", formData);
+  const onSubmit = async (data) => {
+    try {
+      await createAffiliate(data).unwrap();
       alert("Affiliate form submitted!");
+      reset(); // Reset the form after successful submission
+    } catch (error) {
+      console.error("Failed to save the affiliate:", error);
     }
   };
 
   const handleReset = () => {
-    setName("");
-    setStatus("active");
-    setErrors({});
+    reset();
   };
 
   return (
@@ -35,41 +31,31 @@ const AddAffiliatesPage = ({ initialData = {} }) => {
       <h2 className="text-2xl font-semibold mb-6">Affiliates</h2>
 
       <div className="grid grid-cols-1 gap-6">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/* Name Field */}
           <div className="mb-4">
-            <label
-              className="block text-[1rem] font-semibold mb-2"
-              htmlFor="name"
-            >
+            <label className="block text-[1rem] font-semibold mb-2" htmlFor="name">
               Name
             </label>
-            <FormInput
+            <input
               type="text"
               id="name"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              {...register("name", { required: "Affiliate name is required." })}
               placeholder="Enter Affiliate Name"
-              required
+              className={`block w-full border border-gray-300 p-2 rounded-md ${errors.name ? 'border-red-500' : ''}`}
             />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
           </div>
 
           {/* Status Field */}
           <div className="mb-4">
-            <label
-              className="block text-[1rem] font-semibold mb-2"
-              htmlFor="status"
-            >
+            <label className="block text-[1rem] font-semibold mb-2" htmlFor="status">
               Status
             </label>
             <select
               id="status"
-              name="status"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              {...register("status")}
               className="block w-full border border-gray-300 p-2 rounded-md"
-              required
             >
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -79,7 +65,7 @@ const AddAffiliatesPage = ({ initialData = {} }) => {
           {/* Action Buttons */}
           <div className="flex justify-end mt-6 gap-2">
             <button
-              type="reset"
+              type="button"
               className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
               onClick={handleReset}
             >
@@ -87,11 +73,16 @@ const AddAffiliatesPage = ({ initialData = {} }) => {
             </button>
             <button
               type="submit"
-              className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500 mr-2"
+              className={`bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500 mr-2 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isLoading}
             >
-              Add
+              {isLoading ? 'Adding...' : 'Add'}
             </button>
           </div>
+
+          {/* Success/Error Messages */}
+          {isSuccess && <p className="text-green-500 mt-4">Affiliate added successfully!</p>}
+          {isError && <p className="text-red-500 mt-4">Failed to add affiliate. Please try again.</p>}
         </form>
       </div>
     </div>

@@ -3,9 +3,11 @@ import React, { useState, useRef } from "react";
 import { FaTrash } from "react-icons/fa"; // React Icon for remove button
 import { CiCircleRemove } from "react-icons/ci";
 import FormInput from "../../_components/Form/FormInput/FormInput.jsx";
+import { useDispatch } from "react-redux";
+import { phaseSlice } from "../../../redux/slices/phasesSlice.js";
 
 const AddPhasesPage = ({ initialData = {} }) => {
-  console.log("✔ PAHSES DATA: ", phases);
+ 
 
   const [imagePreview, setImagePreview] = useState(
     initialData.mainImage || null
@@ -26,8 +28,11 @@ const AddPhasesPage = ({ initialData = {} }) => {
   const [services, setServices] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
+  
 
   const handleSubmit = (e) => {
+    
+    
     e.preventDefault();
     const formData = {
       title,

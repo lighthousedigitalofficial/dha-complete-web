@@ -57,6 +57,10 @@ const adminRoutes = [
         element: <FacilitiesList />,
       },
       {
+        path: "facilities/list",
+        element: <FacilitiesList />,
+      },
+      {
         path: "facilities/add",
         element: <AddFacilitiesPage />,
       },
@@ -123,7 +127,7 @@ const adminRoutes = [
         path: "phases/list",
         element: <PhasesList />,
       },
-
+      
       {
         path: "property-dealers/add",
         element: <AddPropertyDealersPage />,
