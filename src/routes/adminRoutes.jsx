@@ -21,6 +21,8 @@ import PropertyDealersList from "../_dashboard/pages/PropertyDealers/PropertyDea
 import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPropertyDealersPage";
 import MediaList from "../_dashboard/pages/Media/MediaList";
 import AddPhasesPage from "../_dashboard/pages/Phases/AddPhasesPage";
+import AddVideosPage from "../_dashboard/pages/Vidoes/AddVideosPage";
+import VideosList from "../_dashboard/pages/Vidoes/VidoesList";
 
 const adminRoutes = [
   {
