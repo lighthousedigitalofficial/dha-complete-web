@@ -21,6 +21,13 @@ import AffiliatesList from "../_dashboard/pages/Affiliates/AffiliatesList";
 import PropertyDealersList from "../_dashboard/pages/PropertyDealers/PropertyDealersList";
 import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPropertyDealersPage";
 import MediaList from "../_dashboard/pages/Media/MediaList";
+import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
+import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
+
+import UserList from "./../_dashboard/pages/User/UserList";
+import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
+import RegistrationPropertyPage from "../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
+import RegistrationPropertyList from "./../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
 
 const adminRoutes = [
 	{
@@ -112,6 +119,22 @@ const adminRoutes = [
 				element: <AddPhasePage />,
 			},
 			{
+				path: "users/add",
+				element: <AddUserPage />,
+			},
+			{
+				path: "users/list",
+				element: <UserList />,
+			},
+			{
+				path: "portal-guide/add",
+				element: <AddPortalPage />,
+			},
+			{
+				path: "portal-guide/list",
+				element: <PortGuidesList />,
+			},
+			{
 				path: "phases/list",
 				element: <PhasesList />,
 			},
@@ -123,6 +146,14 @@ const adminRoutes = [
 			{
 				path: "property-dealers/list",
 				element: <PropertyDealersList />,
+			},
+			{
+				path: "registration-property/add",
+				element: <RegistrationPropertyPage />,
+			},
+			{
+				path: "registration-property/list",
+				element: <RegistrationPropertyList />,
 			},
 		],
 	},

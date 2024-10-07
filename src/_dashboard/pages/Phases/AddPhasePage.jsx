@@ -4,13 +4,17 @@ import uploadImage from "../../../helpers/imageUpload";
 import uploadVideo from "../../../helpers/videoUpload";
 import InputField from "../../_components/shared/InputField";
 import toast from "react-hot-toast";
+import { useCreatePhasesMutation } from "../../../redux/slices/phasesSlice";
 
 const AddPhasePage = () => {
 	const [imagePreview, setImagePreview] = useState(null);
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [uploadedVideos, setUploadedVideos] = useState([]);
 
+	const [createPhase, { isLoading }] = useCreatePhasesMutation();
+
 	const methods = useForm(); // Initialize useForm
+
 	const {
 		register,
 		handleSubmit,
@@ -66,6 +70,10 @@ const AddPhasePage = () => {
 			const images = await handleImagesUpload(uploadedImages);
 			const videos = await handleVideosUpload(uploadedVideos);
 
+			if (!images || !videos) {
+				return toast.error("Images or Videos not uploaded on cloud.");
+			}
+
 			// Step 2: Prepare the data to be sent to the server after uploads
 			const formData = {
 				...data,
@@ -76,11 +84,11 @@ const AddPhasePage = () => {
 
 			console.log(formData);
 
-			// Step 3: Dispatch the createPhase action with form data
-			// dispatch(createPhase(formData));
+			// Step 3:createPhase action with form data
+			await createPhase(formData).unwrap();
 
 			// Notify the user and reset form
-			alert("Phase successfully created!");
+			toast.success("Phase successfully created!");
 			reset(); // Reset form after submission
 
 			// Clear states after form submission
@@ -89,6 +97,7 @@ const AddPhasePage = () => {
 			setImagePreview(null);
 		} catch (error) {
 			console.error("Error creating phase:", error);
+			toast.error(error.data.message || "Error creating phase");
 		}
 	};
 
@@ -188,9 +197,39 @@ const AddPhasePage = () => {
 						type="file"
 						multiple
 						accept="image/*"
-						onChange={(e) => setUploadedImages(e.target.files)}
+						onChange={(e) =>
+							setUploadedImages([
+								...uploadedImages,
+								...Array.from(e.target.files),
+							])
+						}
 						className="block w-full border border-gray-300 p-2 rounded-md"
 					/>
+
+					{/* Preview and Delete for Images */}
+					{uploadedImages.length > 0 && (
+						<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+							{Array.from(uploadedImages).map((file, index) => (
+								<div key={index} className="relative">
+									<img
+										src={URL.createObjectURL(file)}
+										alt={`Preview ${index}`}
+										className="object-cover w-full h-32 rounded-md"
+									/>
+									<button
+										onClick={() =>
+											setUploadedImages(
+												uploadedImages.filter((_, i) => i !== index)
+											)
+										}
+										className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full"
+									>
+										&#10005;
+									</button>
+								</div>
+							))}
+						</div>
+					)}
 				</div>
 
 				{/* Videos Upload */}
@@ -200,9 +239,39 @@ const AddPhasePage = () => {
 						type="file"
 						multiple
 						accept="video/*"
-						onChange={(e) => setUploadedVideos(e.target.files)}
+						onChange={(e) =>
+							setUploadedVideos([
+								...uploadedVideos,
+								...Array.from(e.target.files),
+							])
+						}
 						className="block w-full border border-gray-300 p-2 rounded-md"
 					/>
+
+					{/* Preview and Delete for Videos */}
+					{uploadedVideos.length > 0 && (
+						<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+							{Array.from(uploadedVideos).map((file, index) => (
+								<div key={index} className="relative">
+									<video
+										src={URL.createObjectURL(file)}
+										controls
+										className="object-cover w-full h-32 rounded-md"
+									/>
+									<button
+										onClick={() =>
+											setUploadedVideos(
+												uploadedVideos.filter((_, i) => i !== index)
+											)
+										}
+										className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full"
+									>
+										&#10005;
+									</button>
+								</div>
+							))}
+						</div>
+					)}
 				</div>
 
 				{/* Submit Button */}
@@ -216,9 +285,10 @@ const AddPhasePage = () => {
 					</button>
 					<button
 						type="submit"
-						className="px-4 py-2 bg-primary-500 hover:bg-primary-500 text-white rounded-md"
+						className="w-full px-4 py-2 bg-primary-500 text-white rounded-md"
+						disabled={isLoading}
 					>
-						Add Phase
+						{isLoading ? "Registering..." : "Register Property"}
 					</button>
 				</div>
 			</form>
