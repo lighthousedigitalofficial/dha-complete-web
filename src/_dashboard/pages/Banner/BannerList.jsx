@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
 
 import {
   useGetBannersQuery,
@@ -33,9 +34,11 @@ const BannerList = () => {
       try {
         await deleteBanner(selectedBannerId); // Trigger delete mutation
         refetch(); // Refetch banners to update the list after deletion
+        toast.success("Banner deleted successfully!"); // Show success toast
         setIsModalOpen(false); // Close modal
         setSelectedBannerId(null); // Clear selected banner ID
       } catch (error) {
+        toast.error("Failed to delete banner."); // Show error toast
         console.error("Error deleting banner:", error);
       }
     }
@@ -48,10 +51,10 @@ const BannerList = () => {
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Title",
@@ -73,12 +76,15 @@ const BannerList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)} className="text-blue-500">
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Set the selected banner ID for deletion
-            className="text-red-500"
+            className="border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500"
           >
             <FaTrash />
           </a>

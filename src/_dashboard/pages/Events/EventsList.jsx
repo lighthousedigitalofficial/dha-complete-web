@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
 import {
   useDeleteEventMutation,
   useGetEventsQuery,
@@ -8,36 +7,43 @@ import {
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast";
 
 const EventsList = () => {
   const { data: Events, isLoading, refetch } = useGetEventsQuery({});
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
+  // const [isDeleting, setIsDeleting] = useState(false);
 
-  const [deleteEvent] = useDeleteEventMutation(); // Hook to delete event
+  const [deleteEvent] = useDeleteEventMutation();
 
-  // Handle click to delete and open confirmation modal
   const handleDeleteClick = (id) => {
-    setSelectedEventId(id); // Set the selected event ID
-    setIsModalOpen(true); // Open confirmation modal
+    setSelectedEventId(id);
+    setIsModalOpen(true);
   };
 
-  // Close the confirmation modal
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedEventId(null); // Reset selected event ID
+    setSelectedEventId(null);
   };
 
-  // Confirm delete action
   const handleConfirmDelete = async () => {
     if (selectedEventId) {
+      setIsDeleting(true);
       try {
-        await deleteEvent(selectedEventId); // Trigger the delete mutation
-        refetch(); // Refetch the list after deletion
-        handleModalClose(); // Close the modal
+        await deleteEvent(selectedEventId);
+        refetch();
+        handleModalClose();
+
+        toast.dismiss();
+        toast.success("Event deleted successfully!");
       } catch (error) {
         console.error("Error deleting event:", error);
+
+        toast.dismiss();
+        toast.error("Error deleting event!");
+      } finally {
+        setIsDeleting(false);
       }
     }
   };
@@ -70,12 +76,15 @@ const EventsList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)} className="text-blue-500">
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Pass the event ID to delete
-            className="text-red-500"
+            className="border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500"
           >
             <FaTrash />
           </a>
@@ -85,7 +94,7 @@ const EventsList = () => {
   ];
 
   return (
-    <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
+    <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md relative">
       <h2 className="text-2xl font-bold mb-6">List of Events</h2>
       {isLoading ? (
         <Loader />
@@ -103,6 +112,8 @@ const EventsList = () => {
         title="Confirm Deletion"
         message="Are you sure you want to delete this event?"
       />
+
+      {/* Hot-toast notifications */}
     </div>
   );
 };

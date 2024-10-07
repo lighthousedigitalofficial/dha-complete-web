@@ -30,89 +30,90 @@ import RegistrationPropertyPage from "../_dashboard/pages/RegistrationProperty/A
 import RegistrationPropertyList from "./../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
 
 const adminRoutes = [
-	{
-		path: "/dashboard",
-		element: <DashboardLayout />,
-		children: [
-			{
-				path: "",
-				element: <DashboardPage />,
-			},
-			{
-				path: "affiliates/add",
-				element: <AddAffiliatesPage />,
-			},
-			{
-				path: "affiliates/list",
-				element: <AffiliatesList />,
-			},
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "",
+        element: <DashboardPage />,
+      },
 
-			{
-				path: "facilities/list",
-				element: <FacilitiesList />,
-			},
-			{
-				path: "facilities/list",
-				element: <FacilitiesList />,
-			},
-			{
-				path: "facilities/add",
-				element: <AddFacilitiesPage />,
-			},
+      {
+        path: "affiliates/add",
+        element: <AddAffiliatesPage />,
+      },
+      {
+        path: "affiliates/list",
+        element: <AffiliatesList />,
+      },
 
-			{
-				path: "videos/add",
-				element: <AddVideoPage />,
-			},
-			{
-				path: "videos/list",
-				element: <VideosList />,
-			},
+      {
+        path: "facilities/list",
+        element: <FacilitiesList />,
+      },
+      {
+        path: "facilities/list",
+        element: <FacilitiesList />,
+      },
+      {
+        path: "facilities/add",
+        element: <AddFacilitiesPage />,
+      },
 
-			{
-				path: "associates-websites/add",
-				element: <AddAssociatesWebsitesPage />,
-			},
-			{
-				path: "associates-websites/list",
-				element: <AssociatesWebsiteList />,
-			},
+      {
+        path: "videos/add",
+        element: <AddVideoPage />,
+      },
+      {
+        path: "videos/list",
+        element: <VideosList />,
+      },
 
-			{
-				path: "banners/add",
-				element: <AddBannerPage />,
-			},
-			{
-				path: "banners/list",
-				element: <BannerList />,
-			},
+      {
+        path: "associates-websites/add",
+        element: <AddAssociatesWebsitesPage />,
+      },
+      {
+        path: "associates-websites/list",
+        element: <AssociatesWebsiteList />,
+      },
 
-			{
-				path: "events/add",
-				element: <AddEventPage />,
-			},
-			{
-				path: "events/list",
-				element: <EventsList />,
-			},
+      {
+        path: "banners/add",
+        element: <AddBannerPage />,
+      },
+      {
+        path: "banners/list",
+        element: <BannerList />,
+      },
 
-			{
-				path: "important-notices/add",
-				element: <AddImportantNoticePage />,
-			},
-			{
-				path: "important-notices/list",
-				element: <ImportantNoticeList />,
-			},
+      {
+        path: "events/add",
+        element: <AddEventPage />,
+      },
+      {
+        path: "events/list",
+        element: <EventsList />,
+      },
 
-			{
-				path: "media/add",
-				element: <AddMediaPage />,
-			},
-			{
-				path: "media/list",
-				element: <MediaList />,
-			},
+      {
+        path: "important-notices/add",
+        element: <AddImportantNoticePage />,
+      },
+      {
+        path: "important-notices/list",
+        element: <ImportantNoticeList />,
+      },
+
+      {
+        path: "media/add",
+        element: <AddMediaPage />,
+      },
+      {
+        path: "media/list",
+        element: <MediaList />,
+      },
 
 			{
 				path: "phases/add",
