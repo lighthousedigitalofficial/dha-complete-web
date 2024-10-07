@@ -73,7 +73,7 @@ const adminRoutes = [
         element: <AddAssociatesWebsitesPage />,
       },
       {
-        path: "associates-websites/list",
+        path: "associates/list",
         element: <AssociatesWebsiteList />,
       },
 
