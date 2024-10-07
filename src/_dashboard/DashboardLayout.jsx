@@ -37,8 +37,9 @@ const DashboardLayout = () => {
           <button onClick={toggleSidebar}>
             <FaTimes />
           </button>
+          
         </div>
-        <Sidebar toggleSidebar={toggleSidebar} />
+        <Sidebar isSidebarOpen={true} />
       </aside>
       <div className="flex-1 flex flex-col">
         <Navbar toggleSidebar={toggleSidebar} />

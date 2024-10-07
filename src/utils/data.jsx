@@ -26,7 +26,7 @@ export const sidebarItems = [
     label: 'Associates Websites',
     icon: FaLink,
     subItems: [
-      { path: '/dashboard/associates-websites/add', label: 'Add Website', icon: FaPlus },
+      { path: '/dashboard/associates/add', label: 'Add Website', icon: FaPlus },
       { path: '/dashboard/associates/list', label: 'List Websites', icon: FaList },
     ],
   },

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FaChevronDown, FaChevronRight, FaBars, FaTimes } from 'react-icons/fa';
 import { sidebarItems } from '../../../utils/data';
 
-const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
+const Sidebar = ({ isSidebarOpen }) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [activeSubIndex, setActiveSubIndex] = useState(null);
 
@@ -23,7 +23,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
   return (
     <>
-      <button onClick={toggleSidebar} className="md:hidden fixed top-4 left-4 z-50 text-white">
+      <button onClick={isSidebarOpen} className="md:hidden fixed top-4 left-4 z-50 text-white">
         <FaBars />
       </button>
       <div className={`fixed top-0 left-0 h-full w-72 py-4 bg-primary-600 min-h-screen overflow-y-auto text-white p-4 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:relative md:translate-x-0 custom-scrollbar`}>
