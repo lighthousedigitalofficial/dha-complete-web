@@ -9,8 +9,6 @@ const RegistrationPropertyList = ({ onEdit, onDelete }) => {
 	const { data: RegistrationProperty, isLoading } =
 		useGetRegistrationPropertiesQuery({});
 
-	console.log(RegistrationProperty);
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedPhaseId, setSelectedPhaseId] = useState(null);
 
