@@ -35,6 +35,7 @@ import UserList from "../_dashboard/pages/User/UserList";
 
 import RegistrationPropertyPage from "./../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
 import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
+import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
 
 const adminRoutes = [
 	{
@@ -212,6 +213,10 @@ const adminRoutes = [
 			{
 				path: "users/list",
 				element: <UserList />,
+			},
+			{
+				path: "users/add",
+				element: <AddUserPage />,
 			},
 
 			{
