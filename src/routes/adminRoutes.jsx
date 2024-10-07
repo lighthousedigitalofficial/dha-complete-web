@@ -71,11 +71,11 @@ const adminRoutes = [
 			},
 
 			{
-				path: "associates-websites/add",
+				path: "associates/add",
 				element: <AddAssociatesWebsitesPage />,
 			},
 			{
-				path: "associates-websites/list",
+				path: "associates/list",
 				element: <AssociatesWebsiteList />,
 			},
 
