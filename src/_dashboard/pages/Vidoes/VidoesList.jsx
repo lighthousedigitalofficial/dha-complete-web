@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { toast, Toaster } from "react-hot-toast"; // Import toast functions
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import {
@@ -7,6 +8,7 @@ import {
   useGetVideosQuery,
 } from "../../../redux/slices/videosApiSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+
 const VideosList = () => {
   const { data: Video, isLoading, refetch } = useGetVideosQuery({});
   const [deleteVideo] = useDeleteVideoMutation();
@@ -26,10 +28,12 @@ const VideosList = () => {
   const handleConfirmDelete = async () => {
     if (selectedVideoId) {
       try {
-        await deleteVideo(selectedVideoId);
-        refetch();
+        await deleteVideo(selectedVideoId); // Delete the video
+        refetch(); // Refetch to update the list
+        toast.success("Video deleted successfully!"); // Show success toast
         handleModalClose();
       } catch (error) {
+        toast.error("Failed to delete video."); // Show error toast
         console.error("Error deleting video:", error);
       }
     }
@@ -41,9 +45,9 @@ const VideosList = () => {
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
       render: (text, record, index) => index + 1,
     },
     {
@@ -70,12 +74,15 @@ const VideosList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)} className="text-blue-500">
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Pass the video ID to delete
-            className="text-red-500"
+            className="border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500"
           >
             <FaTrash />
           </a>

@@ -7,22 +7,20 @@ import AddEventPage from "../_dashboard/pages/Events/AddEventPage";
 import AddFacilitiesPage from "../_dashboard/pages/Facilities/AddFacilitiesPage";
 import AddImportantNoticePage from "../_dashboard/pages/ImportantNotice/AddImportantNoticePage";
 import AddMediaPage from "../_dashboard/pages/Media/AddMediaPage";
-// import AddPhasesPage from "../_dashboard/pages/Phases/AddPhasesPage";
+import AddPhasePage from "../_dashboard/pages/Phases/AddPhasePage";
 import DashboardPage from "../_dashboard/pages/DashboardPage";
 import PhasesList from "../_dashboard/pages/Phases/PhasesList";
 import ImportantNoticeList from "../_dashboard/pages/ImportantNotice/ImportantNoticeList";
 import BannerList from "../_dashboard/pages/Banner/BannerList";
 import AssociatesWebsiteList from "../_dashboard/pages/AssociatesWebsites/AssociatesWebsiteList";
-
+import AddVideoPage from "../_dashboard/pages/Vidoes/AddVideoPage";
+import VideosList from "../_dashboard/pages/Vidoes/VidoesList";
 import EventsList from "../_dashboard/pages/Events/EventsList";
 import FacilitiesList from "../_dashboard/pages/Facilities/FacilitiesList";
 import AffiliatesList from "../_dashboard/pages/Affiliates/AffiliatesList";
 import PropertyDealersList from "../_dashboard/pages/PropertyDealers/PropertyDealersList";
 import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPropertyDealersPage";
 import MediaList from "../_dashboard/pages/Media/MediaList";
-import AddPhasesPage from "../_dashboard/pages/Phases/AddPhasesPage";
-import AddVideosPage from "../_dashboard/pages/Vidoes/AddVideosPage";
-import VideosList from "../_dashboard/pages/Vidoes/VidoesList";
 
 const adminRoutes = [
   {
@@ -58,7 +56,7 @@ const adminRoutes = [
 
       {
         path: "videos/add",
-        element: <AddVideosPage />,
+        element: <AddVideoPage />,
       },
       {
         path: "videos/list",
@@ -111,8 +109,8 @@ const adminRoutes = [
       },
 
       {
-        path: "phases/page",
-        element: <AddPhasesPage />,
+        path: "phases/add",
+        element: <AddPhasePage />,
       },
       {
         path: "phases/list",

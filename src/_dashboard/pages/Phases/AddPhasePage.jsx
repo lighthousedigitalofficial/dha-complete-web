@@ -7,7 +7,7 @@ import uploadImage from "../../../helpers/imageUpload";
 import InputField from "../../_components/shared/InputField";
 import { useCreatePhasesMutation } from "../../../redux/slices/phasesSlice";
 
-const AddPhasesPage = () => {
+const AddPhasePage = () => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -198,4 +198,4 @@ const AddPhasesPage = () => {
   );
 };
 
-export default AddPhasesPage;
+export default AddPhasePage;
