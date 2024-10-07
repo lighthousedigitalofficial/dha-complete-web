@@ -24,7 +24,7 @@ export const apiSlice = createApi({
 		"AssociatesWebsite",
 		"Phases",
 		"Events",
-		"Facilies",
+		"Facilities",
 		"Affiliates",
 		"Banners",
 		"Notices",
