@@ -78,14 +78,7 @@ export const sidebarItems = [
       { path: '/dashboard/affiliates/list', label: 'List Affiliates', icon: FaList },
     ],
   },
-  {
-    label: 'Property Dealers',
-    icon: FaUserTie,
-    subItems: [
-      { path: '/dashboard/property-dealers/add', label: 'Add Property Dealer', icon: FaPlus },
-      { path: '/dashboard/property-dealers/list', label: 'List Property Dealers', icon: FaList },
-    ],
-  },
+
   {
     label: 'Engineers',
     icon: FaTools,
@@ -103,29 +96,44 @@ export const sidebarItems = [
     ],
   },
   {
-    label: 'Sale Property',
-    icon: FaHome,
+    label: 'Property',
+    icon: FaImage,
     subItems: [
-      { path: '/dashboard/sale-property/add', label: 'Add Sale Property', icon: FaPlus },
-      { path: '/dashboard/sale-property/list', label: 'List Sale Properties', icon: FaList },
+      {
+        label: 'Sale Property',
+        icon: FaHome,
+        subsubItems: [
+          { path: '/dashboard/sale-property/add', label: 'Add Sale Property', icon: FaPlus },
+          { path: '/dashboard/sale-property/list', label: 'List Sale Properties', icon: FaList },
+        ],
+      },
+      {
+        label: 'Purchase Property',
+        icon: FaShoppingCart,
+        subsubItems: [
+          { path: '/dashboard/purchase-property/add', label: 'Add Purchase Property', icon: FaPlus },
+          { path: '/dashboard/purchase-property/list', label: 'List Purchase Properties', icon: FaList },
+        ],
+      },
+      {
+        label: 'Registration Property',
+        icon: FaClipboardList,
+        subsubItems: [
+          { path: '/dashboard/registration-property/add', label: 'Add Registration Property', icon: FaPlus },
+          { path: '/dashboard/registration-property/list', label: 'List Registration Properties', icon: FaList },
+        ],
+      },
+      {
+        label: 'Property Dealers',
+        icon: FaUserTie,
+        subsubItems: [
+          { path: '/dashboard/property-dealers/add', label: 'Add Property Dealer', icon: FaPlus },
+          { path: '/dashboard/property-dealers/list', label: 'List Property Dealers', icon: FaList },
+        ],
+      },
     ],
   },
-  {
-    label: 'Purchase Property',
-    icon: FaShoppingCart,
-    subItems: [
-      { path: '/dashboard/purchase-property/add', label: 'Add Purchase Property', icon: FaPlus },
-      { path: '/dashboard/purchase-property/list', label: 'List Purchase Properties', icon: FaList },
-    ],
-  },
-  {
-    label: 'Registration Property',
-    icon: FaClipboardList,
-    subItems: [
-      { path: '/dashboard/registration-property/add', label: 'Add Registration Property', icon: FaPlus },
-      { path: '/dashboard/registration-property/list', label: 'List Registration Properties', icon: FaList },
-    ],
-  },
+  
   {
     label: 'Team',
     icon: FaUsers,

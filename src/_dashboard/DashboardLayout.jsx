@@ -11,7 +11,7 @@ const DashboardLayout = () => {
 
   const user = useAuth();
   const navigate = useNavigate();
-  
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -32,7 +32,7 @@ const DashboardLayout = () => {
   // If user is authenticated and is an admin, render the dashboard layout
   return (
     <div className="flex h-screen">
-      <aside className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out bg-gray-800 text-white w-64 md:relative md:translate-x-0`}>
+      <aside className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out bg-gray-800 text-white w-72 md:relative md:translate-x-0`}>
         <div className="flex items-center justify-between p-4 md:hidden">
           <button onClick={toggleSidebar}>
             <FaTimes />
@@ -41,12 +41,6 @@ const DashboardLayout = () => {
         <Sidebar toggleSidebar={toggleSidebar} />
       </aside>
       <div className="flex-1 flex flex-col">
-        <header className="flex items-center justify-between p-4 bg-gray-900 text-white md:hidden">
-          <button onClick={toggleSidebar}>
-            <FaBars />
-          </button>
-          <h1 className="text-xl font-bold">Admin Panel</h1>
-        </header>
         <Navbar toggleSidebar={toggleSidebar} />
         <main className="p-4 mt-16 md:mt-0">
           <Outlet />
