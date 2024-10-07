@@ -3,12 +3,12 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetMediaQuery } from "../../../redux/slices/media";
+import { useGetTeamsQuery } from "../../../redux/slices/teamsSlice";
 
-const MediaList = ({ onEdit, onDelete }) => {
-  const { data: Media, isLoading } = useGetMediaQuery({});
+const TeamList = ({ onEdit, onDelete }) => {
+  const { data: TeamsSlice, isLoading } = useGetTeamsQuery({});
 
-  console.log(Media);
+  console.log(TeamsSlice);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
@@ -35,27 +35,38 @@ const MediaList = ({ onEdit, onDelete }) => {
   const columns = [
     {
       title: "ID",
-      dataIndex: "id",
+      dataIndex: "id", // Assuming `id` contains the unique identifier
       key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number or use actual ID
     },
     {
-      title: "Description",
-      dataIndex: "description", // Assuming `description` contains the description of the item
-      key: "description",
+      title: "Name",
+      dataIndex: "name", // Assuming `name` contains the person's name
+      key: "name",
     },
-    // {
-    //   title: "Media Banner",
-    //   dataIndex: "mediaBanner", // Assuming `mediaBanner` contains the URL or path to the banner image
-    //   key: "mediaBanner",
-    //   render: (mediaBanner) => (
-    //     <img
-    //       src={mediaBanner}
-    //       alt="Media Banner"
-    //       className="h-16 w-32 object-cover rounded-md"
-    //     />
-    //   ),
-    // },
+    {
+      title: "Designation",
+      dataIndex: "designation", // Assuming `designation` contains the job title or position
+      key: "designation",
+    },
+    {
+      title: "Extension",
+      dataIndex: "extension", // Assuming `extension` contains the phone extension number
+      key: "extension",
+    },
+    {
+      title: "Status",
+      dataIndex: "status", // Assuming `status` contains the status (Enum: active, inactive)
+      key: "status",
+      render: (status) => (
+        <span
+          className={`px-2 py-1 rounded-full text-white ${
+            status === "active" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {status.charAt(0).toUpperCase() + status.slice(1)}
+        </span>
+      ),
+    },
     {
       title: "Action",
       key: "action",
@@ -74,13 +85,13 @@ const MediaList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of Media</h2>
+      <h2 className="text-2xl font-bold mb-6">List of TeamsSlice</h2>
       {isLoading ? (
         <Loader />
-      ) : Media && Media?.doc ? (
-        <DataTable columns={columns} data={Media?.doc} />
+      ) : TeamsSlice && TeamsSlice?.doc && TeamsSlice?.doc?.length ? (
+        <DataTable columns={columns} data={TeamsSlice?.doc} />
       ) : (
-        <p>Media not found!</p>
+        <p>TeamsSlice not found!</p>
       )}
 
       {/* <ConfirmationModal
@@ -94,4 +105,4 @@ const MediaList = ({ onEdit, onDelete }) => {
   );
 };
 
-export default MediaList;
+export default TeamList;

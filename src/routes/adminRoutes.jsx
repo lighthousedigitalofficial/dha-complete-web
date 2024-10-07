@@ -24,6 +24,14 @@ import AffiliatesList from "../_dashboard/pages/Affiliates/AffiliatesList";
 import PropertyDealersList from "../_dashboard/pages/PropertyDealers/PropertyDealersList";
 import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPropertyDealersPage";
 import MediaList from "../_dashboard/pages/Media/MediaList";
+import EngineersList from "../_dashboard/pages/Engineers/EngineersList";
+import ActivitiesList from "../_dashboard/pages/Activities/ActivitiesList";
+import SalePropertyList from "../_dashboard/pages/SaleProperty/SalePropertyList";
+import PurchasePropertyList from "../_dashboard/pages/PurchaseProperty/PurchasePropertyList";
+import RegistrationPropertyList from "../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
+import TeamList from "../_dashboard/pages/Team/TeamList";
+import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
+import UserList from "../_dashboard/pages/User/UserList";
 
 const adminRoutes = [
   {
@@ -34,6 +42,12 @@ const adminRoutes = [
         path: "",
         element: <DashboardPage />,
       },
+
+      {
+        path: "activities/list",
+        element: <ActivitiesList />,
+      },
+
       {
         path: "advertisements/add",
         element: <AddAdvertisementsPage />,
@@ -59,6 +73,11 @@ const adminRoutes = [
       {
         path: "facilities/add",
         element: <AddFacilitiesPage />,
+      },
+
+      {
+        path: "engineers/list",
+        element: <EngineersList />,
       },
 
       {
@@ -131,6 +150,35 @@ const adminRoutes = [
       {
         path: "property-dealers/list",
         element: <PropertyDealersList />,
+      },
+      {
+        path: "sale-property/list",
+        element: <SalePropertyList />,
+      },
+
+      {
+        path: "purchase-property/list",
+        element: <PurchasePropertyList />,
+      },
+
+      {
+        path: "registration-property/list",
+        element: <RegistrationPropertyList />,
+      },
+
+      {
+        path: "team/list",
+        element: <TeamList />,
+      },
+
+      {
+        path: "portal-guide/list",
+        element: <PortGuidesList />,
+      },
+
+      {
+        path: "users/list",
+        element: <UserList />,
       },
     ],
   },

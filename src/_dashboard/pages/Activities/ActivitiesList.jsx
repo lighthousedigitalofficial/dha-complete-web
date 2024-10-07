@@ -3,12 +3,12 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetMediaQuery } from "../../../redux/slices/media";
+import { useGetActivityQuery } from "../../../redux/slices/activity";
 
-const MediaList = ({ onEdit, onDelete }) => {
-  const { data: Media, isLoading } = useGetMediaQuery({});
+const ActivitiesList = ({ onEdit, onDelete }) => {
+  const { data: Activities, isLoading } = useGetActivityQuery({});
 
-  console.log(Media);
+  console.log(Activities);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
@@ -33,28 +33,34 @@ const MediaList = ({ onEdit, onDelete }) => {
   const handleDelete = () => {};
 
   const columns = [
+    // {
+    //   title: "ID",
+    //   dataIndex: "id", // Assuming `id` contains the unique identifier
+    //   key: "id",
+    // },
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number or use actual ID
+      title: "Title",
+      dataIndex: "title", // Assuming `title` contains the title of the record
+      key: "title",
     },
     {
       title: "Description",
-      dataIndex: "description", // Assuming `description` contains the description of the item
+      dataIndex: "description", // Assuming `description` contains the description text
       key: "description",
+      render: (text) => (
+        <span className="line-clamp-2">{text}</span> // Clamps description to two lines if long
+      ),
     },
+
     // {
-    //   title: "Media Banner",
-    //   dataIndex: "mediaBanner", // Assuming `mediaBanner` contains the URL or path to the banner image
-    //   key: "mediaBanner",
-    //   render: (mediaBanner) => (
-    //     <img
-    //       src={mediaBanner}
-    //       alt="Media Banner"
-    //       className="h-16 w-32 object-cover rounded-md"
-    //     />
-    //   ),
+    //   title: "Banner ID",
+    //   dataIndex: "bannerId", // Assuming `bannerId` contains the banner's unique identifier
+    //   key: "bannerId",
+    // },
+    // {
+    //   title: "Slug",
+    //   dataIndex: "slug", // Assuming `slug` contains the URL-friendly string
+    //   key: "slug",
     // },
     {
       title: "Action",
@@ -74,13 +80,13 @@ const MediaList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of Media</h2>
+      <h2 className="text-2xl font-bold mb-6">List of Activities</h2>
       {isLoading ? (
         <Loader />
-      ) : Media && Media?.doc ? (
-        <DataTable columns={columns} data={Media?.doc} />
+      ) : Activities && Activities?.doc ? (
+        <DataTable columns={columns} data={Activities?.doc} />
       ) : (
-        <p>Media not found!</p>
+        <p>Activities not found!</p>
       )}
 
       {/* <ConfirmationModal
@@ -94,4 +100,4 @@ const MediaList = ({ onEdit, onDelete }) => {
   );
 };
 
-export default MediaList;
+export default ActivitiesList;

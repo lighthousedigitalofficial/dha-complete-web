@@ -39,23 +39,7 @@ const AdvertisementsList = ({ onEdit, onDelete }) => {
       key: "id",
       render: (text, record, index) => index + 1, // Automatically generate serial number
     },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-    },
-    {
-      title: "Media URL",
-      dataIndex: "mediaUrl",
-      key: "mediaUrl",
-      render: (mediaUrl) => (
-        <img
-          src={mediaUrl}
-          alt="Media"
-          className="w-16 h-16 object-cover rounded-md"
-        />
-      ),
-    },
+
     {
       title: "Title",
       dataIndex: "title",
@@ -66,11 +50,7 @@ const AdvertisementsList = ({ onEdit, onDelete }) => {
       dataIndex: "description",
       key: "description",
     },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
+
     {
       title: "Action",
       key: "action",
