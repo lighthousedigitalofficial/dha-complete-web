@@ -1,246 +1,141 @@
-import DashboardLayout from "../_dashboard/DashboardLayout";
-
-import AddAdvertisementsPage from "../_dashboard/pages/Advertisements/AddAdvertisementsPage";
-import AddAffiliatesPage from "../_dashboard/pages/Affiliates/AddAffiliatesPage";
-import AddAssociatesWebsitesPage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitesPage";
-import AddBannerPage from "../_dashboard/pages/Banner/AddBannerPage";
-import AddEventPage from "../_dashboard/pages/Events/AddEventPage";
-import AddFacilitiesPage from "../_dashboard/pages/Facilities/AddFacilitiesPage";
-import AddImportantNoticePage from "../_dashboard/pages/ImportantNotice/AddImportantNoticePage";
-import AddMediaPage from "../_dashboard/pages/Media/AddMediaPage";
-import AddPhasesPage from "../_dashboard/pages/Phases/AddPhasesPage";
-
-import DashboardPage from "../_dashboard/pages/DashboardPage";
-import PhasesList from "../_dashboard/pages/Phases/PhasesList";
-import ImportantNoticeList from "../_dashboard/pages/ImportantNotice/ImportantNoticeList";
-import BannerList from "../_dashboard/pages/Banner/BannerList";
-import AssociatesWebsiteList from "../_dashboard/pages/AssociatesWebsites/AssociatesWebsiteList";
-import AddVideosPage from "../_dashboard/pages/Vidoes/AddVideosPage";
-import VideosList from "../_dashboard/pages/Vidoes/VidoesList";
-import AdvertisementsList from "../_dashboard/pages/Advertisements/AdvertisementsList";
-import EventsList from "../_dashboard/pages/Events/EventsList";
-import FacilitiesList from "../_dashboard/pages/Facilities/FacilitiesList";
-import AffiliatesList from "../_dashboard/pages/Affiliates/AffiliatesList";
-import PropertyDealersList from "../_dashboard/pages/PropertyDealers/PropertyDealersList";
-import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPropertyDealersPage";
-import MediaList from "../_dashboard/pages/Media/MediaList";
-import EngineersList from "../_dashboard/pages/Engineers/EngineersList";
-import ActivitiesList from "../_dashboard/pages/Activities/ActivitiesList";
-import SalePropertyList from "../_dashboard/pages/SaleProperty/SalePropertyList";
-import PurchasePropertyList from "../_dashboard/pages/PurchaseProperty/PurchasePropertyList";
-import RegistrationPropertyList from "../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
-import TeamList from "../_dashboard/pages/Team/TeamList";
-import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
-import UserList from "../_dashboard/pages/User/UserList";
-
-import RegistrationPropertyPage from "./../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
-import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
-import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
-
-const adminRoutes = [
+import { createBrowserRouter } from "react-router-dom";
+import RootLayout from "./_root/RootLayout";
+import Customerlist from "./components/Customer/Customerlist";
+import Cardlist from "./components/Card/Cardlist";
+import Carlist from "./components/Cars/Carlist";
+import Carallocationtable from "./components/Carallocation/Carallocationtable";
+import Dashboard from "./components/DashBoard/Dashboard";
+import AddCustomerForm from "./components/Customer/AddCustomerForm";
+import CarDetails from "./components/Cars/CarDetails";
+import Reports from "./components/Report/Reports";
+import UserDetailPage from "./_root/pages/UserDetailPage";
+import CustomerDetailPage from "./_root/pages/CustomerDetailPage";
+import AddBrandForm from "./components/Brand/AddBrandForm";
+import CarType from "./components/CarType/CarType";
+import AddUser from "./components/Vendor/AddUser";
+import TransactionTable from "./components/Transcation/Transactiontable";
+import BookingPage from "./_root/pages/BookingPage";
+import UserList from "./components/Vendor/Userlist";
+import AddCarForm from "./components/Cars/AddCarsForm";
+import UpdateUserPage from "../src/_root/pages/UpdateUserPage";
+import CreateTransactionPage from "../src/_root/pages/CreateTransactionPage";
+import TransactionList from "./_root/pages/TransactionList";
+import TransactionDetailPage from "./_root/pages/TransactionDetailPage";
+import TransactionDetails from "./components/Transcation/TransactionDetails";
+import UpdateBrand from "./components/Brand/UpdateBrand";
+import UpdateCarType from "./components/CarType/UpdateCarType";
+import UpdateCars from "./components/Cars/UpdateCars";
+const router = createBrowserRouter([
 	{
-		path: "/dashboard",
-		element: <DashboardLayout />,
+		path: "/",
+		element: <RootLayout />,
 		children: [
 			{
 				path: "",
-				element: <DashboardPage />,
-			},
-			{
-				path: "advertisements/add",
-				element: <AddAdvertisementsPage />,
-			},
-			{
-				path: "advertisements/list",
-				element: <AdvertisementsList />,
-			},
-			{
-				path: "affiliates/add",
-				element: <AddAffiliatesPage />,
-			},
-			{
-				path: "affiliates/list",
-				element: <AffiliatesList />,
-			},
-			{
-				path: "activities/list",
-				element: <ActivitiesList />,
+				element: <Dashboard />,
 			},
 
 			{
-				path: "advertisements/add",
-				element: <AddAdvertisementsPage />,
+				path: "/car-types",
+				element: <CarType />,
 			},
 			{
-				path: "advertisements/list",
-				element: <AdvertisementsList />,
-			},
-
-			{
-				path: "facilities/list",
-				element: <FacilitiesList />,
+				path: "/car-types/update/:id/:name",
+				element: <UpdateCarType />,
 			},
 			{
-				path: "facilities/add",
-				element: <AddFacilitiesPage />,
+				path: "/brands",
+				element: <AddBrandForm />,
 			},
 			{
-				path: "videos/add",
-				element: <AddVideosPage />,
+				path: "/brands/update/:id/:name",
+				element: <UpdateBrand />,
 			},
 			{
-				path: "videos/list",
-				element: <VideosList />,
-			},
-
-			{
-				path: "associates/add",
-				element: <AddAssociatesWebsitesPage />,
+				path: "customers/customer-details/:id",
+				element: <CustomerDetailPage />,
 			},
 			{
-				path: "associates/list",
-				element: <AssociatesWebsiteList />,
+				path: "users/add-user",
+				element: <AddUser />,
 			},
 
 			{
-				path: "engineers/list",
-				element: <EngineersList />,
-			},
-
-			{
-				path: "videos/add",
-				element: <AddVideosPage />,
+				path: "customer/add-customer",
+				element: <AddCustomerForm />,
 			},
 			{
-				path: "videos/list",
-				element: <VideosList />,
-			},
-			{
-				path: "banners/add",
-				element: <AddBannerPage />,
-			},
-			{
-				path: "banners/list",
-				element: <BannerList />,
-			},
-			{
-				path: "events/add",
-				element: <AddEventPage />,
-			},
-			{
-				path: "events/list",
-				element: <EventsList />,
-			},
-
-			{
-				path: "important-notices/add",
-				element: <AddImportantNoticePage />,
-			},
-			{
-				path: "important-notices/list",
-				element: <ImportantNoticeList />,
-			},
-
-			{
-				path: "media/add",
-				element: <AddMediaPage />,
-			},
-			{
-				path: "media/list",
-				element: <MediaList />,
-			},
-
-			{
-				path: "phases/add",
-				element: <AddPhasesPage />,
-			},
-			{
-				path: "phases/list",
-				element: <PhasesList />,
-			},
-
-			{
-				path: "media/add",
-				element: <AddMediaPage />,
-			},
-			{
-				path: "media/list",
-				element: <MediaList />,
-			},
-
-			{
-				path: "phases/add",
-				element: <AddPhasesPage />,
-			},
-			{
-				path: "phases/list",
-				element: <PhasesList />,
-			},
-
-			{
-				path: "property-dealers/add",
-				element: <AddPropertyDealersPage />,
-			},
-			{
-				path: "property-dealers/list",
-				element: <PropertyDealersList />,
-			},
-			{
-				path: "sale-property/list",
-				element: <SalePropertyList />,
-			},
-
-			{
-				path: "purchase-property/list",
-				element: <PurchasePropertyList />,
-			},
-
-			{
-				path: "registration-property/list",
-				element: <RegistrationPropertyList />,
-			},
-
-			{
-				path: "team/list",
-				element: <TeamList />,
-			},
-
-			{
-				path: "portal-guide/list",
-				element: <PortGuidesList />,
-			},
-
-			{
-				path: "users/list",
+				path: "/users",
 				element: <UserList />,
 			},
 			{
-				path: "users/add",
-				element: <AddUserPage />,
-			},
-
-			{
-				path: "property-dealers/add",
-				element: <AddPropertyDealersPage />,
+				path: "/customers",
+				element: <Customerlist />,
 			},
 			{
-				path: "property-dealers/list",
-				element: <PropertyDealersList />,
+				path: "users/user-details/:id",
+				element: <UserDetailPage />,
 			},
 			{
-				path: "register-property/add",
-				element: <RegistrationPropertyPage />,
+				path: "bookings/car-alot",
+				element: <BookingPage />,
 			},
 			{
-				path: "portals/add",
-				element: <AddPortalPage />,
+				path: "/cars",
+				element: <Carlist />,
+			},
+			{
+				path: "/cars/add-car",
+				element: <AddCarForm />,
+			},
+			{
+				path: "/cars/update-car/:id",
+				element: <UpdateCars />,
+			},
+			{
+				path: "reports",
+				element: <Reports />,
+			},
+			{
+				path: "/billing-payments/list-cards",
+				element: <Cardlist />,
+			},
+			{
+				path: "/bookings",
+				element: <Carallocationtable />,
+			},
+			{
+				path: "car-details/:id",
+				element: <CarDetails />,
 			},
 			// {
-			//   path: "register-property/list",
-			//   element: < />,
+			// 	path: "cards",
+			// 	element: <CardView />,
 			// },
+
+			{
+				path: "billing-payments/add-card",
+				element: <CreateTransactionPage />,
+			},
+			{
+				path: "/transcations",
+				element: <TransactionList />,
+			},
+			{
+				path: "/billing-payments/add-card/transaction-list/:id",
+				element: <TransactionDetailPage />,
+			},
+			{
+				path: "billing-payments/add-card/transaction-list/:id/transaction",
+				element: <TransactionDetails />,
+			},
+			{
+				path: "/users/update/:id",
+
+				element: <UpdateUserPage />,
+			},
 		],
 	},
-];
+]);
 
-export default adminRoutes;
+export default router;

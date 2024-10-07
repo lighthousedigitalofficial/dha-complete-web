@@ -3,6 +3,8 @@ import React, { useState, useRef } from "react";
 import { FaTrash } from "react-icons/fa"; // React Icon for remove button
 import { CiCircleRemove } from "react-icons/ci";
 import FormInput from "../../_components/Form/FormInput/FormInput.jsx";
+import { useDispatch } from "react-redux";
+import { phaseSlice } from "../../../redux/slices/phasesSlice.js";
 
 const AddPhasesPage = ({ initialData = {} }) => {
 	const [imagePreview, setImagePreview] = useState(
