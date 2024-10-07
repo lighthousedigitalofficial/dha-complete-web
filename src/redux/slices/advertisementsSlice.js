@@ -1,16 +1,33 @@
-import { MEDIA_URL } from "../constants";
+// import { MEDIA_URL } from "../constants";
+// import { apiSlice } from "./apiSlice";
+
+// export const advertisementsSlice = apiSlice.injectEndpoints({
+//     endpoints: (builder)=> ({
+//         getAdvertisements: builder.query({
+// 			query: () => ({
+// 				url: MEDIA_URL,
+// 			}),
+// 			providesTags: ["Advertisements"],
+// 			keepUnusedDataFor: 5,
+// 		}),
+//     })
+// })
+
+// export const { useGetAdvertisementsQuery } = advertisementsSlice; 
+
+import { MEDIA_URL} from "../constants";
 import { apiSlice } from "./apiSlice";
 
-export const advertisementSlice = apiSlice.injectEndpoints({
+export const advertisementsSlice = apiSlice.injectEndpoints({
     endpoints: (builder)=> ({
-        getAdertisements: builder.query({
+        getAdvertisements: builder.query({
 			query: () => ({
 				url: MEDIA_URL,
 			}),
-			providesTags: ["Adertisements"],
+			providesTags: ["AdvergetAdvertisements"],
 			keepUnusedDataFor: 5,
 		}),
     })
 })
 
-export const { useGetAdertisementsQuery } = advertisementSlice; 
+export const { useGetAdvergetAdvertisementsQuery } = advertisementsSlice; 

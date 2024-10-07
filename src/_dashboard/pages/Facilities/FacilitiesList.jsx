@@ -44,53 +44,13 @@ const FacilitiesList = ({ onEdit, onDelete }) => {
       dataIndex: "title", // Assuming `title` contains the title of the item
       key: "title",
     },
-    {
-      title: "Main Image",
-      dataIndex: "mainImage", // Assuming `mainImage` contains the URL of the main image
-      key: "mainImage",
-      render: (mainImageUrl) => (
-        <img
-          src={mainImageUrl}
-          alt="Main"
-          className="w-16 h-16 object-cover rounded-md"
-        />
-      ),
-    },
-    {
-      title: "Images",
-      dataIndex: "images", // Assuming `images` contains an array of image URLs
-      key: "images",
-      render: (images) => (
-        <div className="flex space-x-2">
-          {images.map((imageUrl, index) => (
-            <img
-              key={index}
-              src={imageUrl}
-              alt={`Image ${index + 1}`}
-              className="w-12 h-12 object-cover rounded-md"
-            />
-          ))}
-        </div>
-      ),
-    },
+
     {
       title: "Description",
       dataIndex: "description", // Assuming `description` contains a brief description
       key: "description",
     },
 
-    {
-      title: "Services",
-      dataIndex: "services", // Assuming `services` contains an array of service names
-      key: "services",
-      render: (services) => (
-        <ul className="list-disc pl-5">
-          {services.map((service, index) => (
-            <li key={index}>{service}</li>
-          ))}
-        </ul>
-      ),
-    },
     {
       title: "Link",
       dataIndex: "link", // Assuming `link` contains the URL
