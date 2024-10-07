@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-// import { useGetBannersQuery } from "../../../redux/slices/BannersSlice";
-import { useGetBannersQuery } from "../../../redux/slices/bannerSlice";
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
+import { useGetTeamsQuery } from "../../../redux/slices/teamsSlice";
 
-const BannerList = ({ onEdit, onDelete }) => {
-  const { data: Banners, isLoading } = useGetBannersQuery({});
+const PortGuidesList = ({ onEdit, onDelete }) => {
+  const { data: PortalGuides, isLoading } = useGetTeamsQuery({});
 
-  console.log(Banners);
+  console.log(PortalGuides);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
@@ -36,41 +35,38 @@ const BannerList = ({ onEdit, onDelete }) => {
   const columns = [
     {
       title: "ID",
-      dataIndex: "id",
+      dataIndex: "id", // Assuming `id` contains the unique identifier
       key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number
+    },
+    {
+      title: "Title",
+      dataIndex: "title", // Assuming `title` contains the title of the video
+      key: "title",
     },
     // {
-    //   title: "Type",
-    //   dataIndex: "type",
-    //   key: "type",
-    // },
-    // {
-    //   title: "Media URL",
-    //   dataIndex: "mediaUrl",
-    //   key: "mediaUrl",
-    //   render: (mediaUrl) => (
-    //     <img
-    //       src={mediaUrl}
-    //       alt="Media"
-    //       className="w-16 h-16 object-cover rounded-md"
-    //     />
+    //   title: "Video",
+    //   dataIndex: "video", // Assuming `video` contains the video URL or video file
+    //   key: "video",
+    //   render: (video) => (
+    //     <video width="100" controls>
+    //       <source src={video} type="video/mp4" />
+    //       Your browser does not support the video tag.
+    //     </video>
     //   ),
     // },
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-    },
-    {
       title: "Status",
-      dataIndex: "status",
+      dataIndex: "status", // Assuming `status` contains the status (active/inactive)
       key: "status",
+      render: (status) => (
+        <span
+          className={`px-2 py-1 rounded-full text-white ${
+            status === "active" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {status.charAt(0).toUpperCase() + status.slice(1)}
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -90,13 +86,13 @@ const BannerList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of Banners</h2>
+      <h2 className="text-2xl font-bold mb-6">List of PortalGuides</h2>
       {isLoading ? (
         <Loader />
-      ) : Banners && Banners?.doc ? (
-        <DataTable columns={columns} data={Banners?.doc} />
+      ) : PortalGuides && PortalGuides?.doc && PortalGuides?.doc?.length ? (
+        <DataTable columns={columns} data={PortalGuides?.doc} />
       ) : (
-        <p>Banners not found!</p>
+        <p>PortalGuides not found!</p>
       )}
 
       {/* <ConfirmationModal
@@ -110,4 +106,4 @@ const BannerList = ({ onEdit, onDelete }) => {
   );
 };
 
-export default BannerList;
+export default PortGuidesList;
