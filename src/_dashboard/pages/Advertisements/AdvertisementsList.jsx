@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-import { useGetAdertisementsQuery } from "../../../redux/slices/advertisementsSlice";
+// import {
+//   useGetAdertisementsQuery,
+//   useDeleteAdvertisementMutation,
+// } from "../../../redux/slices/advertisementsSlice";
+
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 
-const AdvertisementsList = ({ onEdit, onDelete }) => {
-  const { data: Advertisements, isLoading } = useGetAdertisementsQuery({});
+const AdvertisementsList = () => {
+  const { data: Advertisements, isLoading, refetch } = useGetAdver({});
 
   console.log(Advertisements);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+
+  const [deleteBanner] = useDeleteBannerMutation(); // Hook to delete banner
 
   const handleDeleteClick = (id) => {
     setSelectedPhaseId(id);

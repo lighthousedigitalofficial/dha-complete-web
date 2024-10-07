@@ -1,71 +1,47 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-import { useGetNoticeQuery } from "../../../redux/slices/importantNoticeSlice";
+import {
+  useGetNoticeQuery,
+  useDeleteNoticeMutation,
+} from "../../../redux/slices/importantNoticeSlice";
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal"; // Assuming you have a modal component
 
-const ImportantNoticeList = ({ onEdit, onDelete }) => {
-  const { data: Notice, isLoading } = useGetNoticeQuery({});
-
-  console.log(Notice);
-
+const ImportantNoticeList = () => {
+  const { data: Notice, isLoading, refetch } = useGetNoticeQuery({});
+  const [deleteNotice] = useDeleteNoticeMutation(); // Hook to delete notice
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedNoticeId, setSelectedNoticeId] = useState(null);
 
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
+    setSelectedNoticeId(id);
     setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedNoticeId(null);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  const handleConfirmDelete = async () => {
+    if (selectedNoticeId) {
+      try {
+        await deleteNotice(selectedNoticeId); // Trigger delete mutation
+        refetch(); // Refetch the data after deletion
+        setIsModalOpen(false); // Close modal
+        setSelectedNoticeId(null); // Clear selected ID
+      } catch (error) {
+        console.error("Error deleting notice:", error);
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (record) => {
+    onEdit(record);
+  };
 
-  // const columns = [
-  //   {
-  //     title: "S.No",
-  //     dataIndex: "sno",
-  //     key: "sno",
-  //     render: (text, record, index) => index + 1, // Automatically generate serial number
-  //   },
-  //   {
-  //     title: "Title",
-  //     dataIndex: "title",
-  //     key: "title",
-  //   },
-  //   {
-  //     image: "Image",
-  //     dataIndex: "img",
-  //     key: "img",
-  //   },
-  //   {
-  //     title: "Action",
-  //     key: "action",
-  //     render: (_, record) => (
-  //       <div className="flex gap-2 items-center px-2">
-  //         {/* Example action buttons (Edit/Delete) */}
-  //         <a onClick={() => handleEdit(record)}>
-  //           <FaEdit />
-  //         </a>
-
-  //         <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
-  //           <FaTrash />
-  //         </a>
-  //       </div>
-  //     ),
-  //   },
-  // ];
   const columns = [
     {
       title: "S.No",
@@ -95,16 +71,23 @@ const ImportantNoticeList = ({ onEdit, onDelete }) => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Trigger delete confirmation modal
+            className="border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500"
+          >
             <FaTrash />
           </a>
         </div>
       ),
     },
   ];
+
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
       <h2 className="text-2xl font-bold mb-6">List of Notice</h2>
@@ -116,13 +99,13 @@ const ImportantNoticeList = ({ onEdit, onDelete }) => {
         <p>Notice not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Confirm delete action
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this notice?"
+      />
     </div>
   );
 };
