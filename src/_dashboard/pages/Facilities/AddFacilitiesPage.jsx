@@ -63,14 +63,6 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
     }
   };
 
-  // const handleMainImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setMainImage(file); // Set the main image
-  //     setImagePreview(URL.createObjectURL(file));
-  //     console.log("Main image selected:", file);
-  //   }
-  // };
 
   const handleAddImages = (e) => {
     const files = Array.from(e.target.files);

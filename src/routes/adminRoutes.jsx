@@ -59,6 +59,10 @@ const adminRoutes = [
         path: "facilities/add",
         element: <AddFacilitiesPage />,
       },
+      // {
+      //   path: "facilities/add",
+      //   element: <AddEngineersPage />,
+      // },
       {
         path: "videos/add",
         element: <AddVideosPage />,

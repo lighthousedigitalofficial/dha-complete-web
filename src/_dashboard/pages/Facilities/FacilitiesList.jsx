@@ -132,14 +132,6 @@ const FacilitiesList = ({ onEdit, onDelete }) => {
       ) : (
         <p>Facilities not found!</p>
       )}
-
-      {/* <ConfirmationModal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
-        title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
     </div>
   );
 };

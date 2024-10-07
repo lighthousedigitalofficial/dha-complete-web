@@ -26,6 +26,7 @@ export const apiSlice = createApi({
 		"Events",
 		"Facilities",
 		"Affiliates",
+		"PropertyDealer",
 		"Banners",
 		"Notices",
 		"Videos",
