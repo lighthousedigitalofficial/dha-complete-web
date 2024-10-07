@@ -42,7 +42,6 @@ const adminRoutes = [
         path: "advertisements/list",
         element: <AdvertisementsList />,
       },
-
       {
         path: "affiliates/add",
         element: <AddAffiliatesPage />,
@@ -60,7 +59,6 @@ const adminRoutes = [
         path: "facilities/add",
         element: <AddFacilitiesPage />,
       },
-
       {
         path: "videos/add",
         element: <AddVideosPage />,
