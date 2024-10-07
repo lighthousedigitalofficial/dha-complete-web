@@ -3,34 +3,34 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetMediaQuery } from "../../../redux/slices/media";
+import { useGetMediaQuery } from "../../../redux/slices/mediaApiSlice";
 
 const MediaList = ({ onEdit, onDelete }) => {
-  const { data: Media, isLoading } = useGetMediaQuery({});
+	const { data: Media, isLoading } = useGetMediaQuery({});
 
-  console.log(Media);
+	console.log(Media);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedPhaseId, setSelectedPhaseId] = useState(null);
 
-  const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
-    setIsModalOpen(true);
-  };
+	const handleDeleteClick = (id) => {
+		setSelectedPhaseId(id);
+		setIsModalOpen(true);
+	};
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
-  };
+	const handleModalClose = () => {
+		setIsModalOpen(false);
+		setSelectedPhaseId(null);
+	};
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
-  };
+	const handleConfirmDelete = () => {
+		onDelete(selectedPhaseId);
+		setIsModalOpen(false);
+		setSelectedPhaseId(null);
+	};
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+	const handleEdit = () => {};
+	const handleDelete = () => {};
 
   const columns = [
     {
@@ -72,26 +72,26 @@ const MediaList = ({ onEdit, onDelete }) => {
     },
   ];
 
-  return (
-    <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of Media</h2>
-      {isLoading ? (
-        <Loader />
-      ) : Media && Media?.doc ? (
-        <DataTable columns={columns} data={Media?.doc} />
-      ) : (
-        <p>Media not found!</p>
-      )}
+	return (
+		<div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
+			<h2 className="text-2xl font-bold mb-6">List of Media</h2>
+			{isLoading ? (
+				<Loader />
+			) : Media && Media?.doc ? (
+				<DataTable columns={columns} data={Media?.doc} />
+			) : (
+				<p>Media not found!</p>
+			)}
 
-      {/* <ConfirmationModal
+			{/* <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
         message="Are you sure you want to delete this phase?"
       /> */}
-    </div>
-  );
+		</div>
+	);
 };
 
 export default MediaList;

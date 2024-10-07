@@ -2,21 +2,34 @@ import React, { useState, useRef } from "react";
 import { FaTrash } from "react-icons/fa";
 import { CiCircleRemove } from "react-icons/ci";
 import FormInput from "../../_components/Form/FormInput/FormInput";
+import { useCreateFacilitiesMutation } from "../../../redux/slices/facilities";
 
 const AddFacilitiesPage = ({ initialData = {} }) => {
   const [imagePreview, setImagePreview] = useState(initialData.image || null);
   const [title, setTitle] = useState(initialData.title || "");
   const [description, setDescription] = useState(initialData.description || "");
+  // const [mainImage, setMainImage] = useState(initialData.mainImage || "");
   const [mainImage, setMainImage] = useState(initialData.mainImage || "");
+
   const [images, setImages] = useState(initialData.images || []);
-  const [image, setImage] = useState(null);
   const [services, setServices] = useState(initialData.services || []);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
   const [link, setLink] = useState(initialData.link || "");
 
-  const handleSubmit = (e) => {
+  // Use the createFacilities mutation
+  const [createFacilities, { isLoading, isError, isSuccess }] =
+    useCreateFacilitiesMutation();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if mainImage is set
+    if (!mainImage) {
+      alert("Please provide a main image.");
+      return;
+    }
+
     const formData = {
       title,
       description,
@@ -26,14 +39,44 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
       link,
     };
 
-    console.log("Facilities Data:", formData);
-    alert("Facilities form submitted!");
+    // Log the form data
+    console.log("Submitting form data:", formData);
+
+    try {
+      // Call the mutation to create the facility
+      await createFacilities(formData).unwrap();
+      alert("Facilities form submitted successfully!");
+      console.log("Facilities submitted successfully");
+    } catch (error) {
+      console.error("Failed to submit the form:", error);
+      alert("There was an error submitting the form.");
+    }
   };
+  const handleMainImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Create a URL for the file
+      const imageUrl = URL.createObjectURL(file);
+      setMainImage(imageUrl); // Set the URL as the main image
+      setImagePreview(imageUrl);
+      console.log("Main image URL:", imageUrl);
+    }
+  };
+
+  // const handleMainImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setMainImage(file); // Set the main image
+  //     setImagePreview(URL.createObjectURL(file));
+  //     console.log("Main image selected:", file);
+  //   }
+  // };
 
   const handleAddImages = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map((file) => URL.createObjectURL(file));
     setImages((prevImages) => [...prevImages, ...newImages]);
+    console.log("Additional images added:", newImages);
   };
 
   const handleReset = () => {
@@ -46,32 +89,37 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
     setLink("");
     setImagePreview(null);
     setImage(null);
+    console.log("Form reset");
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      setImagePreview(URL.createObjectURL(file)); // Show image preview
+      setImagePreview(URL.createObjectURL(file));
+      console.log("Image changed:", file);
     }
   };
 
   const removeImage = (index) => {
     setImages(images.filter((_, i) => i !== index));
+    console.log("Image removed at index:", index);
   };
 
   const handleAddService = () => {
     if (inputValue.trim() !== "" && !services.includes(inputValue.trim())) {
       setServices((prevServices) => [...prevServices, inputValue.trim()]);
       setInputValue("");
+      console.log("Service added:", inputValue.trim());
       if (inputRef.current) {
-        inputRef.current.focus(); // Refocus input after adding
+        inputRef.current.focus();
       }
     }
   };
 
   const handleRemoveService = (service) => {
     setServices((prevServices) => prevServices.filter((s) => s !== service));
+    console.log("Service removed:", service);
   };
 
   const handleKeyDown = (e) => {
@@ -151,7 +199,7 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
                 onKeyDown={handleKeyDown}
                 ref={inputRef}
                 placeholder="Add service..."
-                className="border outline-primary-400  border-gray-400 rounded-md px-2 py-1"
+                className="border outline-primary-400 border-gray-400 rounded-md px-2 py-1"
               />
             </div>
           </div>
@@ -184,7 +232,8 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
                 type="file"
                 accept="image/*"
                 className="absolute inset-0 opacity-0 cursor-pointer"
-                onChange={handleImageChange}
+                onChange={handleMainImageChange} // Use separate function for main image
+                required // Ensure this field is required
               />
               <div className="text-center">
                 <div className="text-gray-500 text-3xl">+</div>
@@ -213,7 +262,7 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
                 multiple
                 accept="image/*"
                 className="absolute inset-0 opacity-0 cursor-pointer"
-                onChange={handleAddImages}
+                onChange={handleAddImages} // Use separate function for additional images
               />
               <div className="text-center">
                 <div className="text-gray-500 text-3xl">+</div>
@@ -226,17 +275,17 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="relative border rounded-md h-40 overflow-hidden"
+                  className="relative group border border-gray-300 rounded-md overflow-hidden"
                 >
                   <img
                     src={image}
                     alt={`Preview ${index}`}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-32"
                   />
-                  {/* Remove Icon */}
                   <button
+                    type="button"
+                    className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
                     onClick={() => removeImage(index)}
-                    className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full"
                   >
                     <FaTrash />
                   </button>
@@ -246,20 +295,21 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex justify-end mt-6 gap-2">
+        {/* Submit and Reset buttons */}
+        <div className="flex justify-end mt-6">
           <button
-            type="reset"
+            type="button"
             onClick={handleReset}
-            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+            className="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-md mr-2"
           >
             Reset
           </button>
           <button
             type="submit"
-            className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500"
+            disabled={isLoading}
+            className="bg-primary-500 text-white font-semibold py-2 px-4 rounded-md"
           >
-            Add
+            {isLoading ? "Adding..." : "Add Facility"}
           </button>
         </div>
       </form>

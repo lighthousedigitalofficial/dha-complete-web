@@ -33,17 +33,35 @@ import TeamList from "../_dashboard/pages/Team/TeamList";
 import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
 import UserList from "../_dashboard/pages/User/UserList";
 
-const adminRoutes = [
-  {
-    path: "/dashboard",
-    element: <DashboardLayout />,
-    children: [
-      {
-        path: "",
-        element: <DashboardPage />,
-      },
+import RegistrationPropertyPage from "./../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
+import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
 
-      {
+const adminRoutes = [
+	{
+		path: "/dashboard",
+		element: <DashboardLayout />,
+		children: [
+			{
+				path: "",
+				element: <DashboardPage />,
+			},
+			{
+				path: "advertisements/add",
+				element: <AddAdvertisementsPage />,
+			},
+			{
+				path: "advertisements/list",
+				element: <AdvertisementsList />,
+			},
+			{
+				path: "affiliates/add",
+				element: <AddAffiliatesPage />,
+			},
+			{
+				path: "affiliates/list",
+				element: <AffiliatesList />,
+			},
+ {
         path: "activities/list",
         element: <ActivitiesList />,
       },
@@ -57,23 +75,31 @@ const adminRoutes = [
         element: <AdvertisementsList />,
       },
 
-      {
-        path: "affiliates/add",
-        element: <AddAffiliatesPage />,
-      },
-      {
-        path: "affiliates/list",
-        element: <AffiliatesList />,
-      },
+			{
+				path: "facilities/list",
+				element: <FacilitiesList />,
+			},
+			{
+				path: "facilities/add",
+				element: <AddFacilitiesPage />,
+			},
+			{
+				path: "videos/add",
+				element: <AddVideosPage />,
+			},
+			{
+				path: "videos/list",
+				element: <VideosList />,
+			},
 
-      {
-        path: "facilities/list",
-        element: <FacilitiesList />,
-      },
-      {
-        path: "facilities/add",
-        element: <AddFacilitiesPage />,
-      },
+			{
+				path: "associates/add",
+				element: <AddAssociatesWebsitesPage />,
+			},
+			{
+				path: "associates/list",
+				element: <AssociatesWebsiteList />,
+			},
 
       {
         path: "engineers/list",
@@ -88,42 +114,49 @@ const adminRoutes = [
         path: "videos/list",
         element: <VideosList />,
       },
+			{
+				path: "banners/add",
+				element: <AddBannerPage />,
+			},
+			{
+				path: "banners/list",
+				element: <BannerList />,
+			},
+			{
+				path: "events/add",
+				element: <AddEventPage />,
+			},
+			{
+				path: "events/list",
+				element: <EventsList />,
+			},
 
-      {
-        path: "associates-websites/add",
-        element: <AddAssociatesWebsitesPage />,
-      },
-      {
-        path: "associates-websites/list",
-        element: <AssociatesWebsiteList />,
-      },
+			{
+				path: "important-notices/add",
+				element: <AddImportantNoticePage />,
+			},
+			{
+				path: "important-notices/list",
+				element: <ImportantNoticeList />,
+			},
 
-      {
-        path: "banners/add",
-        element: <AddBannerPage />,
-      },
-      {
-        path: "banners/list",
-        element: <BannerList />,
-      },
+			{
+				path: "media/add",
+				element: <AddMediaPage />,
+			},
+			{
+				path: "media/list",
+				element: <MediaList />,
+			},
 
-      {
-        path: "events/add",
-        element: <AddEventPage />,
-      },
-      {
-        path: "events/list",
-        element: <EventsList />,
-      },
-
-      {
-        path: "important-notices/add",
-        element: <AddImportantNoticePage />,
-      },
-      {
-        path: "important-notices/list",
-        element: <ImportantNoticeList />,
-      },
+			{
+				path: "phases/add",
+				element: <AddPhasesPage />,
+			},
+			{
+				path: "phases/list",
+				element: <PhasesList />,
+			},
 
       {
         path: "media/add",
@@ -182,6 +215,28 @@ const adminRoutes = [
       },
     ],
   },
+			{
+				path: "property-dealers/add",
+				element: <AddPropertyDealersPage />,
+			},
+			{
+				path: "property-dealers/list",
+				element: <PropertyDealersList />,
+			},
+			{
+				path: "register-property/add",
+				element: <RegistrationPropertyPage />,
+			},
+			{
+				path: "portals/add",
+				element: <AddPortalPage />,
+			},
+			// {
+			//   path: "register-property/list",
+			//   element: < />,
+			// },
+		],
+	},
 ];
 
 export default adminRoutes;
