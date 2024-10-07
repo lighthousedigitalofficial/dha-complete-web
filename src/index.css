@@ -39,6 +39,11 @@
         @apply flex justify-center items-center;
     }
 
+    .custom-table-header thead th {
+        @apply bg-green-700 text-white text-center p-4 border-b-2 border-green-800;
+      }
+      
+
     .input {
         @apply border rounded w-full py-3 px-6 text-gray-700 leading-tight focus:outline-1 outline-primary-100;
         @apply border-gray-300; /* Default border */
