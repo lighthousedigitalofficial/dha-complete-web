@@ -3,41 +3,50 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetActivityQuery } from "../../../redux/slices/activity";
+import {
+  useGetActivityQuery,
+  useDeleteActivityMutation,
+} from "../../../redux/slices/activity";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 
-const ActivitiesList = ({ onEdit, onDelete }) => {
-  const { data: Activities, isLoading } = useGetActivityQuery({});
-
-  console.log(Activities);
-
+const ActivitiesList = () => {
+  const { data: Activities, isLoading, refetch } = useGetActivityQuery({});
+  const [deleteActivity] = useDeleteActivityMutation(); // Hook to delete activity
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
 
+  // Handle delete button click - opens the confirmation modal
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
+    setSelectedActivityId(id);
     setIsModalOpen(true);
   };
 
+  // Close modal and reset selected activity ID
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedActivityId(null);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  // Handle the delete action on confirmation
+  const handleConfirmDelete = async () => {
+    if (selectedActivityId) {
+      try {
+        await deleteActivity(selectedActivityId); // Trigger delete mutation
+        refetch(); // Refetch activities to update the list after deletion
+        setIsModalOpen(false); // Close modal
+        setSelectedActivityId(null); // Clear selected activity ID
+      } catch (error) {
+        console.error("Error deleting activity:", error);
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (record) => {
+    // Handle edit logic here
+    console.log("Edit record", record);
+  };
 
   const columns = [
-    // {
-    //   title: "ID",
-    //   dataIndex: "id", // Assuming `id` contains the unique identifier
-    //   key: "id",
-    // },
     {
       title: "Title",
       dataIndex: "title", // Assuming `title` contains the title of the record
@@ -51,26 +60,18 @@ const ActivitiesList = ({ onEdit, onDelete }) => {
         <span className="line-clamp-2">{text}</span> // Clamps description to two lines if long
       ),
     },
-
-    // {
-    //   title: "Banner ID",
-    //   dataIndex: "bannerId", // Assuming `bannerId` contains the banner's unique identifier
-    //   key: "bannerId",
-    // },
-    // {
-    //   title: "Slug",
-    //   dataIndex: "slug", // Assuming `slug` contains the URL-friendly string
-    //   key: "slug",
-    // },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a onClick={() => handleEdit(record)} className="text-blue-500">
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Set the selected activity ID for deletion
+            className="text-red-500"
+          >
             <FaTrash />
           </a>
         </div>
@@ -89,13 +90,14 @@ const ActivitiesList = ({ onEdit, onDelete }) => {
         <p>Activities not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Confirm delete action
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this activity?"
+      />
     </div>
   );
 };

@@ -71,17 +71,17 @@ export const sidebarItems = [
 		],
 	},
 	{
-		label: "Advertisements",
+		label: "Media",
 		icon: FaAd,
 		subItems: [
 			{
-				path: "/dashboard/advertisements/add",
-				label: "Add Advertisement",
+				path: "/dashboard/media/add",
+				label: "Add Media",
 				icon: FaPlus,
 			},
 			{
-				path: "/dashboard/advertisements/list",
-				label: "List Advertisements",
+				path: "/dashboard/media/list",
+				label: "List Media",
 				icon: FaList,
 			},
 		],
