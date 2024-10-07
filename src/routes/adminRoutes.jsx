@@ -61,19 +61,19 @@ const adminRoutes = [
 				path: "affiliates/list",
 				element: <AffiliatesList />,
 			},
- {
-        path: "activities/list",
-        element: <ActivitiesList />,
-      },
+			{
+				path: "activities/list",
+				element: <ActivitiesList />,
+			},
 
-      {
-        path: "advertisements/add",
-        element: <AddAdvertisementsPage />,
-      },
-      {
-        path: "advertisements/list",
-        element: <AdvertisementsList />,
-      },
+			{
+				path: "advertisements/add",
+				element: <AddAdvertisementsPage />,
+			},
+			{
+				path: "advertisements/list",
+				element: <AdvertisementsList />,
+			},
 
 			{
 				path: "facilities/list",
@@ -101,19 +101,19 @@ const adminRoutes = [
 				element: <AssociatesWebsiteList />,
 			},
 
-      {
-        path: "engineers/list",
-        element: <EngineersList />,
-      },
+			{
+				path: "engineers/list",
+				element: <EngineersList />,
+			},
 
-      {
-        path: "videos/add",
-        element: <AddVideosPage />,
-      },
-      {
-        path: "videos/list",
-        element: <VideosList />,
-      },
+			{
+				path: "videos/add",
+				element: <AddVideosPage />,
+			},
+			{
+				path: "videos/list",
+				element: <VideosList />,
+			},
 			{
 				path: "banners/add",
 				element: <AddBannerPage />,
@@ -158,63 +158,62 @@ const adminRoutes = [
 				element: <PhasesList />,
 			},
 
-      {
-        path: "media/add",
-        element: <AddMediaPage />,
-      },
-      {
-        path: "media/list",
-        element: <MediaList />,
-      },
+			{
+				path: "media/add",
+				element: <AddMediaPage />,
+			},
+			{
+				path: "media/list",
+				element: <MediaList />,
+			},
 
-      {
-        path: "phases/add",
-        element: <AddPhasesPage />,
-      },
-      {
-        path: "phases/list",
-        element: <PhasesList />,
-      },
+			{
+				path: "phases/add",
+				element: <AddPhasesPage />,
+			},
+			{
+				path: "phases/list",
+				element: <PhasesList />,
+			},
 
-      {
-        path: "property-dealers/add",
-        element: <AddPropertyDealersPage />,
-      },
-      {
-        path: "property-dealers/list",
-        element: <PropertyDealersList />,
-      },
-      {
-        path: "sale-property/list",
-        element: <SalePropertyList />,
-      },
+			{
+				path: "property-dealers/add",
+				element: <AddPropertyDealersPage />,
+			},
+			{
+				path: "property-dealers/list",
+				element: <PropertyDealersList />,
+			},
+			{
+				path: "sale-property/list",
+				element: <SalePropertyList />,
+			},
 
-      {
-        path: "purchase-property/list",
-        element: <PurchasePropertyList />,
-      },
+			{
+				path: "purchase-property/list",
+				element: <PurchasePropertyList />,
+			},
 
-      {
-        path: "registration-property/list",
-        element: <RegistrationPropertyList />,
-      },
+			{
+				path: "registration-property/list",
+				element: <RegistrationPropertyList />,
+			},
 
-      {
-        path: "team/list",
-        element: <TeamList />,
-      },
+			{
+				path: "team/list",
+				element: <TeamList />,
+			},
 
-      {
-        path: "portal-guide/list",
-        element: <PortGuidesList />,
-      },
+			{
+				path: "portal-guide/list",
+				element: <PortGuidesList />,
+			},
 
-      {
-        path: "users/list",
-        element: <UserList />,
-      },
-    ],
-  },
+			{
+				path: "users/list",
+				element: <UserList />,
+			},
+
 			{
 				path: "property-dealers/add",
 				element: <AddPropertyDealersPage />,
