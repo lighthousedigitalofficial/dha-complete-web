@@ -1,0 +1,115 @@
+import React from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import InputField from '../shared/Inputfield';
+
+const AddUserForm = () => {
+  const methods = useForm();
+
+  const handleFormSubmit = (data) => {
+    // Handle form submission logic here
+    console.log('Form Data:', data);
+    // You can also send the data to an API endpoint
+    // fetch('/api/endpoint', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //   console.log('Success:', data);
+    // })
+    // .catch((error) => {
+    //   console.error('Error:', error);
+    // });
+  };
+
+  return (
+    <FormProvider {...methods}>
+      <div className="max-w-md mx-auto bg-white p-8 rounded-md shadow-md">
+        <h2 className="text-2xl font-bold mb-6">Add User</h2>
+        <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+          <InputField
+            label="First Name"
+            name="firstName"
+            register={methods.register}
+            required
+            errors={methods.formState.errors}
+            errorMessage="First Name is required"
+          />
+          <InputField
+            label="Last Name"
+            name="lastName"
+            register={methods.register}
+            required
+            errors={methods.formState.errors}
+            errorMessage="Last Name is required"
+          />
+          <InputField
+            label="Email"
+            name="email"
+            register={methods.register}
+            required
+            errors={methods.formState.errors}
+            errorMessage="Email is required"
+          />
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Identity Type</label>
+            <select
+              {...methods.register('identityType', { required: 'Identity Type is required' })}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+            >
+              <option value="">Select Identity Type</option>
+              <option value="CNIC">CNIC</option>
+              <option value="NICOP">NICOP</option>
+              <option value="POC">POC</option>
+            </select>
+            {methods.formState.errors.identityType && <p className="text-red-500 text-sm">{methods.formState.errors.identityType.message}</p>}
+          </div>
+          <InputField
+            label="Identity Number"
+            name="identityNum"
+            register={methods.register}
+            required
+            errors={methods.formState.errors}
+            errorMessage="Identity Number is required"
+          />
+          <InputField
+            label="Membership Number"
+            name="membershipNum"
+            register={methods.register}
+            required
+            errors={methods.formState.errors}
+            errorMessage="Membership Number is required"
+          />
+          <InputField
+            label="Phone"
+            name="phone"
+            register={methods.register}
+            required
+            errors={methods.formState.errors}
+            errorMessage="Phone is required"
+          />
+          <InputField
+            label="Password"
+            name="password"
+            type="password"
+            register={methods.register}
+            required
+            errors={methods.formState.errors}
+            errorMessage="Password is required"
+          />
+          <button
+            type="submit"
+            className="w-full px-4 py-2 bg-primary text-white rounded-md"
+          >
+            Add User
+          </button>
+        </form>
+      </div>
+    </FormProvider>
+  );
+};
+
+export default AddUserForm;

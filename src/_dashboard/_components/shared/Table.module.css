@@ -1,0 +1,4 @@
+/* TableHeader.module.css */
+.customTableHeader thead th {
+    @apply bg-blue-500 text-white text-lg p-4 text-center;
+  }

@@ -1,4 +1,4 @@
-export const BASE_URL = "http://127.0.0.1:4000"; // If using proxy
+export const BASE_URL = "http://localhost:5000"; // If using proxy
 
 // API ROUTES
 export const ASSOCIATE_WEBSITES_URL = "/api/associate-websites";
