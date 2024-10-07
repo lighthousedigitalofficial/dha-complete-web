@@ -1,6 +1,5 @@
 import DashboardLayout from "../_dashboard/DashboardLayout";
 
-import AddAdvertisementsPage from "../_dashboard/pages/Advertisements/AddAdvertisementsPage";
 import AddAffiliatesPage from "../_dashboard/pages/Affiliates/AddAffiliatesPage";
 import AddAssociatesWebsitesPage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitesPage";
 import AddBannerPage from "../_dashboard/pages/Banner/AddBannerPage";
@@ -14,9 +13,8 @@ import PhasesList from "../_dashboard/pages/Phases/PhasesList";
 import ImportantNoticeList from "../_dashboard/pages/ImportantNotice/ImportantNoticeList";
 import BannerList from "../_dashboard/pages/Banner/BannerList";
 import AssociatesWebsiteList from "../_dashboard/pages/AssociatesWebsites/AssociatesWebsiteList";
-import AddVideosPage from "../_dashboard/pages/Vidoes/AddVideosPage";
+import AddVideoPage from "../_dashboard/pages/Vidoes/AddVideoPage";
 import VideosList from "../_dashboard/pages/Vidoes/VidoesList";
-import AdvertisementsList from "../_dashboard/pages/Advertisements/AdvertisementsList";
 import EventsList from "../_dashboard/pages/Events/EventsList";
 import FacilitiesList from "../_dashboard/pages/Facilities/FacilitiesList";
 import AffiliatesList from "../_dashboard/pages/Affiliates/AffiliatesList";
@@ -33,15 +31,6 @@ const adminRoutes = [
 				path: "",
 				element: <DashboardPage />,
 			},
-			{
-				path: "advertisements/add",
-				element: <AddAdvertisementsPage />,
-			},
-			{
-				path: "advertisements/list",
-				element: <AdvertisementsList />,
-			},
-
 			{
 				path: "affiliates/add",
 				element: <AddAffiliatesPage />,
@@ -66,7 +55,7 @@ const adminRoutes = [
 
 			{
 				path: "videos/add",
-				element: <AddVideosPage />,
+				element: <AddVideoPage />,
 			},
 			{
 				path: "videos/list",

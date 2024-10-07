@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { createPhase } from "../../redux/slices/phaseSlice";
+import { createPhase } from "../../../redux/slices/phasesApiSlice";
 import uploadImage from "./../../../helpers/imageUpload";
 import uploadVideo from "../../../helpers/videoUpload";
-import InputField from "../shared/InputField";
+import InputField from "../../_components/shared/InputField";
 
 const AddPhasesPage = () => {
 	const dispatch = useDispatch();
