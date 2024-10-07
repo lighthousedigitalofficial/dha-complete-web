@@ -3,7 +3,6 @@ import { apiSlice } from "./apiSlice";
 
 export const eventsSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        // Fetch all events
         getEvents: builder.query({
             query: () => ({
                 url: EVENTS_URL,
@@ -11,50 +10,46 @@ export const eventsSlice = apiSlice.injectEndpoints({
             providesTags: ["Events"],
             keepUnusedDataFor: 5,
         }),
-
-        // Create a new event
+        getEvent: builder.query({
+            query: (id) => ({
+                url: `${EVENTS_URL}/${id}`,
+            }),
+            providesTags: (result, error, id) => [{ type: "Events", id }],
+            keepUnusedDataFor: 5,
+        }),
+        
         createEvent: builder.mutation({
-            query: (data) => ({
+            query: (eventData) => ({
                 url: EVENTS_URL,
                 method: "POST",
-                body: data,
+                body: eventData,
             }),
-            invalidatesTags: ["Events"], // Invalidate to refetch events after creating
+            invalidatesTags: ["Events"],
         }),
-
-        // Update an event by ID
+        
         updateEvent: builder.mutation({
-            query: (data) => ({
-                url: `${EVENTS_URL}/${data.id}`, // Assumes data contains 'id'
+            query: (eventData) => ({
+                url: `${EVENTS_URL}/${eventData.id}`,
                 method: "PUT",
-                body: data,
+                body: eventData,
             }),
-            invalidatesTags: ["Events"], // Invalidate to refetch after update
+            invalidatesTags: (result, error, { id }) => [{ type: "Events", id }],
         }),
-
-        // Delete an event by ID
+        
         deleteEvent: builder.mutation({
             query: (eventId) => ({
                 url: `${EVENTS_URL}/${eventId}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Events"], // Invalidate to refetch after deletion
-        }),
-
-        // Get event details by ID
-        getEventById: builder.query({
-            query: (id) => ({
-                url: `${EVENTS_URL}/${id}`,
-            }),
-            keepUnusedDataFor: 5,
+            invalidatesTags: ["Events"],
         }),
     }),
 });
 
 export const {
     useGetEventsQuery,
+    useGetEventQuery,
     useCreateEventMutation,
     useUpdateEventMutation,
     useDeleteEventMutation,
-    useGetEventByIdQuery,
 } = eventsSlice;
