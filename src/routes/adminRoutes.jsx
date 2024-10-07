@@ -7,7 +7,7 @@ import AddEventPage from "../_dashboard/pages/Events/AddEventPage";
 import AddFacilitiesPage from "../_dashboard/pages/Facilities/AddFacilitiesPage";
 import AddImportantNoticePage from "../_dashboard/pages/ImportantNotice/AddImportantNoticePage";
 import AddMediaPage from "../_dashboard/pages/Media/AddMediaPage";
-import AddPhasesPage from "../_dashboard/pages/Phases/AddPhasesPage";
+import AddPhasePage from "../_dashboard/pages/Phases/AddPhasePage";
 import DashboardPage from "../_dashboard/pages/DashboardPage";
 import PhasesList from "../_dashboard/pages/Phases/PhasesList";
 import ImportantNoticeList from "../_dashboard/pages/ImportantNotice/ImportantNoticeList";
@@ -108,8 +108,8 @@ const adminRoutes = [
 			},
 
 			{
-				path: "phases/page",
-				element: <AddPhasesPage />,
+				path: "phases/add",
+				element: <AddPhasePage />,
 			},
 			{
 				path: "phases/list",

@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { createPhase } from "../../../redux/slices/phasesApiSlice";
-import uploadImage from "./../../../helpers/imageUpload";
+import uploadImage from "../../../helpers/imageUpload";
 import uploadVideo from "../../../helpers/videoUpload";
 import InputField from "../../_components/shared/InputField";
+import toast from "react-hot-toast";
 
-const AddPhasesPage = () => {
-	const dispatch = useDispatch();
+const AddPhasePage = () => {
 	const [imagePreview, setImagePreview] = useState(null);
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [uploadedVideos, setUploadedVideos] = useState([]);
@@ -20,46 +18,77 @@ const AddPhasesPage = () => {
 		reset,
 	} = methods;
 
-	// Helper function to handle images upload
-	const handleImagesUpload = async (files) => {
-		const uploaded = await uploadImage(files);
-		setUploadedImages(uploaded);
-	};
-
-	// Helper function to handle videos upload
-	const handleVideosUpload = async (files) => {
-		const uploaded = await uploadVideo(files);
-		setUploadedVideos(uploaded);
-	};
-
-	// Form submission logic
-	const onSubmit = async (data) => {
-		try {
-			const formData = {
-				...data,
-				mainImage: uploadedImages.length ? uploadedImages[0] : null, // Main image
-				images: uploadedImages, // Additional images
-				videos: uploadedVideos, // Videos
-			};
-
-			dispatch(createPhase(formData));
-			alert("Phase successfully created!");
-			reset(); // Reset form after submission
-
-			setUploadedImages([]);
-			setUploadedVideos([]);
-			setImagePreview(null);
-		} catch (error) {
-			console.error("Error creating phase:", error);
-		}
-	};
-
-	// Handle image preview for the main image
+	// Helper function to handle image preview
 	const handleImagePreview = (e) => {
 		const file = e.target.files[0];
 		if (file) {
 			setImagePreview(URL.createObjectURL(file));
 			handleImagesUpload([file]);
+		}
+	};
+
+	// Helper function to handle single image upload and store the URL
+	const handleImagesUpload = async (files) => {
+		try {
+			const uploadedUrls = [];
+			for (let file of files) {
+				const uploadedUrl = await uploadImage(file); // Upload each image individually
+				uploadedUrls.push(uploadedUrl);
+			}
+			return uploadedUrls; // Return list of uploaded images' URLs
+		} catch (error) {
+			console.error("Error uploading images:", error);
+			toast.error("Failed to upload images!"); // Show error toast
+			return [];
+		}
+	};
+
+	// Helper function to handle single video upload and store the URL
+	const handleVideosUpload = async (files) => {
+		try {
+			const uploadedUrls = [];
+			for (let file of files) {
+				const uploadedUrl = await uploadVideo(file); // Upload each video individually
+				uploadedUrls.push(uploadedUrl);
+			}
+			return uploadedUrls; // Return list of uploaded videos' URLs
+		} catch (error) {
+			console.error("Error uploading videos:", error);
+			toast.error("Failed to upload videos!"); // Show error toast
+			return [];
+		}
+	};
+
+	// Form submission logic
+	const onSubmit = async (data) => {
+		try {
+			// Step 1: Upload images and videos to the cloud
+			const images = await handleImagesUpload(uploadedImages);
+			const videos = await handleVideosUpload(uploadedVideos);
+
+			// Step 2: Prepare the data to be sent to the server after uploads
+			const formData = {
+				...data,
+				mainImage: images.length ? images[0] : null, // Use the first uploaded image as the main image
+				images, // Array of uploaded image URLs
+				videos, // Array of uploaded video URLs
+			};
+
+			console.log(formData);
+
+			// Step 3: Dispatch the createPhase action with form data
+			// dispatch(createPhase(formData));
+
+			// Notify the user and reset form
+			alert("Phase successfully created!");
+			reset(); // Reset form after submission
+
+			// Clear states after form submission
+			setUploadedImages([]);
+			setUploadedVideos([]);
+			setImagePreview(null);
+		} catch (error) {
+			console.error("Error creating phase:", error);
 		}
 	};
 
@@ -159,7 +188,7 @@ const AddPhasesPage = () => {
 						type="file"
 						multiple
 						accept="image/*"
-						onChange={(e) => handleImagesUpload(e.target.files)}
+						onChange={(e) => setUploadedImages(e.target.files)}
 						className="block w-full border border-gray-300 p-2 rounded-md"
 					/>
 				</div>
@@ -171,7 +200,7 @@ const AddPhasesPage = () => {
 						type="file"
 						multiple
 						accept="video/*"
-						onChange={(e) => handleVideosUpload(e.target.files)}
+						onChange={(e) => setUploadedVideos(e.target.files)}
 						className="block w-full border border-gray-300 p-2 rounded-md"
 					/>
 				</div>
@@ -187,7 +216,7 @@ const AddPhasesPage = () => {
 					</button>
 					<button
 						type="submit"
-						className="px-4 py-2 bg-primary-700 hover:bg-primary-500 text-white rounded-md"
+						className="px-4 py-2 bg-primary-500 hover:bg-primary-500 text-white rounded-md"
 					>
 						Add Phase
 					</button>
@@ -197,4 +226,4 @@ const AddPhasesPage = () => {
 	);
 };
 
-export default AddPhasesPage;
+export default AddPhasePage;
