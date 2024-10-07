@@ -15,7 +15,7 @@ import PhasesList from "../_dashboard/pages/Phases/PhasesList";
 import ImportantNoticeList from "../_dashboard/pages/ImportantNotice/ImportantNoticeList";
 import BannerList from "../_dashboard/pages/Banner/BannerList";
 import AssociatesWebsiteList from "../_dashboard/pages/AssociatesWebsites/AssociatesWebsiteList";
-import AddVideosPage from "../_dashboard/pages/Vidoes/AddVideosPage";
+import AddVideoPage from "../_dashboard/pages/Vidoes/AddVideoPage";
 import VideosList from "../_dashboard/pages/Vidoes/VidoesList";
 import AdvertisementsList from "../_dashboard/pages/Advertisements/AdvertisementsList";
 import EventsList from "../_dashboard/pages/Events/EventsList";
@@ -86,7 +86,7 @@ const adminRoutes = [
 			},
 			{
 				path: "videos/add",
-				element: <AddVideosPage />,
+				element: <AddVideoPage />,
 			},
 			{
 				path: "videos/list",
@@ -101,19 +101,9 @@ const adminRoutes = [
 				path: "associates/list",
 				element: <AssociatesWebsiteList />,
 			},
-
 			{
 				path: "engineers/list",
 				element: <EngineersList />,
-			},
-
-			{
-				path: "videos/add",
-				element: <AddVideosPage />,
-			},
-			{
-				path: "videos/list",
-				element: <VideosList />,
 			},
 			{
 				path: "banners/add",

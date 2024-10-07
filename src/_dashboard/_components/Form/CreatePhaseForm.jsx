@@ -6,7 +6,7 @@ import uploadImage from "./../../../helpers/imageUpload";
 import uploadVideo from "../../../helpers/videoUpload";
 import InputField from "../shared/InputField";
 
-const AddPhasesPage = () => {
+const AddPhasePage = () => {
 	const dispatch = useDispatch();
 	const [imagePreview, setImagePreview] = useState(null);
 	const [uploadedImages, setUploadedImages] = useState([]);
@@ -197,4 +197,4 @@ const AddPhasesPage = () => {
 	);
 };
 
-export default AddPhasesPage;
+export default AddPhasePage;
