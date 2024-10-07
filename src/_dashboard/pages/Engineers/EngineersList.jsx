@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-// import { useGetBannersQuery } from "../../../redux/slices/BannersSlice";
-import { useGetBannersQuery } from "../../../redux/slices/bannerSlice";
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
+import { useGetEngineersQuery } from "../../../redux/slices/engineers";
 
-const BannerList = ({ onEdit, onDelete }) => {
-  const { data: Banners, isLoading } = useGetBannersQuery({});
+const EngineersList = ({ onEdit, onDelete }) => {
+  const { data: Engineers, isLoading } = useGetEngineersQuery({});
 
-  console.log(Banners);
+  console.log(Engineers);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
@@ -34,44 +33,50 @@ const BannerList = ({ onEdit, onDelete }) => {
   const handleDelete = () => {};
 
   const columns = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number
-    },
     // {
-    //   title: "Type",
-    //   dataIndex: "type",
-    //   key: "type",
-    // },
-    // {
-    //   title: "Media URL",
-    //   dataIndex: "mediaUrl",
-    //   key: "mediaUrl",
-    //   render: (mediaUrl) => (
-    //     <img
-    //       src={mediaUrl}
-    //       alt="Media"
-    //       className="w-16 h-16 object-cover rounded-md"
-    //     />
-    //   ),
+    //   title: "ID",
+    //   dataIndex: "id", // Assuming `registeredNumber` contains the firm's registered number
+    //   key: "id",
     // },
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
+      title: "Form Name",
+      dataIndex: "firmName", // Assuming `firmName` contains the name of the firm
+      key: "firmName",
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      title: "Engineer Name",
+      dataIndex: "engineerName", // Assuming `engineerName` contains the name of the engineer
+      key: "engineerName",
+    },
+    {
+      title: "Address",
+      dataIndex: "address", // Assuming `address` contains the full address
+      key: "address",
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone", // Assuming `phone` contains the phone number
+      key: "phone",
     },
     {
       title: "Status",
-      dataIndex: "status",
+      dataIndex: "status", // Assuming `status` contains the status (e.g., Active, Inactive)
       key: "status",
+      render: (status) => (
+        <span
+          className={`px-2 py-1 rounded-full text-white ${
+            status === "Active" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {status}
+        </span>
+      ),
     },
+    // {
+    //   title: "Affiliate ID",
+    //   dataIndex: "affiliateId", // Assuming `affiliateId` contains the affiliate ID
+    //   key: "affiliateId",
+    // },
     {
       title: "Action",
       key: "action",
@@ -90,13 +95,13 @@ const BannerList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of Banners</h2>
+      <h2 className="text-2xl font-bold mb-6">List of Engineers</h2>
       {isLoading ? (
         <Loader />
-      ) : Banners && Banners?.doc ? (
-        <DataTable columns={columns} data={Banners?.doc} />
+      ) : Engineers && Engineers?.doc ? (
+        <DataTable columns={columns} data={Engineers?.doc} />
       ) : (
-        <p>Banners not found!</p>
+        <p>Engineers not found!</p>
       )}
 
       {/* <ConfirmationModal
@@ -110,4 +115,4 @@ const BannerList = ({ onEdit, onDelete }) => {
   );
 };
 
-export default BannerList;
+export default EngineersList;

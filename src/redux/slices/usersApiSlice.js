@@ -1,6 +1,5 @@
 import { apiSlice } from "./apiSlice";
 import { USERS_URL } from "../constants";
-import {USER_ADDRESSES_URL} from "../constants"
 
 export const usersApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -18,21 +17,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				body: userData,
 			}),
 		}),
-		registerAddress: builder.mutation({
-			query: (addressData) => ({
-				url: `${USER_ADDRESSES_URL}`,
-				method: "POST",
-				body: addressData,
-			}),
-		}),
-		updateUserAddress: builder.mutation({
-			query: (data) => ({
-				url: `${USER_ADDRESSES_URL}/${id}`,
-				method: "PUT",
-				body: data,
-			}),
-			invalidatesTags: ["User"],
-		}),
+		
 		logout: builder.mutation({
 			query: (token) => ({
 				url: `${USERS_URL}/logout`,
@@ -69,12 +54,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			keepUnusedDataFor: 5,
 		}),
 
-		getUserAddressDetails: builder.query({
-			query: (id) => ({
-				url: `${USER_ADDRESSES_URL}/all/${id}`,
-			}),
-			keepUnusedDataFor: 5,
-		}),
+		
 		getAllUserDetails: builder.query({
 			query: (id) => ({
 				url: `${USERS_URL}/all/${id}`,

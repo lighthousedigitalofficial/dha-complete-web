@@ -32,45 +32,45 @@ const MediaList = ({ onEdit, onDelete }) => {
 	const handleEdit = () => {};
 	const handleDelete = () => {};
 
-	const columns = [
-		{
-			title: "ID",
-			dataIndex: "id",
-			key: "id",
-			render: (text, record, index) => index + 1, // Automatically generate serial number or use actual ID
-		},
-		{
-			title: "Description",
-			dataIndex: "description", // Assuming `description` contains the description of the item
-			key: "description",
-		},
-		{
-			title: "Media Banner",
-			dataIndex: "mediaBanner", // Assuming `mediaBanner` contains the URL or path to the banner image
-			key: "mediaBanner",
-			render: (mediaBanner) => (
-				<img
-					src={mediaBanner}
-					alt="Media Banner"
-					className="h-16 w-32 object-cover rounded-md"
-				/>
-			),
-		},
-		{
-			title: "Action",
-			key: "action",
-			render: (_, record) => (
-				<div className="flex gap-2 items-center px-2">
-					<a onClick={() => handleEdit(record)}>
-						<FaEdit />
-					</a>
-					<a onClick={() => handleDelete(record)} style={{ color: "red" }}>
-						<FaTrash />
-					</a>
-				</div>
-			),
-		},
-	];
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      render: (text, record, index) => index + 1, // Automatically generate serial number or use actual ID
+    },
+    {
+      title: "Description",
+      dataIndex: "description", // Assuming `description` contains the description of the item
+      key: "description",
+    },
+    // {
+    //   title: "Media Banner",
+    //   dataIndex: "mediaBanner", // Assuming `mediaBanner` contains the URL or path to the banner image
+    //   key: "mediaBanner",
+    //   render: (mediaBanner) => (
+    //     <img
+    //       src={mediaBanner}
+    //       alt="Media Banner"
+    //       className="h-16 w-32 object-cover rounded-md"
+    //     />
+    //   ),
+    // },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <div className="flex gap-2 items-center px-2">
+          <a onClick={() => handleEdit(record)}>
+            <FaEdit />
+          </a>
+          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+            <FaTrash />
+          </a>
+        </div>
+      ),
+    },
+  ];
 
 	return (
 		<div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">

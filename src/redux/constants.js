@@ -3,10 +3,12 @@ export const BASE_URL = "http://localhost:5000"; // If using proxy
 // API ROUTES
 export const ASSOCIATE_WEBSITES_URL = "/api/associate-websites";
 export const PHASES_URL = "/api/phases";
+export const USERS_URL = "/api/users";
 // export const CUSTOMERS_URL = "/api/customers";
 export const PROPERTY_DEALER_URL = "/api/property-dealer";
 export const EVENTS_URL = "/api/events";
 export const FACILITIES_URL = "/api/facilities";
+
 
 export const AFFILIATES_URL = "/api/affiliates";
 export const BANNERS_URL = "/api/banners";
