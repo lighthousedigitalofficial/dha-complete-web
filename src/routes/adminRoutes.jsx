@@ -24,114 +24,128 @@ import AffiliatesList from "../_dashboard/pages/Affiliates/AffiliatesList";
 import PropertyDealersList from "../_dashboard/pages/PropertyDealers/PropertyDealersList";
 import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPropertyDealersPage";
 import MediaList from "../_dashboard/pages/Media/MediaList";
+import RegistrationPropertyPage from "./../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
+import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
 
 const adminRoutes = [
-  {
-    path: "/dashboard",
-    element: <DashboardLayout />,
-    children: [
-      {
-        path: "",
-        element: <DashboardPage />,
-      },
-      {
-        path: "advertisements/add",
-        element: <AddAdvertisementsPage />,
-      },
-      {
-        path: "advertisements/list",
-        element: <AdvertisementsList />,
-      },
-      {
-        path: "affiliates/add",
-        element: <AddAffiliatesPage />,
-      },
-      {
-        path: "affiliates/list",
-        element: <AffiliatesList />,
-      },
+	{
+		path: "/dashboard",
+		element: <DashboardLayout />,
+		children: [
+			{
+				path: "",
+				element: <DashboardPage />,
+			},
+			{
+				path: "advertisements/add",
+				element: <AddAdvertisementsPage />,
+			},
+			{
+				path: "advertisements/list",
+				element: <AdvertisementsList />,
+			},
+			{
+				path: "affiliates/add",
+				element: <AddAffiliatesPage />,
+			},
+			{
+				path: "affiliates/list",
+				element: <AffiliatesList />,
+			},
 
-      {
-        path: "facilities/list",
-        element: <FacilitiesList />,
-      },
-      {
-        path: "facilities/add",
-        element: <AddFacilitiesPage />,
-      },
-      {
-        path: "videos/add",
-        element: <AddVideosPage />,
-      },
-      {
-        path: "videos/list",
-        element: <VideosList />,
-      },
+			{
+				path: "facilities/list",
+				element: <FacilitiesList />,
+			},
+			{
+				path: "facilities/add",
+				element: <AddFacilitiesPage />,
+			},
+			{
+				path: "videos/add",
+				element: <AddVideosPage />,
+			},
+			{
+				path: "videos/list",
+				element: <VideosList />,
+			},
 
-      {
-        path: "associates-websites/add",
-        element: <AddAssociatesWebsitesPage />,
-      },
-      {
-        path: "associates-websites/list",
-        element: <AssociatesWebsiteList />,
-      },
+			{
+				path: "associates-websites/add",
+				element: <AddAssociatesWebsitesPage />,
+			},
+			{
+				path: "associates-websites/list",
+				element: <AssociatesWebsiteList />,
+			},
 
-      {
-        path: "banners/add",
-        element: <AddBannerPage />,
-      },
-      {
-        path: "banners/list",
-        element: <BannerList />,
-      },
+			{
+				path: "banners/add",
+				element: <AddBannerPage />,
+			},
+			{
+				path: "banners/list",
+				element: <BannerList />,
+			},
 
-      {
-        path: "events/add",
-        element: <AddEventPage />,
-      },
-      {
-        path: "events/list",
-        element: <EventsList />,
-      },
+			{
+				path: "events/add",
+				element: <AddEventPage />,
+			},
+			{
+				path: "events/list",
+				element: <EventsList />,
+			},
 
-      {
-        path: "important-notices/add",
-        element: <AddImportantNoticePage />,
-      },
-      {
-        path: "important-notices/list",
-        element: <ImportantNoticeList />,
-      },
+			{
+				path: "important-notices/add",
+				element: <AddImportantNoticePage />,
+			},
+			{
+				path: "important-notices/list",
+				element: <ImportantNoticeList />,
+			},
 
-      {
-        path: "media/add",
-        element: <AddMediaPage />,
-      },
-      {
-        path: "media/list",
-        element: <MediaList />,
-      },
+			{
+				path: "media/add",
+				element: <AddMediaPage />,
+			},
+			{
+				path: "media/list",
+				element: <MediaList />,
+			},
 
-      {
-        path: "phases/add",
-        element: <AddPhasesPage />,
-      },
-      {
-        path: "phases/list",
-        element: <PhasesList />,
-      },
+			{
+				path: "phases/add",
+				element: <AddPhasesPage />,
+			},
+			{
+				path: "phases/list",
+				element: <PhasesList />,
+			},
 
-      {
-        path: "property-dealers/add",
-        element: <AddPropertyDealersPage />,
-      },
-      {
-        path: "property-dealers/list",
-        element: <PropertyDealersList />,
-      },
-    ],
-  },
+			{
+				path: "property-dealers/add",
+				element: <AddPropertyDealersPage />,
+			},
+			{
+				path: "property-dealers/list",
+				element: <PropertyDealersList />,
+			},
+			{
+				path: "register-property/add",
+				element: <RegistrationPropertyPage />,
+			},
+			{
+				path: "portals/add",
+				element: <AddPortalPage />,
+			},
+			// {
+			//   path: "register-property/list",
+			//   element: < />,
+			// },
+		],
+	},
 ];
 
 export default adminRoutes;
