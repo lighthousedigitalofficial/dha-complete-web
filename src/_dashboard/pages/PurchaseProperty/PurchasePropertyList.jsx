@@ -3,42 +3,65 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetpurchasePropertiesQuery } from "../../../redux/slices/purchaseProperties";
+import {
+  useDeletePurchasePropertyMutation,
+  useGetPurchasePropertiesQuery,
+} from "../../../redux/slices/purchaseProperties";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast"; // Import toast for notifications
 
-const PurchasePropertyList = ({ onEdit, onDelete }) => {
-  const { data: PurchaseProperty, isLoading } = useGetpurchasePropertiesQuery(
-    {}
-  );
-
-  console.log(PurchaseProperty);
+const PurchasePropertyList = () => {
+  const {
+    data: PurchaseProperty,
+    isLoading,
+    refetch,
+  } = useGetPurchasePropertiesQuery({});
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // Loading state for delete
+
+  const [deletePurchaseProperty] = useDeletePurchasePropertyMutation();
 
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
-    setIsModalOpen(true);
+    setSelectedPropertyId(id); // Set the ID for the selected property
+    setIsModalOpen(true); // Open the confirmation modal
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedPropertyId(null); // Clear the selected property
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  const handleConfirmDelete = async () => {
+    if (selectedPropertyId) {
+      setIsDeleting(true); // Set loading state for delete
+      try {
+        await deletePurchaseProperty(selectedPropertyId).unwrap(); // Delete the property
+        toast.success("Purchase property deleted successfully!"); // Show success message
+        refetch(); // Refetch the property list
+        setIsModalOpen(false); // Close the modal
+        setSelectedPropertyId(null); // Clear the selection
+      } catch (error) {
+        toast.error("Failed to delete purchase property."); // Show error message
+        console.error("Delete error:", error);
+      } finally {
+        setIsDeleting(false); // Reset loading state
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (record) => {
+    // Handle edit logic here
+    console.log("Edit record", record);
+  };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id", // Assuming `id` contains the UUID
-      key: "id",
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1, // Generate serial number
     },
     {
       title: "Name",
@@ -48,47 +71,42 @@ const PurchasePropertyList = ({ onEdit, onDelete }) => {
 
     {
       title: "Type",
-      dataIndex: "type", // Assuming `type` contains the type (Enum: residential, commercial, etc.)
+      dataIndex: "type", // Assuming `type` contains the property type
       key: "type",
       render: (type) => (
         <span
-          className={`px-2 py-1 rounded-full text-white ${
+          className={`px-2 py-1 rounded-full text-black ${
             type === "residential"
               ? "bg-blue-500"
               : type === "commercial"
               ? "bg-green-500"
-              : "bg-yellow-500"
+              : "bg-yellow-800"
           }`}
         >
           {type.charAt(0).toUpperCase() + type.slice(1)}
         </span>
       ),
     },
-    // {
-    //   title: "Phase",
-    //   dataIndex: "phase", // Assuming `phase` contains the phase (ForeignKey: Phases.id)
-    //   key: "phase",
-    //   render: (phase) => phase.name, // Assuming `phase` contains an object with `name`
-    // },
-    // {
-    //   title: "Size",
-    //   dataIndex: "size", // Assuming `size` contains the property size
-    //   key: "size",
-    // },
     {
       title: "Price",
-      dataIndex: "price", // Assuming `price` contains the price/demand (Decimal)
+      dataIndex: "price", // Assuming `price` contains the price/demand
       key: "price",
-      render: (price) => `Rs. ${price.toLocaleString()}`, // Format the price as currency
+      render: (price) => `Rs. ${price.toLocaleString()}`, // Format as currency
     },
     {
       title: "Status",
-      dataIndex: "status", // Assuming `status` contains the status (Enum: active, inactive)
+      dataIndex: "status", // Assuming `status` contains the status (Enum)
       key: "status",
       render: (status) => (
         <span
           className={`px-2 py-1 rounded-full text-white ${
-            status === "active" ? "bg-green-500" : "bg-red-500"
+            status === "active"
+              ? "bg-green-500"
+              : status === "available"
+              ? "bg-primary-600"
+              : status === "Pending"
+              ? "bg-blue-500"
+              : "bg-red-500"
           }`}
         >
           {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -100,10 +118,18 @@ const PurchasePropertyList = ({ onEdit, onDelete }) => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Pass the correct property ID for deletion
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -113,24 +139,23 @@ const PurchasePropertyList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of PurchaseProperty</h2>
+      <h2 className="text-2xl font-bold mb-6">List of Purchase Properties</h2>
       {isLoading ? (
         <Loader />
-      ) : PurchaseProperty &&
-        PurchaseProperty?.doc &&
-        PurchaseProperty?.doc?.length ? (
+      ) : PurchaseProperty && PurchaseProperty?.doc?.length ? (
         <DataTable columns={columns} data={PurchaseProperty?.doc} />
       ) : (
-        <p>PurchaseProperty not found!</p>
+        <p>Purchase properties not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Confirm deletion
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this purchase property?"
+      />
     </div>
   );
 };

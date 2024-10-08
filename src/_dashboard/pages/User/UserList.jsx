@@ -3,80 +3,101 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-// import { useGetActivityQuery } from "../../../redux/slices/activity";
-import { useGetUsersQuery } from "../../../redux/slices/usersApiSlice";
+import {
+  useDeleteUserMutation,
+  useGetUsersQuery,
+} from "../../../redux/slices/usersApiSlice";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast"; // Optional for notifications
 
-const UserList = ({ onEdit, onDelete }) => {
-  const { data: users, isLoading } = useGetUsersQuery({});
+const UserList = () => {
+  const { data: users, isLoading, refetch } = useGetUsersQuery({});
 
   console.log(users);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // State for delete action
+
+  const [deleteUser] = useDeleteUserMutation();
 
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
-    setIsModalOpen(true);
+    setSelectedUserId(id); // Set user ID for deletion
+    setIsModalOpen(true); // Open confirmation modal
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setIsModalOpen(false); // Close modal without deleting
+    setSelectedUserId(null); // Clear the selected user ID
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  const handleConfirmDelete = async () => {
+    if (selectedUserId) {
+      setIsDeleting(true); // Show delete loading state
+      try {
+        await deleteUser(selectedUserId).unwrap(); // Trigger delete mutation
+        toast.success("User deleted successfully!"); // Show success notification
+        refetch(); // Refetch the users list after deletion
+      } catch (error) {
+        toast.error("Failed to delete the user."); // Show error notification
+        console.error("Delete error:", error);
+      } finally {
+        setIsDeleting(false); // Reset delete loading state
+        setIsModalOpen(false); // Close modal
+        setSelectedUserId(null); // Clear selected user ID
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (record) => {
+    // Handle the edit functionality (implement this based on your requirements)
+    console.log("Editing user:", record);
+  };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id", // Assuming `id` contains the unique identifier
-      key: "id",
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Name",
-      dataIndex: "name", // Assuming `name` contains the person's name
-      key: "name",
+      dataIndex: "firstName", // Assuming firstName contains the person's name
+      key: "firstName",
     },
     {
-      title: "Designation",
-      dataIndex: "designation", // Assuming `designation` contains the job title or position
-      key: "designation",
+      title: "Email",
+      dataIndex: "email", // Assuming email contains the user's email
+      key: "email",
     },
     {
-      title: "Extension",
-      dataIndex: "extension", // Assuming `extension` contains the phone extension number
-      key: "extension",
+      title: "Phone",
+      dataIndex: "phone", // Assuming phone contains the user's phone number
+      key: "phone",
     },
     {
-      title: "Status",
-      dataIndex: "status", // Assuming `status` contains the status (Enum: active, inactive)
-      key: "status",
-      render: (status) => (
-        <span
-          className={`px-2 py-1 rounded-full text-white ${
-            status === "active" ? "bg-green-500" : "bg-red-500"
-          }`}
-        >
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </span>
-      ),
+      title: "Role",
+      dataIndex: "role", // Assuming role contains the user's role
+      key: "role",
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a
+            onClick={() => handleEdit(record)} // Trigger edit action
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Trigger delete confirmation
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -86,22 +107,22 @@ const UserList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of users</h2>
+      <h2 className="text-2xl font-bold mb-6">List of Users</h2>
       {isLoading ? (
         <Loader />
       ) : users && users?.doc && users?.doc?.length ? (
         <DataTable columns={columns} data={users?.doc} />
       ) : (
-        <p>users not found!</p>
+        <p>No users found!</p>
       )}
 
-      {/* <ConfirmationModal
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Confirm deletion
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this user?" // Modal message correction
+      />
     </div>
   );
 };

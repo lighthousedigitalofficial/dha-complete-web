@@ -3,40 +3,62 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetTeamsQuery } from "../../../redux/slices/teamsSlice";
+import {
+  useGetTeamsQuery,
+  useDeleteTeamMutation,
+} from "../../../redux/slices/teamsSlice";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast"; // Optional for notifications
 
-const TeamList = ({ onEdit, onDelete }) => {
-  const { data: TeamsSlice, isLoading } = useGetTeamsQuery({});
+const TeamList = () => {
+  const { data: Teams, isLoading, refetch } = useGetTeamsQuery({});
 
-  console.log(TeamsSlice);
+  console.log(Teams);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedTeamId, setSelectedTeamId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // Loading state for delete
+
+  const [deleteTeam] = useDeleteTeamMutation();
 
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
-    setIsModalOpen(true);
+    setSelectedTeamId(id);
+    setIsModalOpen(true); // Open modal for delete confirmation
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedTeamId(null); // Clear the selected team ID
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  const handleConfirmDelete = async () => {
+    if (selectedTeamId) {
+      setIsDeleting(true); // Start delete loading
+      try {
+        await deleteTeam(selectedTeamId).unwrap(); // Call the delete mutation
+        toast.success("Team deleted successfully!"); // Show success notification
+        refetch(); // Refetch the teams after deletion
+      } catch (error) {
+        toast.error("Failed to delete the team."); // Show error notification
+        console.error("Delete error:", error);
+      } finally {
+        setIsDeleting(false); // Reset delete loading
+        setIsModalOpen(false); // Close the modal
+        setSelectedTeamId(null); // Clear the selected team ID
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (record) => {
+    console.log("Edit team:", record); // Placeholder for edit logic
+  };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id", // Assuming `id` contains the unique identifier
-      key: "id",
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1, // Generate serial number
     },
     {
       title: "Name",
@@ -47,11 +69,6 @@ const TeamList = ({ onEdit, onDelete }) => {
       title: "Designation",
       dataIndex: "designation", // Assuming `designation` contains the job title or position
       key: "designation",
-    },
-    {
-      title: "Extension",
-      dataIndex: "extension", // Assuming `extension` contains the phone extension number
-      key: "extension",
     },
     {
       title: "Status",
@@ -72,10 +89,18 @@ const TeamList = ({ onEdit, onDelete }) => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Pass team ID for delete action
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -85,22 +110,23 @@ const TeamList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of TeamsSlice</h2>
+      <h2 className="text-2xl font-bold mb-6">List of Teams</h2>
       {isLoading ? (
         <Loader />
-      ) : TeamsSlice && TeamsSlice?.doc && TeamsSlice?.doc?.length ? (
-        <DataTable columns={columns} data={TeamsSlice?.doc} />
+      ) : Teams && Teams?.doc?.length ? (
+        <DataTable columns={columns} data={Teams?.doc} />
       ) : (
-        <p>TeamsSlice not found!</p>
+        <p>No teams found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Confirm deletion
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this team?"
+      />
     </div>
   );
 };

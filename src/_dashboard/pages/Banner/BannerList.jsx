@@ -70,6 +70,16 @@ const BannerList = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+
+      render: (status) => (
+        <span
+          className={`px-2 py-1 rounded-full text-white ${
+            status === "active" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {status.charAt(0).toUpperCase() + status.slice(1)}
+        </span>
+      ),
     },
     {
       title: "Action",

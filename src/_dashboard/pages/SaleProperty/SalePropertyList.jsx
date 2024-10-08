@@ -3,40 +3,68 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetSalePropertySliceQuery } from "../../../redux/slices/salePropertySlice";
+import {
+  useDeleteSalePropertyMutation,
+  useGetSalePropertiesQuery,
+  // useGetSalePropertySliceQuery,
+} from "../../../redux/slices/salePropertySlice";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast"; // Add toast for notifications
 
-const SalePropertyList = ({ onEdit, onDelete }) => {
-  const { data: SaleProperty, isLoading } = useGetSalePropertySliceQuery({});
+const SalePropertyList = () => {
+  const {
+    data: SaleProperty,
+    isLoading,
+    refetch,
+  } = useGetSalePropertiesQuery({});
 
   console.log(SaleProperty);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // Track deletion state
+
+  const [deleteSaleProperty] = useDeleteSalePropertyMutation();
 
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
-    setIsModalOpen(true);
+    setSelectedPhaseId(id); // Set the selected property ID to delete
+    setIsModalOpen(true); // Open the confirmation modal
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setIsModalOpen(false); // Close the modal
+    setSelectedPhaseId(null); // Reset selected property ID
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  const handleConfirmDelete = async () => {
+    if (selectedPhaseId) {
+      setIsDeleting(true); // Set deleting state to true
+      try {
+        await deleteSaleProperty(selectedPhaseId).unwrap(); // Trigger delete mutation
+        toast.success("Sale property deleted successfully!"); // Show success toast
+        refetch(); // Refetch the list to update it
+        setIsModalOpen(false); // Close the modal
+        setSelectedPhaseId(null); // Clear selected property ID
+      } catch (error) {
+        toast.error("Failed to delete sale property."); // Show error toast
+        console.error("Error deleting sale property:", error);
+      } finally {
+        setIsDeleting(false); // Reset deleting state
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (record) => {
+    // Handle edit logic here
+    console.log("Edit record", record);
+  };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id", // Assuming `id` contains the UUID
-      key: "id",
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1, // Generate serial number
     },
     {
       title: "Name",
@@ -44,11 +72,11 @@ const SalePropertyList = ({ onEdit, onDelete }) => {
       key: "name",
     },
 
-    {
-      title: "Plot Number",
-      dataIndex: "plotNum", // Assuming `plotNum` contains the plot number
-      key: "plotNum",
-    },
+    // {
+    //   title: "Plot Number",
+    //   dataIndex: "plotNum", // Assuming `plotNum` contains the plot number
+    //   key: "plotNum",
+    // },
 
     {
       title: "Sector",
@@ -60,12 +88,6 @@ const SalePropertyList = ({ onEdit, onDelete }) => {
       dataIndex: "size", // Assuming `size` contains the size of the property
       key: "size",
     },
-    {
-      title: "Phase",
-      dataIndex: "phase", // Assuming `phase` contains a reference to a phase (Foreign Key)
-      key: "phase",
-      render: (phase) => phase.name, // Assuming `phase` object contains a `name` property
-    },
 
     {
       title: "Type",
@@ -73,7 +95,7 @@ const SalePropertyList = ({ onEdit, onDelete }) => {
       key: "type",
       render: (type) => (
         <span
-          className={`px-2 py-1 rounded-full text-white ${
+          className={`px-2 py-1 rounded-full text-black ${
             type === "residential"
               ? "bg-blue-500"
               : type === "commercial"
@@ -85,21 +107,21 @@ const SalePropertyList = ({ onEdit, onDelete }) => {
         </span>
       ),
     },
-    {
-      title: "Document",
-      dataIndex: "document", // Assuming `document` contains the document URL
-      key: "document",
-      render: (document) => (
-        <a
-          href={document}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 underline"
-        >
-          View Document
-        </a>
-      ),
-    },
+    // {
+    //   title: "Document",
+    //   dataIndex: "document", // Assuming `document` contains the document URL
+    //   key: "document",
+    //   render: (document) => (
+    //     <a
+    //       href={document}
+    //       target="_blank"
+    //       rel="noopener noreferrer"
+    //       className="text-blue-500 underline"
+    //     >
+    //       View Document
+    //     </a>
+    //   ),
+    // },
     {
       title: "Status",
       dataIndex: "status", // Assuming `status` contains the status (Enum)
@@ -119,10 +141,18 @@ const SalePropertyList = ({ onEdit, onDelete }) => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Pass the selected property ID for deletion
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -132,22 +162,23 @@ const SalePropertyList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of SaleProperty</h2>
+      <h2 className="text-2xl font-bold mb-6">List of Sale Properties</h2>
       {isLoading ? (
         <Loader />
-      ) : SaleProperty && SaleProperty?.doc && SaleProperty?.doc?.length ? (
+      ) : SaleProperty && SaleProperty?.doc?.length ? (
         <DataTable columns={columns} data={SaleProperty?.doc} />
       ) : (
-        <p>SaleProperty not found!</p>
+        <p>Sale properties not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Confirm delete action
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this sale property?"
+      />
     </div>
   );
 };

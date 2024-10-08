@@ -1,56 +1,70 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetFacilitiesQuery } from "../../../redux/slices/facilities";
+import { toast } from "react-hot-toast";
+import {
+  useDeleteFacilitiesMutation,
+  useGetFacilitiesQuery,
+} from "../../../redux/slices/facilities";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 
-const FacilitiesList = ({ onEdit, onDelete }) => {
-  const { data: Facilities, isLoading } = useGetFacilitiesQuery({});
-
-  console.log(Facilities);
-
+const FacilitiesList = () => {
+  const { data: Facilities, isLoading, refetch } = useGetFacilitiesQuery({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedFacilityId, setSelectedFacilityId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // Add a deleting state
 
+  const [deleteFacilities] = useDeleteFacilitiesMutation();
+
+  // Open the delete confirmation modal
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
+    setSelectedFacilityId(id);
     setIsModalOpen(true);
   };
 
+  // Close the modal
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedFacilityId(null);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  // Confirm the deletion process
+  const handleConfirmDelete = async () => {
+    if (selectedFacilityId) {
+      setIsDeleting(true);
+      toast.dismiss(); // Clear any prior toasts
+      try {
+        await deleteFacilities(selectedFacilityId).unwrap(); // Execute delete mutation
+        refetch(); // Refetch the data after deletion
+        toast.success("Facility deleted successfully!"); // Show success toast
+        handleModalClose(); // Close the modal
+      } catch (error) {
+        console.error("Error deleting facility:", error);
+        toast.error("Error deleting facility!"); // Show error toast
+      } finally {
+        setIsDeleting(false); // Reset deletion state
+      }
+    }
   };
-
-  const handleEdit = () => {};
-  const handleDelete = () => {};
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number or use actual ID
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1, // Automatically generate serial number
     },
     {
       title: "Title",
       dataIndex: "title", // Assuming `title` contains the title of the item
       key: "title",
     },
-
     {
       title: "Description",
       dataIndex: "description", // Assuming `description` contains a brief description
       key: "description",
     },
-
     {
       title: "Link",
       dataIndex: "link", // Assuming `link` contains the URL
@@ -71,10 +85,20 @@ const FacilitiesList = ({ onEdit, onDelete }) => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          {/* Edit button */}
+          <a
+            onClick={() => onEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          {/* Delete button */}
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Ensure the correct ID is passed
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -93,13 +117,14 @@ const FacilitiesList = ({ onEdit, onDelete }) => {
         <p>Facilities not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Optional Confirmation Modal */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this facility?"
+      />
     </div>
   );
 };
