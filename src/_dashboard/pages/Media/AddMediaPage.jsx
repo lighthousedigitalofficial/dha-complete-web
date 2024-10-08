@@ -1,72 +1,60 @@
 import React, { useState } from "react";
-import FormInput from "../../_components/Form/FormInput/FormInput";
+import { useForm } from "react-hook-form";
+import InputField from "../../_components/shared/InputField";
+import { useCreateMediaMutation } from "../../../redux/slices/mediaApiSlice";
+import { useGetBannersQuery } from "../../../redux/slices/bannerSlice";
+import toast from "react-hot-toast";
 
-const AddMediaPage = ({ initialData = {} }) => {
-  const [title, setTitle] = useState(initialData.title || "");
-  const [description, setDescription] = useState(initialData.description || "");
-  const [errors, setErrors] = useState({});
+const AddMediaPage = () => {
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const [createMedia] = useCreateMediaMutation();
+  const { data: banners, isLoading: bannersLoading } = useGetBannersQuery();
+  const [mediaBanner, setMediaBanner] = useState("");
 
-  const handleMediaChange = (e) => {
-    const selectedMedia = e.target.value;
-    setErrors({});
+  const onSubmit = async (data) => {
+    try {
+      // Ensure mediaBanner is included in the data
+      const payload = { 
+        bannerId: mediaBanner, 
+        title: data.title, 
+        description: data.description 
+      };
+
+      // Log the request payload
+      console.log("Request Payload:", payload);
+
+      await createMedia(payload).unwrap();
+      toast.success("Media created successfully");
+      reset();
+      setMediaBanner("");
+    } catch (error) {
+      console.error("Failed to create media:", error);
+    }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!title) newErrors.title = "Title is required.";
-    if (!description) newErrors.description = "Description is required.";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
-    // Collecting form data
-    const formData = {
-      title,
-      description,
-    };
-
-    // Log form data to console
-    console.log("Form Data:", formData);
-    alert("Form submitted!");
+  const handleMediaChange = (event) => {
+    setMediaBanner(event.target.value);
   };
 
   const handleReset = () => {
-    setTitle("");
-    setDescription("");
-    setErrors({});
+    reset();
+    setMediaBanner("");
   };
 
   return (
     <div className="p-4 rounded-md shadow-md m-5">
       <h2 className="text-2xl font-semibold mb-6">Upload Media</h2>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6">
         <div>
           {/* Title Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="title"
-              className="block text-[1rem] font-semibold mb-2"
-            >
-              Title
-            </label>
-            <FormInput
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter Title"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                errors.title
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-blue-500"
-              }`}
-            />
-            {errors.title && <p className="text-red-500">{errors.title}</p>}
-          </div>
+          <InputField
+            label="Title"
+            name="title"
+            register={register}
+            required={true}
+            errors={errors}
+            errorMessage="Title is required."
+          />
 
           {/* Description Input */}
           <div className="mb-4">
@@ -78,17 +66,14 @@ const AddMediaPage = ({ initialData = {} }) => {
             </label>
             <textarea
               id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter Description"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                errors.description
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-blue-500"
+              {...register("description", { required: "Description is required." })}
+              rows="5"
+              className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 ${
+                errors.description ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
               }`}
-            />
+            ></textarea>
             {errors.description && (
-              <p className="text-red-500">{errors.description}</p>
+              <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
             )}
           </div>
 
@@ -102,14 +87,27 @@ const AddMediaPage = ({ initialData = {} }) => {
             </label>
             <select
               id="media-select"
+              {...register("mediaBanner", { required: "Media Banner is required." })}
+              value={mediaBanner}
               onChange={handleMediaChange}
-              className="block w-full text-sm text-gray-500 border rounded-md cursor-pointer p-2 focus:outline-none focus:ring-2 border-gray-300 focus:ring-blue-500"
+              className={`block w-full text-sm text-gray-500 border rounded-md cursor-pointer p-2 focus:outline-none focus:ring-2 ${
+                errors.mediaBanner ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
+              }`}
             >
               <option value="">Select a Media Banner</option>
-              <option value="Banner 1">Banner 1</option>
-              <option value="Banner 2">Banner 2</option>
-              <option value="Banner 3">Banner 3</option>
+              {bannersLoading ? (
+                <option>Loading...</option>
+              ) : (
+                Array.isArray(banners?.doc) && banners.doc.map((banner) => (
+                  <option key={banner._id} value={banner._id}>
+                    {banner.title}
+                  </option>
+                ))
+              )}
             </select>
+            {errors.mediaBanner && (
+              <p className="text-red-500 text-sm mt-1">{errors.mediaBanner.message}</p>
+            )}
           </div>
         </div>
 

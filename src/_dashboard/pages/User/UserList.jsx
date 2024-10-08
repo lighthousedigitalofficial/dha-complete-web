@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
@@ -54,6 +54,7 @@ const UserList = () => {
     console.log("Editing user:", record);
   };
 
+
   const columns = [
     {
       title: "S.No",
@@ -90,7 +91,7 @@ const UserList = () => {
             onClick={() => handleEdit(record)} // Trigger edit action
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
-            <FaEdit />
+           	<FaEye />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Trigger delete confirmation

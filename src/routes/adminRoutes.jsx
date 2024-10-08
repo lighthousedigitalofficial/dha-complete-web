@@ -1,5 +1,4 @@
 import DashboardLayout from "../_dashboard/DashboardLayout";
-
 import AddAffiliatesPage from "../_dashboard/pages/Affiliates/AddAffiliatesPage";
 import AddAssociatesWebsitesPage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitesPage";
 import AddBannerPage from "../_dashboard/pages/Banner/AddBannerPage";
@@ -35,7 +34,7 @@ import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
 
 import UserList from "./../_dashboard/pages/User/UserList";
 import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
-import RegistrationPropertyPage from "../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
+import UserDetailPage from "./pages/User/UserDetailPage";
 // import RegistrationPropertyList from "./../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
 
 const adminRoutes = [
@@ -210,6 +209,10 @@ const adminRoutes = [
         path: "users/list",
         element: <UserList />,
       },
+      {
+				path: "profile",
+				element: <UserDetailPage />,
+			},
     ],
   },
 ];

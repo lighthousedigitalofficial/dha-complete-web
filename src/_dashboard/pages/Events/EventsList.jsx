@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import {
   useDeleteEventMutation,
   useGetEventsQuery,
@@ -81,7 +81,7 @@ const EventsList = () => {
             onClick={() => handleEdit(record)}
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
-            <FaEdit />
+            <FaEye />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Pass the event ID to delete
