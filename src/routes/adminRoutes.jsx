@@ -42,7 +42,7 @@ import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
 
 const adminRoutes = [
 	{
-		path: "/dashboard",
+		path: "/",
 		element: <DashboardLayout />,
 		children: [
 			{

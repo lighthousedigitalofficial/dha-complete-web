@@ -21,99 +21,99 @@ import {
 } from "react-icons/fa";
 
 export const sidebarItems = [
-  {
-    path: '/dashboard',
-    label: 'Dashboard',
-    icon: FaHome,
-  },
-  {
-    label: 'Important Notices',
-    icon: FaBell,
-    subItems: [
-      { path: '/dashboard/important-notices/add', label: 'Add Notice', icon: FaPlus },
-      { path: '/dashboard/important-notices/list', label: 'List Notices', icon: FaList },
-    ],
-  },
-  {
-    label: 'Banners',
-    icon: FaImage,
-    subItems: [
-      { path: '/dashboard/banners/add', label: 'Add Banner', icon: FaPlus },
-      { path: '/dashboard/banners/list', label: 'List Banners', icon: FaList },
-    ],
-  },
-  {
-    label: 'Associates',
-    icon: FaLink,
-    subItems: [
-      { path: '/dashboard/associates/add', label: 'Add Website', icon: FaPlus },
-      { path: '/dashboard/associates/list', label: 'List Websites', icon: FaList },
-    ],
-  },
-	
-  
-  {
-    label: 'Gallery',
+	{
+		path: "/",
+		label: "Dashboard",
+		icon: FaHome,
+	},
+	{
+		label: "Important Notices",
+		icon: FaBell,
+		subItems: [
+			{ path: "/important-notices/add", label: "Add Notice", icon: FaPlus },
+			{ path: "/important-notices/list", label: "List Notices", icon: FaList },
+		],
+	},
+	{
+		label: "Banners",
 		icon: FaImage,
-    subItems: [
-      {
-				label: 'Videos',
+		subItems: [
+			{ path: "/banners/add", label: "Add Banner", icon: FaPlus },
+			{ path: "/banners/list", label: "List Banners", icon: FaList },
+		],
+	},
+	{
+		label: "Associates",
+		icon: FaLink,
+		subItems: [
+			{ path: "/associates/add", label: "Add Website", icon: FaPlus },
+			{ path: "/associates/list", label: "List Websites", icon: FaList },
+		],
+	},
+
+	{
+		label: "Gallery",
+		icon: FaImage,
+		subItems: [
+			{
+				label: "Videos",
 				icon: FaVideo,
 				subsubItems: [
-					{ path: '/dashboard/videos/add', label: 'Add Video', icon: FaPlus },
-					{ path: '/dashboard/videos/list', label: 'List Videos', icon: FaList },
+					{ path: "/videos/add", label: "Add Video", icon: FaPlus },
+					{ path: "/videos/list", label: "List Videos", icon: FaList },
 				],
 			},
 			{
-				label: 'Media',
+				label: "Media",
 				icon: FaImage,
 				subsubItems: [
-					{ path: '/dashboard/media/add', label: 'Add Media', icon: FaPlus},
-					{ path: '/dashboard/media/list', label: 'List Media', icon: FaList}]
-			},
-			{
-				label: 'Events',
-				icon: FaCalendarAlt,
-				subsubItems: [
-					{ path: '/dashboard/events/add', label: 'Add Event', icon: FaPlus },
-					{ path: '/dashboard/events/list', label: 'List Events', icon: FaList },
+					{ path: "/media/add", label: "Add Media", icon: FaPlus },
+					{ path: "/media/list", label: "List Media", icon: FaList },
 				],
 			},
-    ],
-  },
-  
-  {
-    label: 'Phases',
-    icon: FaMapMarkerAlt,
-    subItems: [
-      { path: '/dashboard/phases/add', label: 'Add Phase', icon: FaPlus },
-      { path: '/dashboard/phases/list', label: 'List Phases', icon: FaList },
-    ],
-  },
-  {
-    label: 'Facilities',
-    icon: FaBuilding,
-    subItems: [
-      { path: '/dashboard/facilities/add', label: 'Add Facility', icon: FaPlus },
-      { path: '/dashboard/facilities/list', label: 'List Facilities', icon: FaList },
-    ],
-  },
-  {
-    label: 'Affiliates',
-    icon: FaUsers,
-    subItems: [
-      { path: '/dashboard/affiliates/add', label: 'Add Affiliate', icon: FaPlus },
-      { path: '/dashboard/affiliates/list', label: 'List Affiliates', icon: FaList },
-    ],
-  },
+			{
+				label: "Events",
+				icon: FaCalendarAlt,
+				subsubItems: [
+					{ path: "/events/add", label: "Add Event", icon: FaPlus },
+					{ path: "/events/list", label: "List Events", icon: FaList },
+				],
+			},
+		],
+	},
+
+	{
+		label: "Phases",
+		icon: FaMapMarkerAlt,
+		subItems: [
+			{ path: "/phases/add", label: "Add Phase", icon: FaPlus },
+			{ path: "/phases/list", label: "List Phases", icon: FaList },
+		],
+	},
+	{
+		label: "Facilities",
+		icon: FaBuilding,
+		subItems: [
+			{ path: "/facilities/add", label: "Add Facility", icon: FaPlus },
+			{ path: "/facilities/list", label: "List Facilities", icon: FaList },
+		],
+	},
+	{
+		label: "Affiliates",
+		icon: FaUsers,
+		subItems: [
+			{ path: "/affiliates/add", label: "Add Affiliate", icon: FaPlus },
+			{ path: "/affiliates/list", label: "List Affiliates", icon: FaList },
+		],
+	},
 
 	{
 		label: "Engineers",
 		icon: FaTools,
 		subItems: [
-			{ path: "/dashboard/engineers/add", label: "Add Engineer", icon: FaPlus },
+			{ path: "/engineers/add", label: "Add Engineer", icon: FaPlus },
 			{
-				path: "/dashboard/engineers/list",
+				path: "/engineers/list",
 				label: "List Engineers",
 				icon: FaList,
 			},
@@ -124,12 +124,12 @@ export const sidebarItems = [
 		icon: FaTasks,
 		subItems: [
 			{
-				path: "/dashboard/activities/add",
+				path: "/activities/add",
 				label: "Add Activity",
 				icon: FaPlus,
 			},
 			{
-				path: "/dashboard/activities/list",
+				path: "/activities/list",
 				label: "List Activities",
 				icon: FaList,
 			},
@@ -144,12 +144,12 @@ export const sidebarItems = [
 				icon: FaHome,
 				subsubItems: [
 					{
-						path: "/dashboard/sale-property/add",
+						path: "/sale-property/add",
 						label: "Add Sale Property",
 						icon: FaPlus,
 					},
 					{
-						path: "/dashboard/sale-property/list",
+						path: "/sale-property/list",
 						label: "List Sale Properties",
 						icon: FaList,
 					},
@@ -160,12 +160,12 @@ export const sidebarItems = [
 				icon: FaShoppingCart,
 				subsubItems: [
 					{
-						path: "/dashboard/purchase-property/add",
+						path: "/purchase-property/add",
 						label: "Add Purchase Property",
 						icon: FaPlus,
 					},
 					{
-						path: "/dashboard/purchase-property/list",
+						path: "/purchase-property/list",
 						label: "List Purchase Properties",
 						icon: FaList,
 					},
@@ -176,12 +176,12 @@ export const sidebarItems = [
 				icon: FaClipboardList,
 				subsubItems: [
 					{
-						path: "/dashboard/registration-property/add",
+						path: "/registration-property/add",
 						label: "Add Registration Property",
 						icon: FaPlus,
 					},
 					{
-						path: "/dashboard/registration-property/list",
+						path: "/registration-property/list",
 						label: "List Registration Properties",
 						icon: FaList,
 					},
@@ -192,12 +192,12 @@ export const sidebarItems = [
 				icon: FaUserTie,
 				subsubItems: [
 					{
-						path: "/dashboard/property-dealers/add",
+						path: "/property-dealers/add",
 						label: "Add Property Dealer",
 						icon: FaPlus,
 					},
 					{
-						path: "/dashboard/property-dealers/list",
+						path: "/property-dealers/list",
 						label: "List Property Dealers",
 						icon: FaList,
 					},
@@ -210,9 +210,9 @@ export const sidebarItems = [
 		label: "Team",
 		icon: FaUsers,
 		subItems: [
-			{ path: "/dashboard/team/add", label: "Add Team Member", icon: FaPlus },
+			{ path: "/team/add", label: "Add Team Member", icon: FaPlus },
 			{
-				path: "/dashboard/team/list",
+				path: "/team/list",
 				label: "List Team Members",
 				icon: FaList,
 			},
@@ -223,12 +223,12 @@ export const sidebarItems = [
 		icon: FaBook,
 		subItems: [
 			{
-				path: "/dashboard/portal-guide/add",
+				path: "/portal-guide/add",
 				label: "Add Portal Guide",
 				icon: FaPlus,
 			},
 			{
-				path: "/dashboard/portal-guide/list",
+				path: "/portal-guide/list",
 				label: "List Portal Guides",
 				icon: FaList,
 			},
@@ -238,8 +238,8 @@ export const sidebarItems = [
 		label: "User",
 		icon: FaUser,
 		subItems: [
-			{ path: "/dashboard/users/add", label: "Add User", icon: FaPlus },
-			{ path: "/dashboard/users/list", label: "List Users", icon: FaList },
+			{ path: "/users/add", label: "Add User", icon: FaPlus },
+			{ path: "/users/list", label: "List Users", icon: FaList },
 		],
 	},
 ];
