@@ -1,36 +1,55 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 
 import { useGetPhasesQuery } from "../../../redux/slices/phasesSlice";
+
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast";
+import {
+  useDeletePhaseMutation,
+  useGetPhaseQuery,
+} from "../../../redux/slices/phasesApiSlice";
 
-const PhasesList = ({ onEdit, onDelete }) => {
-  const { data: phases, isLoading } = useGetPhasesQuery({});
-
-  console.log(phases);
-
+const PhasesList = () => {
+  const { data: phases, isLoading, refetch } = useGetPhaseQuery({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
+  const [deletePhase] = useDeletePhaseMutation();
+
+  // Open the delete confirmation modal
   const handleDeleteClick = (id) => {
     setSelectedPhaseId(id);
     setIsModalOpen(true);
   };
 
+  // Close the modal
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedPhaseId(null);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  // Confirm the deletion process
+  const handleConfirmDelete = async () => {
+    if (selectedPhaseId) {
+      setIsDeleting(true);
+      toast.dismiss(); // Clear any prior toasts
+      try {
+        await deletePhase(selectedPhaseId).unwrap(); // Delete the phase
+        refetch(); // Refetch the data after deletion
+        toast.success("Phase deleted successfully!"); // Show success toast
+        setIsModalOpen(false);
+      } catch (error) {
+        console.error("Error deleting phase:", error);
+        toast.error("Error deleting phase!"); // Show error toast
+      } finally {
+        setIsDeleting(false);
+      }
+    }
   };
-
-  const handleEdit = () => {};
-  const handleDelete = () => {};
 
   const columns = [
     {
@@ -45,11 +64,6 @@ const PhasesList = ({ onEdit, onDelete }) => {
       key: "title",
     },
     {
-      title: "Location",
-      dataIndex: "location",
-      key: "location",
-    },
-    {
       title: "Type",
       dataIndex: "type",
       key: "type",
@@ -61,10 +75,16 @@ const PhasesList = ({ onEdit, onDelete }) => {
         <div className="flex gap-2 items-center px-2">
           {/* Example action buttons (Edit/Delete) */}
           <a onClick={() => handleEdit(record)}>
-            <FaEdit />
+            <FaEye />
           </a>
 
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          {/* Delete button */}
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Ensure the correct ID is passed
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -83,13 +103,14 @@ const PhasesList = ({ onEdit, onDelete }) => {
         <p>Phases not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation Modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
         message="Are you sure you want to delete this phase?"
-      /> */}
+      />
     </div>
   );
 };

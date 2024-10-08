@@ -3,108 +3,132 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetGuidesQuery } from "../../../redux/slices/guidesSlice";
+import {
+  useDeleteGuideMutation,
+  useGetGuideQuery,
+} from "../../../redux/slices/guidesSlice";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast"; // Optional for notifications
 
-const PortGuidesList = ({ onEdit, onDelete }) => {
-	const { data: PortalGuides, isLoading } = useGetGuidesQuery();
+const PortGuidesList = ({ onEdit }) => {
+  const { data: PortalGuides, isLoading, refetch } = useGetGuideQuery({});
 
-	console.log(PortalGuides);
+  console.log(PortalGuides);
 
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedGuideId, setSelectedGuideId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // State for delete action
 
-	const handleDeleteClick = (id) => {
-		setSelectedPhaseId(id);
-		setIsModalOpen(true);
-	};
+  const [deleteGuide] = useDeleteGuideMutation();
 
-	const handleModalClose = () => {
-		setIsModalOpen(false);
-		setSelectedPhaseId(null);
-	};
+  const handleDeleteClick = (id) => {
+    setSelectedGuideId(id); // Set guide ID for deletion
+    setIsModalOpen(true); // Open confirmation modal
+  };
 
-	const handleConfirmDelete = () => {
-		onDelete(selectedPhaseId);
-		setIsModalOpen(false);
-		setSelectedPhaseId(null);
-	};
+  const handleModalClose = () => {
+    setIsModalOpen(false); // Close modal without deleting
+    setSelectedGuideId(null); // Clear the selected guide ID
+  };
 
-	const handleEdit = () => {};
-	const handleDelete = () => {};
+  const handleConfirmDelete = async () => {
+    if (selectedGuideId) {
+      setIsDeleting(true); // Show delete loading state
+      try {
+        await deleteGuide(selectedGuideId).unwrap(); // Trigger delete mutation
+        toast.success("Guide deleted successfully!"); // Show success notification
+        refetch(); // Refetch the guides list after deletion
+      } catch (error) {
+        toast.error("Failed to delete the guide."); // Show error notification
+        console.error("Delete error:", error);
+      } finally {
+        setIsDeleting(false); // Reset delete loading state
+        setIsModalOpen(false); // Close modal
+        setSelectedGuideId(null); // Clear selected guide ID
+      }
+    }
+  };
 
-	const columns = [
-		{
-			title: "S.No",
-			dataIndex: "sno",
-			key: "sno",
-			render: (text, record, index) => index + 1,
-		},
-		{
-			title: "Title",
-			dataIndex: "title", // Assuming `title` contains the title of the video
-			key: "title",
-		},
-		// {
-		//   title: "Video",
-		//   dataIndex: "video", // Assuming `video` contains the video URL or video file
-		//   key: "video",
-		//   render: (video) => (
-		//     <video width="100" controls>
-		//       <source src={video} type="video/mp4" />
-		//       Your browser does not support the video tag.
-		//     </video>
-		//   ),
-		// },
-		{
-			title: "Status",
-			dataIndex: "status", // Assuming `status` contains the status (active/inactive)
-			key: "status",
-			render: (status) => (
-				<span
-					className={`px-2 py-1 rounded-full text-white ${
-						status === "active" ? "bg-green-500" : "bg-red-500"
-					}`}
-				>
-					{status.charAt(0).toUpperCase() + status.slice(1)}
-				</span>
-			),
-		},
-		{
-			title: "Action",
-			key: "action",
-			render: (_, record) => (
-				<div className="flex gap-2 items-center px-2">
-					<a onClick={() => handleEdit(record)}>
-						<FaEdit />
-					</a>
-					<a onClick={() => handleDelete(record)} style={{ color: "red" }}>
-						<FaTrash />
-					</a>
-				</div>
-			),
-		},
-	];
+  const handleEdit = (record) => {
+    onEdit(record); // Call parent onEdit function for editing logic
+  };
 
-	return (
-		<div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-			<h2 className="text-2xl font-bold mb-6">List of PortalGuides</h2>
-			{isLoading ? (
-				<Loader />
-			) : PortalGuides && PortalGuides?.doc && PortalGuides?.doc?.length ? (
-				<DataTable columns={columns} data={PortalGuides?.doc} />
-			) : (
-				<p>PortalGuides not found!</p>
-			)}
+  const columns = [
+    {
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1, // Generate serial number
+    },
+    {
+      title: "Name",
+      dataIndex: "name", // Assuming `name` contains the guide name
+      key: "name",
+    },
+    {
+      title: "Designation",
+      dataIndex: "designation", // Assuming `designation` contains the designation/title
+      key: "designation",
+    },
+    {
+      title: "Status",
+      dataIndex: "status", // Assuming `status` contains active/inactive status
+      key: "status",
+      render: (status) => (
+        <span
+          className={`px-2 py-1 rounded-full text-white ${
+            status === "active" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {status.charAt(0).toUpperCase() + status.slice(1)}
+        </span>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <div className="flex gap-2 items-center px-2">
+          <a
+            onClick={() => handleEdit(record)} // Trigger edit action
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
+            <FaEdit />
+          </a>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Trigger delete confirmation
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            <FaTrash />
+          </a>
+        </div>
+      ),
+    },
+  ];
 
-			{/* <ConfirmationModal
+  return (
+    <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
+      <h2 className="text-2xl font-bold mb-6">List of Portal Guides</h2>
+      {isLoading ? (
+        <Loader />
+      ) : PortalGuides && PortalGuides?.doc && PortalGuides?.doc?.length ? (
+        <DataTable columns={columns} data={PortalGuides?.doc} />
+      ) : (
+        <p>No portal guides found!</p>
+      )}
+
+      {/* Confirmation modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Confirm deletion
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
-		</div>
-	);
+        message="Are you sure you want to delete this guide?"
+      />
+    </div>
+  );
 };
 
 export default PortGuidesList;

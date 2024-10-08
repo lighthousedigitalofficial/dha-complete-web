@@ -21,119 +21,91 @@ import {
 } from "react-icons/fa";
 
 export const sidebarItems = [
-	{
-		path: "/dashboard",
-		label: "Dashboard",
-		icon: FaHome,
-	},
-	{
-		label: "Important Notices",
-		icon: FaBell,
-		subItems: [
-			{
-				path: "/dashboard/important-notices/add",
-				label: "Add Notice",
-				icon: FaPlus,
-			},
-			{
-				path: "/dashboard/important-notices/list",
-				label: "List Notices",
-				icon: FaList,
-			},
-		],
-	},
-	{
-		label: "Banners",
+  {
+    path: '/dashboard',
+    label: 'Dashboard',
+    icon: FaHome,
+  },
+  {
+    label: 'Important Notices',
+    icon: FaBell,
+    subItems: [
+      { path: '/dashboard/important-notices/add', label: 'Add Notice', icon: FaPlus },
+      { path: '/dashboard/important-notices/list', label: 'List Notices', icon: FaList },
+    ],
+  },
+  {
+    label: 'Banners',
+    icon: FaImage,
+    subItems: [
+      { path: '/dashboard/banners/add', label: 'Add Banner', icon: FaPlus },
+      { path: '/dashboard/banners/list', label: 'List Banners', icon: FaList },
+    ],
+  },
+  {
+    label: 'Associates',
+    icon: FaLink,
+    subItems: [
+      { path: '/dashboard/associates/add', label: 'Add Website', icon: FaPlus },
+      { path: '/dashboard/associates/list', label: 'List Websites', icon: FaList },
+    ],
+  },
+	
+  
+  {
+    label: 'Gallery',
 		icon: FaImage,
-		subItems: [
-			{ path: "/dashboard/banners/add", label: "Add Banner", icon: FaPlus },
-			{ path: "/dashboard/banners/list", label: "List Banners", icon: FaList },
-		],
-	},
-	{
-		label: "Associates Websites",
-		icon: FaLink,
-		subItems: [
-			{ path: "/dashboard/associates/add", label: "Add Website", icon: FaPlus },
-			{
-				path: "/dashboard/associates/list",
-				label: "List Websites",
-				icon: FaList,
-			},
-		],
-	},
-	{
-		label: "Videos",
-		icon: FaVideo,
-		subItems: [
-			{ path: "/dashboard/videos/add", label: "Add Video", icon: FaPlus },
-			{ path: "/dashboard/videos/list", label: "List Videos", icon: FaList },
-		],
-	},
-	{
-		label: "Media",
-		icon: FaAd,
-		subItems: [
-			{
-				path: "/dashboard/media/add",
-				label: "Add Media",
-				icon: FaPlus,
+    subItems: [
+      {
+				label: 'Videos',
+				icon: FaVideo,
+				subsubItems: [
+					{ path: '/dashboard/videos/add', label: 'Add Video', icon: FaPlus },
+					{ path: '/dashboard/videos/list', label: 'List Videos', icon: FaList },
+				],
 			},
 			{
-				path: "/dashboard/media/list",
-				label: "List Media",
-				icon: FaList,
-			},
-		],
-	},
-	{
-		label: "Events",
-		icon: FaCalendarAlt,
-		subItems: [
-			{ path: "/dashboard/events/add", label: "Add Event", icon: FaPlus },
-			{ path: "/dashboard/events/list", label: "List Events", icon: FaList },
-		],
-	},
-	{
-		label: "Phases",
-		icon: FaMapMarkerAlt,
-		subItems: [
-			{ path: "/dashboard/phases/add", label: "Add Phase", icon: FaPlus },
-			{ path: "/dashboard/phases/list", label: "List Phases", icon: FaList },
-		],
-	},
-	{
-		label: "Facilities",
-		icon: FaBuilding,
-		subItems: [
-			{
-				path: "/dashboard/facilities/add",
-				label: "Add Facility",
-				icon: FaPlus,
+				label: 'Media',
+				icon: FaImage,
+				subsubItems: [
+					{ path: '/dashboard/media/add', label: 'Add Media', icon: FaPlus},
+					{ path: '/dashboard/media/list', label: 'List Media', icon: FaList}]
 			},
 			{
-				path: "/dashboard/facilities/list",
-				label: "List Facilities",
-				icon: FaList,
+				label: 'Events',
+				icon: FaCalendarAlt,
+				subsubItems: [
+					{ path: '/dashboard/events/add', label: 'Add Event', icon: FaPlus },
+					{ path: '/dashboard/events/list', label: 'List Events', icon: FaList },
+				],
 			},
-		],
-	},
-	{
-		label: "Affiliates",
-		icon: FaUsers,
-		subItems: [
-			{
-				path: "/dashboard/affiliates/add",
-				label: "Add Affiliate",
-				icon: FaPlus,
-			},
-			{
-				path: "/dashboard/affiliates/list",
-				label: "List Affiliates",
-				icon: FaList,
-			},
-		],
-	},
+    ],
+  },
+  
+  {
+    label: 'Phases',
+    icon: FaMapMarkerAlt,
+    subItems: [
+      { path: '/dashboard/phases/add', label: 'Add Phase', icon: FaPlus },
+      { path: '/dashboard/phases/list', label: 'List Phases', icon: FaList },
+    ],
+  },
+  {
+    label: 'Facilities',
+    icon: FaBuilding,
+    subItems: [
+      { path: '/dashboard/facilities/add', label: 'Add Facility', icon: FaPlus },
+      { path: '/dashboard/facilities/list', label: 'List Facilities', icon: FaList },
+    ],
+  },
+  {
+    label: 'Affiliates',
+    icon: FaUsers,
+    subItems: [
+      { path: '/dashboard/affiliates/add', label: 'Add Affiliate', icon: FaPlus },
+      { path: '/dashboard/affiliates/list', label: 'List Affiliates', icon: FaList },
+    ],
+  },
 
 	{
 		label: "Engineers",

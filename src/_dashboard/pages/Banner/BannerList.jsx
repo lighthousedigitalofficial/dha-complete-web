@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
 
 import {
@@ -70,6 +70,16 @@ const BannerList = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+
+      render: (status) => (
+        <span
+          className={`px-2 py-1 rounded-full text-white ${
+            status === "active" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {status.charAt(0).toUpperCase() + status.slice(1)}
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -80,7 +90,7 @@ const BannerList = () => {
             onClick={() => handleEdit(record)}
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
-            <FaEdit />
+            <FaEye />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Set the selected banner ID for deletion

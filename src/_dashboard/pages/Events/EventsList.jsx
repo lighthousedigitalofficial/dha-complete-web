@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import {
   useDeleteEventMutation,
   useGetEventsQuery,
@@ -13,59 +13,60 @@ const EventsList = () => {
   const { data: Events, isLoading, refetch } = useGetEventsQuery({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
-  // const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false); // Active deletion state
 
   const [deleteEvent] = useDeleteEventMutation();
 
+  // Open delete confirmation modal
   const handleDeleteClick = (id) => {
     setSelectedEventId(id);
     setIsModalOpen(true);
   };
 
+  // Close delete modal
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedEventId(null);
   };
 
+  // Confirm and handle the deletion of the event
   const handleConfirmDelete = async () => {
     if (selectedEventId) {
       setIsDeleting(true);
+      toast.dismiss(); // Clear any prior toasts
       try {
-        await deleteEvent(selectedEventId);
-        refetch();
-        handleModalClose();
-
-        toast.dismiss();
-        toast.success("Event deleted successfully!");
+        await deleteEvent(selectedEventId); // Delete the event
+        refetch(); // Refetch the data after deletion
+        handleModalClose(); // Close the modal
+        toast.success("Event deleted successfully!"); // Show success toast
       } catch (error) {
         console.error("Error deleting event:", error);
-
-        toast.dismiss();
-        toast.error("Error deleting event!");
+        toast.error("Error deleting event!"); // Show error toast
       } finally {
-        setIsDeleting(false);
+        setIsDeleting(false); // Reset deletion state
       }
     }
   };
 
+  // Handle the event editing process
   const handleEdit = (record) => {
     console.log("Edit event:", record);
-    // Add edit logic here
+    // Add your edit logic here
   };
 
+  // Define columns for DataTable
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1, // Generate serial number or use actual ID
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Title",
       dataIndex: "title",
       key: "title",
     },
-
     {
       title: "Description",
       dataIndex: "description",
@@ -80,11 +81,13 @@ const EventsList = () => {
             onClick={() => handleEdit(record)}
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
-            <FaEdit />
+            <FaEye />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Pass the event ID to delete
-            className="border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500"
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
           >
             <FaTrash />
           </a>
@@ -112,8 +115,6 @@ const EventsList = () => {
         title="Confirm Deletion"
         message="Are you sure you want to delete this event?"
       />
-
-      {/* Hot-toast notifications */}
     </div>
   );
 };
