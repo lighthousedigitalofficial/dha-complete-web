@@ -26,6 +26,7 @@ export const apiSlice = createApi({
 		"Events",
 		"Facilities",
 		"Affiliates",
+		"PropertyDealer",
 		"Banners",
 		"Notices",
 		"Videos",
@@ -36,6 +37,7 @@ export const apiSlice = createApi({
 		"PortalGuides",
 		"SaleProperties",
 		"Engineers",
+		"Teams"
 	],
 	endpoints: (builder) => ({}),
 });
