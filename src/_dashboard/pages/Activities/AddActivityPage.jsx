@@ -1,82 +1,160 @@
-import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import PropTypes from "prop-types";
-// import InputField from "../shared/Inputfield";
-// import ImageUpload from "../shared/ImageUpload";
-// import VideoUpload from "../shared/VideoUpload";
-
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
+import toast from "react-hot-toast";
+import { useCreateActivityMutation } from "../../../redux/slices/activitySlice";
+import { useGetBannersQuery } from "../../../redux/slices/bannerSlice";
+import { Navigate, useNavigate } from "react-router-dom";
 
-import ImageUpload from "../../_components/shared/ImageUpload";
-import VideoUpload from "../../_components/shared/VideoUpload";
-const ActivityForm = ({ onSubmit }) => {
-  const methods = useForm();
+const AddActivityPage = () => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm();
+	const [createActivity] = useCreateActivityMutation();
+	const { data: banners, isLoading: bannersLoading } = useGetBannersQuery();
 
-  const handleFormSubmit = (data) => {
-    onSubmit(data);
-  };
+	const [mediaBanner, setMediaBanner] = useState("");
+	const navigate = useNavigate();
 
-  return (
-    <FormProvider {...methods}>
-      <div className="max-w-md mx-auto bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-2xl font-bold mb-6">Add Activity</h2>
-        <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
-          <InputField
-            label="Title"
-            name="title"
-            register={methods.register}
-            required
-            errors={methods.formState.errors}
-            errorMessage="Title is required"
-          />
-          <InputField
-            label="Slug"
-            name="slug"
-            register={methods.register}
-            required
-            errors={methods.formState.errors}
-            errorMessage="Slug is required"
-          />
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Description
-            </label>
-            <textarea
-              {...methods.register("description", {
-                required: "Description is required",
-              })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-            />
-            {methods.formState.errors.description && (
-              <p className="text-red-500 text-sm">
-                {methods.formState.errors.description.message}
-              </p>
-            )}
-          </div>
-          <InputField
-            label="Banner ID"
-            name="bannerId"
-            register={methods.register}
-            required
-            errors={methods.formState.errors}
-            errorMessage="Banner ID is required"
-          />
-          <ImageUpload name="images" label="Images" />
-          <VideoUpload name="videos" label="Videos" />
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-primary text-white rounded-md"
-          >
-            Add Activity
-          </button>
-        </form>
-      </div>
-    </FormProvider>
-  );
+	const onSubmit = async (data) => {
+		try {
+			// Ensure mediaActivity is included in the data
+			const payload = {
+				bannerId: mediaBanner,
+				title: data.title,
+				description: data.description,
+			};
+
+			// Log the request payload
+			console.log("Request Payload:", payload);
+
+			await createActivity(payload).unwrap();
+			toast.success("Activity created successfully");
+			navigate("/dashboard/activities/list");
+			reset();
+			setMediaBanner("");
+		} catch (error) {
+			console.error("Failed to create media:", error);
+		}
+	};
+
+	const handleMediaChange = (event) => {
+		setMediaBanner(event.target.value);
+	};
+
+	const handleReset = () => {
+		reset();
+		setMediaBanner("");
+	};
+
+	return (
+		<div className="p-4 rounded-md shadow-md m-5">
+			<h2 className="text-2xl font-semibold mb-6">Upload Activity</h2>
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				className="grid grid-cols-1 gap-6"
+			>
+				<div>
+					{/* Title Input */}
+					<InputField
+						label="Title"
+						name="title"
+						register={register}
+						required={true}
+						errors={errors}
+						errorMessage="Title is required."
+					/>
+
+					{/* Description Input */}
+					<div className="mb-4">
+						<label
+							htmlFor="description"
+							className="block text-[1rem] font-semibold mb-2"
+						>
+							Description
+						</label>
+						<textarea
+							id="description"
+							{...register("description", {
+								required: "Description is required.",
+							})}
+							rows="5"
+							className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 ${
+								errors.description
+									? "border-red-500 focus:ring-red-500"
+									: "border-gray-300 focus:ring-blue-500"
+							}`}
+						></textarea>
+						{errors.description && (
+							<p className="text-red-500 text-sm mt-1">
+								{errors.description.message}
+							</p>
+						)}
+					</div>
+
+					{/* Activity Activity Dropdown */}
+					<div className="mt-4 w-full">
+						<label
+							htmlFor="media-select"
+							className="block text-[1rem] font-semibold mb-2"
+						>
+							Activity Activity
+						</label>
+						<select
+							id="media-select"
+							{...register("mediaActivity", {
+								required: "Activity Activity is required.",
+							})}
+							value={mediaBanner}
+							onChange={handleMediaChange}
+							className={`block w-full text-sm text-gray-500 border rounded-md cursor-pointer p-2 focus:outline-none focus:ring-2 ${
+								errors.mediaActivity
+									? "border-red-500 focus:ring-red-500"
+									: "border-gray-300 focus:ring-blue-500"
+							}`}
+						>
+							<option value="">Select a Activity Activity</option>
+							{bannersLoading ? (
+								<option>Loading...</option>
+							) : (
+								Array.isArray(banners?.doc) &&
+								banners.doc.map((activity) => (
+									<option key={activity._id} value={activity._id}>
+										{activity.title}
+									</option>
+								))
+							)}
+						</select>
+						{errors.mediaActivity && (
+							<p className="text-red-500 text-sm mt-1">
+								{errors.mediaActivity.message}
+							</p>
+						)}
+					</div>
+				</div>
+
+				{/* Action Buttons */}
+				<div className="flex justify-end mt-6 gap-2 col-span-2">
+					<button
+						type="button"
+						onClick={handleReset}
+						className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300"
+					>
+						Reset
+					</button>
+					<button
+						type="submit"
+						className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500 transition duration-300"
+					>
+						Add
+					</button>
+				</div>
+			</form>
+		</div>
+	);
 };
 
-ActivityForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
-
-export default ActivityForm;
+export default AddActivityPage;

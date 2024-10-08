@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import PropTypes from "prop-types";
 import InputField from "../../_components/shared/InputField";
-import { useCreatePurchasePropertiesMutation } from "../../../redux/slices/purchasePropertiesSlice";
+import { useCreatePurchasePropertyMutation } from "../../../redux/slices/purchaseProperties";
 
 const PurchasePropertyForm = ({ onSuccess }) => {
 	const methods = useForm();
 	const [createPurchaseProperties, { isLoading, isError, error }] =
-		useCreatePurchasePropertiesMutation();
+		useCreatePurchasePropertyMutation();
 
 	const [successMessage, setSuccessMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");

@@ -1,8 +1,21 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import logo from "./../assets/Images/dhalogo.png";
+import { useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 
 const AuthLayout = () => {
+	const user = useAuth();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (user && user.doc.role === "admin") {
+			navigate("/dashboard");
+		} else if (user) {
+			navigate("/");
+		}
+	}, [navigate, user]);
+
 	return (
 		<div className="my-4 p-8 flex justify-between items-center flex-col">
 			<img src={logo} alt="DHA" className="w-32 h-32 object-contain mb-4" />
