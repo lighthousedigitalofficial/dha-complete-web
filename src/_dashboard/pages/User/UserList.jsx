@@ -42,32 +42,23 @@ const UserList = ({ onEdit, onDelete }) => {
 		},
 		{
 			title: "Name",
-			dataIndex: "name", // Assuming `name` contains the person's name
-			key: "name",
+			dataIndex: `firstName`, // Assuming `name` contains the person's name
+			key: "firstName",
 		},
 		{
-			title: "Designation",
-			dataIndex: "designation", // Assuming `designation` contains the job title or position
-			key: "designation",
+			title: "Email",
+			dataIndex: "email", // Assuming `designation` contains the job title or position
+			key: "email",
 		},
 		{
-			title: "Extension",
-			dataIndex: "extension", // Assuming `extension` contains the phone extension number
-			key: "extension",
+			title: "Phone",
+			dataIndex: "phone", // Assuming `designation` contains the job title or position
+			key: "phone",
 		},
 		{
-			title: "Status",
-			dataIndex: "status", // Assuming `status` contains the status (Enum: active, inactive)
-			key: "status",
-			render: (status) => (
-				<span
-					className={`px-2 py-1 rounded-full text-white ${
-						status === "active" ? "bg-green-500" : "bg-red-500"
-					}`}
-				>
-					{status.charAt(0).toUpperCase() + status.slice(1)}
-				</span>
-			),
+			title: "Role",
+			dataIndex: "role", // Assuming `extension` contains the phone extension number
+			key: "role",
 		},
 		{
 			title: "Action",
