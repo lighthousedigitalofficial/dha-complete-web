@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { FaTrash } from "react-icons/fa";
 import { CiCircleRemove } from "react-icons/ci";
 import FormInput from "../../_components/Form/FormInput/FormInput";
-import { useCreateFacilitiesMutation } from "../../../redux/slices/facilities";
+import { useCreateFacilitiesMutation } from "../../../redux/slices/facilitiesApiSlice";
 
 const AddFacilitiesPage = ({ initialData = {} }) => {
 	const [imagePreview, setImagePreview] = useState(initialData.image || null);
@@ -63,6 +63,12 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
 		}
 	};
 
+	const handleAddImages = (e) => {
+		const files = Array.from(e.target.files);
+		const newImages = files.map((file) => URL.createObjectURL(file));
+		setImages((prevImages) => [...prevImages, ...newImages]);
+		console.log("Additional images added:", newImages);
+	};
 	// const handleMainImageChange = (e) => {
 	//   const file = e.target.files[0];
 	//   if (file) {
@@ -71,14 +77,6 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
 	//     console.log("Main image selected:", file);
 	//   }
 	// };
-
-	const handleAddImages = (e) => {
-		const files = Array.from(e.target.files);
-		const newImages = files.map((file) => URL.createObjectURL(file));
-		setImages((prevImages) => [...prevImages, ...newImages]);
-		console.log("Additional images added:", newImages);
-	};
-
 	const handleReset = () => {
 		setTitle("");
 		setDescription("");

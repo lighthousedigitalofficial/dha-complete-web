@@ -19,12 +19,11 @@ const DashboardLayout = () => {
 	useEffect(() => {
 		if (!user) {
 			// Redirect to login if not authenticated
-			navigate("/");
+			navigate("/user/auth/sign-in");
 		} else if (user.doc.role !== "admin") {
-			navigate("/dashboard");
+			navigate("/");
 		}
 	}, [navigate, user]);
-
 
 	// // Loading or no user data
 	if (!user) {

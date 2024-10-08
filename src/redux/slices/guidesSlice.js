@@ -1,5 +1,5 @@
-import { apiSlice } from "./apiSlice";
 import { PORTAL_GUIDES_URL } from "../constants";
+import { apiSlice } from "./apiSlice";
 
 export const portalGuidesApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
