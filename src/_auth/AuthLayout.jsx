@@ -1,15 +1,13 @@
 import { Outlet } from "react-router-dom";
 
-import logo from "./../assets/app-logo/vista-app-logo.png";
+import logo from "./../assets/Images/dhalogo.png";
 
 const AuthLayout = () => {
 	return (
-		<div className="">
-			<div className="my-4 p-8 flex justify-between items-center flex-col">
-				<img src={logo} alt="vistamart" className="w-40 h-40 object-contain" />
-				<div className="p-8 lg:w-2/5 w-full">
-					<Outlet />
-				</div>
+		<div className="my-4 p-8 flex justify-between items-center flex-col">
+			<img src={logo} alt="DHA" className="w-32 h-32 object-contain mb-4" />
+			<div className="p-8 lg:w-1/2 w-full shadow-md">
+				<Outlet />
 			</div>
 		</div>
 	);

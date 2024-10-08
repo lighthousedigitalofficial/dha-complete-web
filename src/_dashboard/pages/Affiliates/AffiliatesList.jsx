@@ -1,43 +1,60 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetAffiliatesQuery } from "../../../redux/slices/affiliates";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast";
+import {
+  useDeleteAffiliateMutation,
+  useGetAffiliatesQuery,
+} from "../../../redux/slices/affiliates";
 
-const AffiliatesList = ({ onEdit, onDelete }) => {
-  const { data: Affiliates, isLoading } = useGetAffiliatesQuery({});
-
-  console.log(Affiliates);
-
+const AffiliatesList = () => {
+  const { data: Affiliates, isLoading, refetch } = useGetAffiliatesQuery({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedAffiliateId, setSelectedAffiliateId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // Track delete state
 
+  const [deleteAffiliate] = useDeleteAffiliateMutation();
+
+  // Open the delete confirmation modal
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
+    setSelectedAffiliateId(id);
     setIsModalOpen(true);
   };
 
+  // Close the modal
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedAffiliateId(null);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  // Confirm deletion and handle feedback with toast
+  const handleConfirmDelete = async () => {
+    if (selectedAffiliateId) {
+      setIsDeleting(true);
+      toast.dismiss(); // Clear previous toasts
+      try {
+        await deleteAffiliate(selectedAffiliateId).unwrap(); // Execute delete mutation
+        refetch(); // Refetch the list of affiliates after deletion
+        toast.success("Affiliate deleted successfully!"); // Show success toast
+        handleModalClose(); // Close the modal
+      } catch (error) {
+        console.error("Error deleting affiliate:", error);
+        toast.error("Error deleting affiliate!"); // Show error toast
+      } finally {
+        setIsDeleting(false); // Reset the deleting state
+      }
+    }
   };
-
-  const handleEdit = () => {};
-  const handleDelete = () => {};
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1,
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1, // Automatically generate serial number
     },
     {
       title: "Name",
@@ -51,7 +68,7 @@ const AffiliatesList = ({ onEdit, onDelete }) => {
       render: (status) => (
         <span
           className={`px-2 py-1 rounded-full text-white ${
-            status === "Active" ? "bg-green-500" : "bg-red-500"
+            status === "active" ? "bg-green-500" : "bg-red-500"
           }`}
         >
           {status}
@@ -64,9 +81,15 @@ const AffiliatesList = ({ onEdit, onDelete }) => {
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
           <a onClick={() => handleEdit(record)}>
-            <FaEdit />
+            <FaEye/>
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          {/* Delete button */}
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Ensure the correct ID is passed
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -85,13 +108,14 @@ const AffiliatesList = ({ onEdit, onDelete }) => {
         <p>Affiliates not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation Modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this affiliate?"
+      />
     </div>
   );
 };
