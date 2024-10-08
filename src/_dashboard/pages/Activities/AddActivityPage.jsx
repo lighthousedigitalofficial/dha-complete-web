@@ -4,7 +4,7 @@ import InputField from "../../_components/shared/InputField";
 import toast from "react-hot-toast";
 import { useCreateActivityMutation } from "../../../redux/slices/activitySlice";
 import { useGetBannersQuery } from "../../../redux/slices/bannerSlice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AddActivityPage = () => {
 	const {
