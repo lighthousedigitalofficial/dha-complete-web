@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 import {
 	useDeleteFacilitiesMutation,
 	useGetFacilitiesQuery,
-} from "../../../redux/slices/facilities";
+} from "../../../redux/slices/facilitiesApiSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 
 const FacilitiesList = () => {

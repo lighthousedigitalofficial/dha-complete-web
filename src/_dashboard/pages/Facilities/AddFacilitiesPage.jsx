@@ -63,14 +63,12 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
 		}
 	};
 
-<<<<<<< HEAD
-  const handleAddImages = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setImages((prevImages) => [...prevImages, ...newImages]);
-    console.log("Additional images added:", newImages);
-  };
-=======
+	const handleAddImages = (e) => {
+		const files = Array.from(e.target.files);
+		const newImages = files.map((file) => URL.createObjectURL(file));
+		setImages((prevImages) => [...prevImages, ...newImages]);
+		console.log("Additional images added:", newImages);
+	};
 	// const handleMainImageChange = (e) => {
 	//   const file = e.target.files[0];
 	//   if (file) {
@@ -79,15 +77,6 @@ const AddFacilitiesPage = ({ initialData = {} }) => {
 	//     console.log("Main image selected:", file);
 	//   }
 	// };
-
-	const handleAddImages = (e) => {
-		const files = Array.from(e.target.files);
-		const newImages = files.map((file) => URL.createObjectURL(file));
-		setImages((prevImages) => [...prevImages, ...newImages]);
-		console.log("Additional images added:", newImages);
-	};
->>>>>>> dev
-
 	const handleReset = () => {
 		setTitle("");
 		setDescription("");

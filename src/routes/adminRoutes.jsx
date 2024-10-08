@@ -22,7 +22,6 @@ import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPrope
 import MediaList from "../_dashboard/pages/Media/MediaList";
 import EngineersList from "../_dashboard/pages/Engineers/EngineersList";
 import ActivitiesList from "../_dashboard/pages/Activities/ActivitiesList";
-import ActivityForm from "../_dashboard/pages/Activities/AddActivityPage";
 import SalePropertyList from "../_dashboard/pages/SaleProperty/SalePropertyList";
 import PurchasePropertyList from "../_dashboard/pages/PurchaseProperty/PurchasePropertyList";
 import RegistrationPropertyList from "../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
@@ -32,7 +31,14 @@ import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
 
 import UserList from "./../_dashboard/pages/User/UserList";
 import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
-import UserDetailPage from "./pages/User/UserDetailPage";
+import UserDetailPage from "./../_dashboard/pages/User/UserDetailPage";
+
+import SalePropertyForm from "./../_dashboard/pages/SaleProperty/AddSalePropertyPage";
+import RegistrationPropertyPage from "./../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
+import EngineersForm from "./../_dashboard/pages/Engineers/AddEngineersPage";
+import TeamForm from "./../_dashboard/pages/Team/AddTeamPage";
+import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage";
+import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
 
 const adminRoutes = [
 	{
@@ -44,6 +50,26 @@ const adminRoutes = [
 				element: <DashboardPage />,
 			},
 
+			{
+				path: "sale-propropty/add",
+				element: <SalePropertyForm />,
+			},
+			{
+				path: "registeration-propropty/add",
+				element: <RegistrationPropertyPage />,
+			},
+			{
+				path: "purchase-propropty/add",
+				element: <PurchasePropertyForm />,
+			},
+			{
+				path: "engineers/add",
+				element: <EngineersForm />,
+			},
+			{
+				path: "team/add",
+				element: <TeamForm />,
+			},
 			{
 				path: "affiliates/add",
 				element: <AddAffiliatesPage />,
@@ -61,10 +87,6 @@ const adminRoutes = [
 				element: <AssociatesWebsiteList />,
 			},
 
-			{
-				path: "facilities/list",
-				element: <FacilitiesList />,
-			},
 			{
 				path: "facilities/list",
 				element: <FacilitiesList />,
@@ -174,7 +196,7 @@ const adminRoutes = [
 
 			{
 				path: "activities/add",
-				element: <ActivityForm />,
+				element: <AddActivityPage />,
 			},
 
 			{
