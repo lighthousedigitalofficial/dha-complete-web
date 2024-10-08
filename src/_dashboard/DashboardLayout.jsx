@@ -12,6 +12,7 @@ const DashboardLayout = () => {
   const user = useAuth();
   const navigate = useNavigate();
 
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -24,10 +25,10 @@ const DashboardLayout = () => {
   // 	}
   // }, [navigate, user]);
 
-  // // Loading or no user data
-  // if (!user) {
-  // 	return <Loader />;
-  // }
+	// // Loading or no user data
+	// if (!user) {
+	// 	return <Loader />;
+	// }
 
   // If user is authenticated and is an admin, render the dashboard layout
   return (

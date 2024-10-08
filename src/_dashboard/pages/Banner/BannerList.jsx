@@ -1,62 +1,61 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
 
-// import { useGetBannersQuery } from "../../../redux/slices/BannersSlice";
-import { useGetBannersQuery } from "../../../redux/slices/bannerSlice";
+import {
+  useGetBannersQuery,
+  useDeleteBannerMutation,
+} from "../../../redux/slices/bannerSlice";
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 
-const BannerList = ({ onEdit, onDelete }) => {
-  const { data: Banners, isLoading } = useGetBannersQuery({});
-
-  console.log(Banners);
-
+const BannerList = () => {
+  const { data: Banners, isLoading, refetch } = useGetBannersQuery({});
+  const [deleteBanner] = useDeleteBannerMutation(); // Hook to delete banner
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedBannerId, setSelectedBannerId] = useState(null);
 
+  // Handle delete button click - opens the confirmation modal
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
+    setSelectedBannerId(id);
     setIsModalOpen(true);
   };
 
+  // Close modal and reset selected banner ID
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedBannerId(null);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  // Handle the delete action on confirmation
+  const handleConfirmDelete = async () => {
+    if (selectedBannerId) {
+      try {
+        await deleteBanner(selectedBannerId); // Trigger delete mutation
+        refetch(); // Refetch banners to update the list after deletion
+        toast.success("Banner deleted successfully!"); // Show success toast
+        setIsModalOpen(false); // Close modal
+        setSelectedBannerId(null); // Clear selected banner ID
+      } catch (error) {
+        toast.error("Failed to delete banner."); // Show error toast
+        console.error("Error deleting banner:", error);
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (record) => {
+    // Handle edit logic here
+    console.log("Edit banner", record);
+  };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1,
     },
-    // {
-    //   title: "Type",
-    //   dataIndex: "type",
-    //   key: "type",
-    // },
-    // {
-    //   title: "Media URL",
-    //   dataIndex: "mediaUrl",
-    //   key: "mediaUrl",
-    //   render: (mediaUrl) => (
-    //     <img
-    //       src={mediaUrl}
-    //       alt="Media"
-    //       className="w-16 h-16 object-cover rounded-md"
-    //     />
-    //   ),
-    // },
     {
       title: "Title",
       dataIndex: "title",
@@ -77,10 +76,16 @@ const BannerList = ({ onEdit, onDelete }) => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Set the selected banner ID for deletion
+            className="border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500"
+          >
             <FaTrash />
           </a>
         </div>
@@ -99,13 +104,14 @@ const BannerList = ({ onEdit, onDelete }) => {
         <p>Banners not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Confirm delete action
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this banner?" // Updated message
+      />
     </div>
   );
 };
