@@ -20,7 +20,6 @@ export const PURCHASE_PROPERTIES_URL = "/api/purchase-properties";
 
 export const REGISTRATION_PROPERTIES_URL = "/api/registration-properties";
 export const PORTAL_GUIDES_URL = "/api/portal-guides";
-
 export const TEAMS_URL = "/api/teams";
 export const SALE_PROPERTIES_URL = "/api/sale-properties";
 export const ENGINEERS_URL = "/api/engineers";

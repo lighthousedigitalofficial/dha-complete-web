@@ -118,19 +118,6 @@ const AddPhasePage = () => {
 					/>
 				</div>
 
-				{/* Status Field */}
-				<div className="mb-4">
-					<label>Status</label>
-					<select
-						{...register("status", { required: true })}
-						className="block w-full border border-gray-300 p-2 rounded-md"
-					>
-						<option value="active">Active</option>
-						<option value="inactive">Inactive</option>
-					</select>
-					{errors.status && <p className="text-red-600">Status is required</p>}
-				</div>
-
 				{/* Link Field */}
 				<div className="mb-4">
 					<InputField
@@ -288,7 +275,7 @@ const AddPhasePage = () => {
 						className="w-full px-4 py-2 bg-primary-500 text-white rounded-md"
 						disabled={isLoading}
 					>
-						{isLoading ? "Registering..." : "Register Property"}
+						{isLoading ? "Adding.." : "Add Phase"}
 					</button>
 				</div>
 			</form>
