@@ -51,15 +51,15 @@ const adminRoutes = [
 			},
 
 			{
-				path: "sale-propropty/add",
+				path: "sale-property/add",
 				element: <SalePropertyForm />,
 			},
 			{
-				path: "registeration-propropty/add",
+				path: "registration-property/add",
 				element: <RegistrationPropertyPage />,
 			},
 			{
-				path: "purchase-propropty/add",
+				path: "purchase-property/add",
 				element: <PurchasePropertyForm />,
 			},
 			{
