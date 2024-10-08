@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FormInput from "../../_components/Form/FormInput/FormInput";
-import { useCreatePropertyDealerMutation } from "../../../redux/slices/propertyDealerSlice";
+import { useCreatePropertyDealerMutation } from "../../../redux/slices/propertyDealerApiSlice";
 import { useGetAffiliatesQuery } from "../../../redux/slices/affiliates";
 
 const AddPropertyDealersPage = ({ initialData = {} }) => {
@@ -10,7 +10,8 @@ const AddPropertyDealersPage = ({ initialData = {} }) => {
   const [phone, setPhone] = useState(initialData.phone || "");
   const [affiliateId, setAffiliateId] = useState(initialData.affiliateId || "");
 
-  const [createPropertyDealer, { isLoading: isCreating }] = useCreatePropertyDealerMutation();
+  const [createPropertyDealer, { isLoading: isCreating }] =
+    useCreatePropertyDealerMutation();
 
   // Fetch affiliates
   const {
@@ -64,7 +65,10 @@ const AddPropertyDealersPage = ({ initialData = {} }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Agency Field */}
           <div className="mb-4">
-            <label className="block text-[1rem] font-semibold mb-2" htmlFor="agency">
+            <label
+              className="block text-[1rem] font-semibold mb-2"
+              htmlFor="agency"
+            >
               Agency
             </label>
             <FormInput
@@ -80,7 +84,10 @@ const AddPropertyDealersPage = ({ initialData = {} }) => {
 
           {/* Full Name Field */}
           <div className="mb-4">
-            <label className="block text-[1rem] font-semibold mb-2" htmlFor="fullName">
+            <label
+              className="block text-[1rem] font-semibold mb-2"
+              htmlFor="fullName"
+            >
               Full Name
             </label>
             <FormInput
@@ -96,7 +103,10 @@ const AddPropertyDealersPage = ({ initialData = {} }) => {
 
           {/* Address Field */}
           <div className="mb-4">
-            <label className="block text-[1rem] font-semibold mb-2" htmlFor="address">
+            <label
+              className="block text-[1rem] font-semibold mb-2"
+              htmlFor="address"
+            >
               Address
             </label>
             <FormInput
@@ -112,7 +122,10 @@ const AddPropertyDealersPage = ({ initialData = {} }) => {
 
           {/* Phone Field */}
           <div className="mb-4">
-            <label className="block text-[1rem] font-semibold mb-2" htmlFor="phone">
+            <label
+              className="block text-[1rem] font-semibold mb-2"
+              htmlFor="phone"
+            >
               Phone
             </label>
             <FormInput
@@ -128,7 +141,10 @@ const AddPropertyDealersPage = ({ initialData = {} }) => {
 
           {/* Affiliate Field */}
           <div className="mb-4">
-            <label className="block text-[1rem] font-semibold mb-2" htmlFor="affiliateId">
+            <label
+              className="block text-[1rem] font-semibold mb-2"
+              htmlFor="affiliateId"
+            >
               Affiliate
             </label>
             <select

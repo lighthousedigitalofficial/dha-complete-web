@@ -1,20 +1,59 @@
-import React, { useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-import PropTypes from 'prop-types';
-import InputField from '../../shared/Inputfield';
+import React, { useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import PropTypes from "prop-types";
+import InputField from "../../_components/shared/InputField";
+import uploadImage from "../../../helpers/imageUpload";
+import { useCreateSalePropertiesMutation } from "../../../redux/slices/salePropertiesApiSlice";
 
-const SalePropertyForm = ({ onSubmit }) => {
+const SalePropertyForm = () => {
   const methods = useForm();
-  const [uploadedDocument, setUploadedDocument] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [createSaleProperty, { isLoading, isError, isSuccess, error }] =
+    useCreateSalePropertiesMutation();
 
-  const handleFormSubmit = (data) => {
-    onSubmit(data);
+  const handleFormSubmit = async (data) => {
+    console.log("Form submitted with data:", data);
+    try {
+      setUploading(true);
+
+      // Check if an image file is provided
+      if (!data.image || data.image.length === 0) {
+        console.error("Image is required");
+        return;
+      }
+
+      console.log("Uploading image...");
+      const imageUrl = await uploadImage(data.image[0], "image_uploads");
+      console.log("Image uploaded successfully:", imageUrl);
+      setUploading(false);
+
+      const salePropertyData = {
+        ...data,
+        document: imageUrl,
+      };
+
+      await createSaleProperty(salePropertyData).unwrap();
+      console.log("Sale property created successfully!");
+      methods.reset();
+      setUploadedImage(null);
+    } catch (err) {
+      setUploading(false);
+      console.error("Failed to create sale property: ", err);
+      // Log the error with more context if needed
+    }
   };
 
-  const handleDocumentUpload = (event) => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
-    setUploadedDocument(URL.createObjectURL(file));
-    methods.setValue('document', file);
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setUploadedImage(imageURL);
+      methods.setValue("image", event.target.files); // Set value to the file list
+      console.log("Image selected:", file.name); // Log the selected image file
+    } else {
+      console.error("No image file selected");
+    }
   };
 
   return (
@@ -103,9 +142,11 @@ const SalePropertyForm = ({ onSubmit }) => {
             errorMessage="Demand is required"
           />
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Type</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Type
+            </label>
             <select
-              {...methods.register('type', { required: 'Type is required' })}
+              {...methods.register("type", { required: "Type is required" })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
             >
               <option value="">Select Type</option>
@@ -114,41 +155,82 @@ const SalePropertyForm = ({ onSubmit }) => {
               <option value="shop">Shop</option>
               <option value="apartment">Apartment</option>
             </select>
-            {methods.formState.errors.type && <p className="text-red-500 text-sm">{methods.formState.errors.type.message}</p>}
+            {methods.formState.errors.type && (
+              <p className="text-red-500 text-sm">
+                {methods.formState.errors.type.message}
+              </p>
+            )}
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Document</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Upload Image
+            </label>
             <input
               type="file"
-              accept="application/pdf"
-              onChange={handleDocumentUpload}
+              accept="image/*"
+              {...methods.register("image", {
+                required: "Image file is required",
+              })}
+              onChange={handleImageChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
             />
-            {uploadedDocument && (
-              <div className="mt-2">
-                <a href={uploadedDocument} target="_blank" rel="noopener noreferrer" className="text-blue-500">View Uploaded Document</a>
-              </div>
+            {methods.formState.errors.image && (
+              <p className="text-red-500 text-sm">
+                {methods.formState.errors.image.message}
+              </p>
             )}
-            {methods.formState.errors.document && <p className="text-red-500 text-sm">{methods.formState.errors.document.message}</p>}
           </div>
+
+          {/* Image preview section */}
+          {uploadedImage && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Image Preview
+              </label>
+              <img src={uploadedImage} alt="Uploaded" className="w-full" />
+            </div>
+          )}
+
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Status</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Status
+            </label>
             <select
-              {...methods.register('status', { required: 'Status is required' })}
+              {...methods.register("status", {
+                required: "Status is required",
+              })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
             >
               <option value="">Select Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="available">Available</option>
+              <option value="sold">Sold</option>
+              <option value="pending">Pending</option>
             </select>
-            {methods.formState.errors.status && <p className="text-red-500 text-sm">{methods.formState.errors.status.message}</p>}
+            {methods.formState.errors.status && (
+              <p className="text-red-500 text-sm">
+                {methods.formState.errors.status.message}
+              </p>
+            )}
           </div>
+
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-primary text-white rounded-md"
+            className="w-full px-4 py-2 bg-green-500 text-white rounded-md"
+            disabled={uploading || isLoading}
           >
-            Add Sale Property
+            {uploading || isLoading ? "Uploading..." : "Add Sale Property"}
           </button>
+
+          {isError && (
+            <p className="text-red-500 text-sm mt-2">
+              Failed to add sale property: {error.message}
+            </p>
+          )}
+          {isSuccess && (
+            <p className="text-green-500 text-sm mt-2">
+              Sale property added successfully!
+            </p>
+          )}
         </form>
       </div>
     </FormProvider>
@@ -156,7 +238,7 @@ const SalePropertyForm = ({ onSubmit }) => {
 };
 
 SalePropertyForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
 };
 
 export default SalePropertyForm;

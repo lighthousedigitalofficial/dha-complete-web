@@ -3,7 +3,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetPropertyDealerQuery } from "../../../redux/slices/propertyDealerSlice";
+import { useGetPropertyDealerQuery } from "../../../redux/slices/propertyDealerApiSlice";
 
 const PropertyDealersList = ({ onEdit, onDelete }) => {
   const { data: PropertyDealersList, isLoading } = useGetPropertyDealerQuery(

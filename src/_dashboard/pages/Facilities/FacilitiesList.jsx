@@ -3,7 +3,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetFacilitiesQuery } from "../../../redux/slices/facilities";
+import { useGetFacilitiesQuery } from "../../../redux/slices/facilitiesApiSlice";
 
 const FacilitiesList = ({ onEdit, onDelete }) => {
   const { data: Facilities, isLoading } = useGetFacilitiesQuery({});

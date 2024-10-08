@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-import { useGetEventsQuery } from "../../../redux/slices/event";
+import { useGetEventsQuery } from "../../../redux/slices/eventApiSlice";
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 

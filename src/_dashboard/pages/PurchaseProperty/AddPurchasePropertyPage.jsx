@@ -1,19 +1,64 @@
-import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-import PropTypes from 'prop-types';
-import InputField from '../../shared/Inputfield';
+import React, { useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import PropTypes from "prop-types";
+import InputField from "../../_components/shared/InputField";
+import { useCreatePurchasePropertiesMutation } from "../../../redux/slices/purchasePropertiesApiSlice";
 
-const PurchasePropertyForm = ({ onSubmit }) => {
+const PurchasePropertyForm = ({ onSuccess }) => {
   const methods = useForm();
+  const [createPurchaseProperties, { isLoading, isError, error }] =
+    useCreatePurchasePropertiesMutation();
 
-  const handleFormSubmit = (data) => {
-    onSubmit(data);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleFormSubmit = async (data) => {
+    try {
+      // Clear previous messages
+      setSuccessMessage("");
+      setErrorMessage("");
+
+      // Call the createPurchaseProperties mutation with form data
+      const result = await createPurchaseProperties(data).unwrap();
+      console.log("Property registered successfully:", result);
+
+      // Trigger the onSuccess callback if provided
+      if (onSuccess) {
+        onSuccess(result);
+      }
+
+      // Show success message
+      setSuccessMessage("Property registered successfully!");
+
+      // Optionally reset the form
+      methods.reset();
+    } catch (err) {
+      console.error("Failed to register property:", err);
+
+      // Show error message
+      setErrorMessage(
+        err?.data?.message || "Failed to register property. Please try again."
+      );
+    }
   };
 
   return (
     <FormProvider {...methods}>
       <div className="max-w-md mx-auto bg-white p-8 rounded-md shadow-md">
         <h2 className="text-2xl font-bold mb-6">Register Property</h2>
+
+        {/* Display success or error alerts */}
+        {successMessage && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            {successMessage}
+          </div>
+        )}
+        {errorMessage && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            {errorMessage}
+          </div>
+        )}
+
         <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
           <InputField
             label="Name"
@@ -48,9 +93,11 @@ const PurchasePropertyForm = ({ onSubmit }) => {
             errorMessage="Email is required"
           />
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Type</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Type
+            </label>
             <select
-              {...methods.register('type', { required: 'Type is required' })}
+              {...methods.register("type", { required: "Type is required" })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
             >
               <option value="">Select Type</option>
@@ -59,7 +106,11 @@ const PurchasePropertyForm = ({ onSubmit }) => {
               <option value="shop">Shop</option>
               <option value="apartment">Apartment</option>
             </select>
-            {methods.formState.errors.type && <p className="text-red-500 text-sm">{methods.formState.errors.type.message}</p>}
+            {methods.formState.errors.type && (
+              <p className="text-red-500 text-sm">
+                {methods.formState.errors.type.message}
+              </p>
+            )}
           </div>
           <InputField
             label="Phase"
@@ -86,22 +137,40 @@ const PurchasePropertyForm = ({ onSubmit }) => {
             errorMessage="Price is required"
           />
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Status</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Status
+            </label>
             <select
-              {...methods.register('status', { required: 'Status is required' })}
+              {...methods.register("status", {
+                required: "Status is required",
+              })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
             >
               <option value="">Select Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="available">Available</option>
+              <option value="sold">Sold</option>
+              <option value="sold">Pending</option>
             </select>
-            {methods.formState.errors.status && <p className="text-red-500 text-sm">{methods.formState.errors.status.message}</p>}
+            {methods.formState.errors.status && (
+              <p className="text-red-500 text-sm">
+                {methods.formState.errors.status.message}
+              </p>
+            )}
           </div>
+
+          {/* Error handling */}
+          {isError && (
+            <p className="text-red-500 text-sm">
+              Error: {error?.data?.message || "Something went wrong"}
+            </p>
+          )}
+
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-primary text-white rounded-md"
+            className="w-full px-4 py-2 bg-green-500 text-white rounded-md"
+            disabled={isLoading}
           >
-            Register Property
+            {isLoading ? "Registering..." : "Register Property"}
           </button>
         </form>
       </div>
@@ -110,7 +179,7 @@ const PurchasePropertyForm = ({ onSubmit }) => {
 };
 
 PurchasePropertyForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func,
 };
 
 export default PurchasePropertyForm;

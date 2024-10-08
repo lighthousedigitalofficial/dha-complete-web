@@ -24,6 +24,10 @@ import AffiliatesList from "../_dashboard/pages/Affiliates/AffiliatesList";
 import PropertyDealersList from "../_dashboard/pages/PropertyDealers/PropertyDealersList";
 import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPropertyDealersPage";
 import MediaList from "../_dashboard/pages/Media/MediaList";
+import EngineersForm from "../_dashboard/pages/Engineers/AddEngineersPage";
+import TeamForm from "../_dashboard/pages/Team/AddTeamPage";
+import PurchasePropertyForm from "../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage";
+import SalePropertyForm from "../_dashboard/pages/SaleProperty/AddSalePropertyPage";
 
 const adminRoutes = [
   {
@@ -59,10 +63,10 @@ const adminRoutes = [
         path: "facilities/add",
         element: <AddFacilitiesPage />,
       },
-      // {
-      //   path: "facilities/add",
-      //   element: <AddEngineersPage />,
-      // },
+      {
+        path: "engineers/add",
+        element: <EngineersForm />,
+      },
       {
         path: "videos/add",
         element: <AddVideosPage />,
@@ -133,6 +137,18 @@ const adminRoutes = [
       {
         path: "property-dealers/list",
         element: <PropertyDealersList />,
+      },
+      {
+        path: "teams/add",
+        element: <TeamForm />,
+      },
+      {
+        path: "purchase-property/add",
+        element: <PurchasePropertyForm />,
+      },
+      {
+        path: "sale-property/add",
+        element: <SalePropertyForm />,
       },
     ],
   },
