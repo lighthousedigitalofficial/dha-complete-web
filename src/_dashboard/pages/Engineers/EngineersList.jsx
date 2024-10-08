@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import { toast } from "react-hot-toast"; // Import toast for notifications
@@ -93,11 +94,9 @@ const EngineersList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a
-            onClick={() => handleEdit(record)}
-            className="border p-2 rounded-md hover:text-white hover:bg-primary-300 border-primary-500"
-          >
-            <FaEdit />
+          <a onClick={() => handleEdit(record)}>
+            <FaEye />
+
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Pass the ID to delete

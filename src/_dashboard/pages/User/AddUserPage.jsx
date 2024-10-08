@@ -21,25 +21,33 @@ const AddUserPage = () => {
 	};
 	return (
 		<FormProvider {...methods}>
-			<div className="max-w-md mx-auto bg-white p-8 rounded-md shadow-md">
+			<div className="w-[90%] mx-auto bg-white p-8 mt-6 rounded-md shadow-md">
 				<h2 className="text-2xl font-bold mb-6">Add User</h2>
 				<form onSubmit={methods.handleSubmit(handleFormSubmit)}>
-					<InputField
-						label="First Name"
-						name="firstName"
-						register={methods.register}
-						required
-						errors={methods.formState.errors}
-						errorMessage="First Name is required"
-					/>
-					<InputField
-						label="Last Name"
-						name="lastName"
-						register={methods.register}
-						required
-						errors={methods.formState.errors}
-						errorMessage="Last Name is required"
-					/>
+					<div className="flex w-full gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="First Name"
+								name="firstName"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="First Name is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="Last Name"
+								name="lastName"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Last Name is required"
+							/>
+						</div>
+
+					</div>
+
 					<InputField
 						label="Email"
 						name="email"
@@ -48,51 +56,62 @@ const AddUserPage = () => {
 						errors={methods.formState.errors}
 						errorMessage="Email is required"
 					/>
-					<div className="mb-4">
-						<label className="block text-sm font-medium text-gray-700">
-							Identity Type
-						</label>
-						<select
-							{...methods.register("identityType", {
-								required: "Identity Type is required",
-							})}
-							className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-						>
-							<option value="">Select Identity Type</option>
-							<option value="CNIC">CNIC</option>
-							<option value="NICOP">NICOP</option>
-							<option value="POC">POC</option>
-						</select>
-						{methods.formState.errors.identityType && (
-							<p className="text-red-500 text-sm">
-								{methods.formState.errors.identityType.message}
-							</p>
-						)}
+					<div className="w-full flex gap-4">
+						<div className="w-1/2 ">
+							<label className="block text-sm font-medium text-gray-700">
+								Identity Type
+							</label>
+							<select
+								{...methods.register("identityType", {
+									required: "Identity Type is required",
+								})}
+								className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+							>
+								<option value="">Select Identity Type</option>
+								<option value="CNIC">CNIC</option>
+								<option value="NICOP">NICOP</option>
+								<option value="POC">POC</option>
+							</select>
+							{methods.formState.errors.identityType && (
+								<p className="text-red-500 text-sm">
+									{methods.formState.errors.identityType.message}
+								</p>
+							)}
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="Identity Number"
+								name="identityNum"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Identity Number is required"
+							/>
+						</div>
 					</div>
-					<InputField
-						label="Identity Number"
-						name="identityNum"
-						register={methods.register}
-						required
-						errors={methods.formState.errors}
-						errorMessage="Identity Number is required"
-					/>
-					<InputField
-						label="Membership Number"
-						name="membershipNum"
-						register={methods.register}
-						required
-						errors={methods.formState.errors}
-						errorMessage="Membership Number is required"
-					/>
-					<InputField
-						label="Phone"
-						name="phone"
-						register={methods.register}
-						required
-						errors={methods.formState.errors}
-						errorMessage="Phone is required"
-					/>
+					<div className="flex w-full gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="Membership Number"
+								name="membershipNum"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Membership Number is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="Phone"
+								name="phone"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Phone is required"
+							/>
+						</div>
+
+					</div>
 					<InputField
 						label="Password"
 						name="password"

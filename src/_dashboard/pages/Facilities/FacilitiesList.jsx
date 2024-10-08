@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import { toast } from "react-hot-toast";
@@ -85,12 +86,9 @@ const FacilitiesList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          {/* Edit button */}
-          <a
-            onClick={() => onEdit(record)}
-            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
-          >
-            <FaEdit />
+          <a onClick={() => handleEdit(record)}>
+            <FaEye />
+
           </a>
           {/* Delete button */}
           <a
