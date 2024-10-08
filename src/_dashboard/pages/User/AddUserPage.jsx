@@ -5,8 +5,7 @@ import { useCreateUserMutation } from "../../../redux/slices/usersApiSlice";
 
 const AddUserPage = () => {
 	const methods = useForm();
-	const [createUser, { isLoading, isError, isSuccess }] =
-		useCreateUserMutation(); // CreateUser mutation hook
+	const [createUser, { isLoading, isError }] = useCreateUserMutation(); // CreateUser mutation hook
 
 	const handleFormSubmit = async (data) => {
 		try {

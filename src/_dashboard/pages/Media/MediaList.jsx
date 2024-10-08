@@ -3,57 +3,86 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetMediaQuery } from "../../../redux/slices/mediaApiSlice";
+import {
+  useDeleteMediaMutation,
+  useGetMediaQuery,
+} from "../../../redux/slices/mediaApiSlice";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast"; // Optional: for notifications
 
-const MediaList = ({ onEdit, onDelete }) => {
-  const { data: Media, isLoading } = useGetMediaQuery({});
+const MediaList = () => {
+  const { data: Media, isLoading, refetch } = useGetMediaQuery({});
 
   console.log(Media);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedMediaId, setSelectedMediaId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // For loading state during deletion
+
+  const [deleteMedia] = useDeleteMediaMutation();
 
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
-    setIsModalOpen(true);
+    setSelectedMediaId(id); // Store the media ID to be deleted
+    setIsModalOpen(true); // Open confirmation modal
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setIsModalOpen(false); // Close modal without deletion
+    setSelectedMediaId(null); // Clear selected media ID
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  const handleConfirmDelete = async () => {
+    if (selectedMediaId) {
+      setIsDeleting(true); // Set deleting state
+      try {
+        await deleteMedia(selectedMediaId).unwrap(); // Trigger delete mutation
+        toast.success("Media deleted successfully!"); // Optional: show success notification
+        refetch(); // Refetch media data after deletion
+      } catch (error) {
+        toast.error("Failed to delete media."); // Optional: show error notification
+        console.error("Delete error:", error);
+      } finally {
+        setIsDeleting(false); // Reset deleting state
+        setIsModalOpen(false); // Close modal
+        setSelectedMediaId(null); // Clear selected media ID
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (record) => {
+    // Handle media edit action (implement based on your needs)
+    console.log("Editing media:", record);
+  };
 
   const columns = [
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number or use actual ID
+      render: (text, record, index) => index + 1, // Automatically generate index
     },
     {
       title: "Description",
-      dataIndex: "description", // Assuming `description` contains the description of the item
+      dataIndex: "description", // Assuming `description` contains the media description
       key: "description",
     },
-
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a
+            onClick={() => handleEdit(record)} // Trigger edit action
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Pass the media ID for deletion
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -66,19 +95,19 @@ const MediaList = ({ onEdit, onDelete }) => {
       <h2 className="text-2xl font-bold mb-6">List of Media</h2>
       {isLoading ? (
         <Loader />
-      ) : Media && Media?.doc ? (
+      ) : Media && Media?.doc && Media?.doc.length > 0 ? (
         <DataTable columns={columns} data={Media?.doc} />
       ) : (
         <p>Media not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete} // Trigger delete action on confirm
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this media item?" // Adjusted modal message
+      />
     </div>
   );
 };

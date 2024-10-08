@@ -1,62 +1,62 @@
 import { useState } from "react";
-import FormInput from "../../_components/Form/FormInput/FormInput";
 
-const AddImportantNoticePage = ({ initialData = {} }) => {
-	const [imagePreview, setImagePreview] = useState(initialData.image || null);
-	const [title, setTitle] = useState(initialData.title || "");
-	const [imageURL, setImageURL] = useState(initialData.imageURL || "");
-	const [image, setImage] = useState(null);
-	const [errors, setErrors] = useState({});
-	const [description, setDescription] = useState(initialData.description || "");
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { useCreateNoticeMutation } from "../../../redux/slices/noticesApiSlice";
+import uploadImage from "../../../helpers/imageUpload";
 
+const AddImportantNoticePage = () => {
+	const [createNotice] = useCreateNoticeMutation();
+
+	const [imageFile, setImageFile] = useState(null); // Store the actual image file
+	const [imagePreview, setImagePreview] = useState(null); // Store preview for display
+
+	const methods = useForm();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = methods;
+
+	// Handle image change and preview
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
 		if (file) {
-			setImage(file);
-			setImagePreview(URL.createObjectURL(file));
+			setImageFile(file); // Store the actual file for upload
+			setImagePreview(URL.createObjectURL(file)); // Set the preview for display
 		}
 	};
 
-	const validateForm = () => {
-		const newErrors = {};
+	// Form submit logic
+	const onSubmit = async (data) => {
+		try {
+			console.log(data);
+			console.log(imageFile);
 
-		if (!title.trim()) {
-			newErrors.title = "Title is required.";
+			let url = null;
+			// Check if an image file is selected and upload it to Cloudinary
+			if (imageFile) {
+				url = await uploadImage(imageFile); // Upload image to Cloudinary
+				if (!url) {
+					toast.error("Image upload failed");
+					return;
+				}
+			}
+			// Prepare the final data to send
+			const noticeData = {
+				title: data.title,
+				description: data.description,
+				image: url || null, // Include uploaded image URL if available
+			};
+
+			await createNotice(noticeData).unwrap(); // Send data to the backend
+			toast.success("Notice created successfully");
+			reset();
+			setImagePreview(null); // Clear image preview
+		} catch (error) {
+			toast.error("Error creating notice");
 		}
-
-		if (!image && !imagePreview) {
-			newErrors.image = "Image is required.";
-		}
-
-		setErrors(newErrors);
-		return Object.keys(newErrors).length === 0;
-	};
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-
-		if (!validateForm()) {
-			return;
-		}
-
-		const formData = {
-			title,
-			description,
-			imageURL: imageURL || imagePreview,
-		};
-
-		console.log("Form Data:", formData);
-
-		alert("Form submitted successfully!");
-	};
-
-	const handleReset = () => {
-		setTitle("");
-		setDescription("");
-		setImageURL("");
-		setImage(null);
-		setImagePreview(null);
-		setErrors({});
 	};
 
 	return (
@@ -65,7 +65,7 @@ const AddImportantNoticePage = ({ initialData = {} }) => {
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 				<div>
-					<form onSubmit={handleSubmit}>
+					<form onSubmit={handleSubmit(onSubmit)}>
 						{/* Title Input */}
 						<div className="mb-4">
 							<label
@@ -74,22 +74,20 @@ const AddImportantNoticePage = ({ initialData = {} }) => {
 							>
 								Title
 							</label>
-							<FormInput
+							<input
 								type="text"
 								id="title"
-								name="title"
-								value={title}
-								onChange={(e) => setTitle(e.target.value)}
+								{...register("title", { required: true })}
 								placeholder="Enter Title"
-								required
 								className={`w-full border ${
 									errors.title ? "border-red-500" : "border-gray-300"
 								} rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-200`}
 							/>
 							{errors.title && (
-								<p className="text-red-500 text-sm mt-1">{errors.title}</p>
+								<p className="text-red-500 text-sm mt-1">Title is required</p>
 							)}
 						</div>
+
 						{/* Description */}
 						<div className="mb-4">
 							<label
@@ -100,13 +98,17 @@ const AddImportantNoticePage = ({ initialData = {} }) => {
 							</label>
 							<textarea
 								id="description"
-								name="description"
-								value={description}
-								onChange={(e) => setDescription(e.target.value)}
+								{...register("description", { required: true })}
 								placeholder="Enter Description"
 								className="w-full border border-gray-300 rounded-md p-2"
 							/>
+							{errors.description && (
+								<p className="text-red-500 text-sm mt-1">
+									Description is required
+								</p>
+							)}
 						</div>
+
 						{/* Image Upload */}
 						<div className="mt-4 w-full">
 							<label
@@ -115,10 +117,9 @@ const AddImportantNoticePage = ({ initialData = {} }) => {
 							>
 								Choose Image
 							</label>
-							<FormInput
+							<input
 								type="file"
 								id="file-upload"
-								name="file-upload"
 								accept="image/*"
 								onChange={handleImageChange}
 								className={`block w-full text-sm text-gray-500 border ${
@@ -126,7 +127,7 @@ const AddImportantNoticePage = ({ initialData = {} }) => {
 								} rounded-md cursor-pointer p-2 focus:outline-none focus:ring focus:ring-blue-200`}
 							/>
 							{errors.image && (
-								<p className="text-red-500 text-sm mt-1">{errors.image}</p>
+								<p className="text-red-500 text-sm mt-1">Image is required</p>
 							)}
 						</div>
 					</form>
@@ -157,14 +158,17 @@ const AddImportantNoticePage = ({ initialData = {} }) => {
 				<button
 					type="reset"
 					className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-					onClick={handleReset}
+					onClick={() => {
+						reset();
+						setImagePreview(null);
+					}}
 				>
 					Reset
 				</button>
 				<button
 					type="submit"
 					className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500 mr-2"
-					onClick={handleSubmit}
+					onClick={handleSubmit(onSubmit)}
 				>
 					Add
 				</button>

@@ -28,8 +28,15 @@ import SalePropertyList from "../_dashboard/pages/SaleProperty/SalePropertyList"
 import PurchasePropertyList from "../_dashboard/pages/PurchaseProperty/PurchasePropertyList";
 import RegistrationPropertyList from "../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
 import TeamList from "../_dashboard/pages/Team/TeamList";
+// import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
+// import UserList from "../_dashboard/pages/User/UserList";
 import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
-import UserList from "../_dashboard/pages/User/UserList";
+import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
+
+import UserList from "./../_dashboard/pages/User/UserList";
+import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
+import RegistrationPropertyPage from "../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
+// import RegistrationPropertyList from "./../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
 
 const adminRoutes = [
   {
@@ -48,6 +55,14 @@ const adminRoutes = [
       {
         path: "affiliates/list",
         element: <AffiliatesList />,
+      },
+      {
+        path: "associates/add",
+        element: <AddAssociatesWebsitesPage />,
+      },
+      {
+        path: "associates/list",
+        element: <AssociatesWebsiteList />,
       },
 
       {
@@ -120,6 +135,22 @@ const adminRoutes = [
       {
         path: "phases/add",
         element: <AddPhasePage />,
+      },
+      {
+        path: "users/add",
+        element: <AddUserPage />,
+      },
+      {
+        path: "users/list",
+        element: <UserList />,
+      },
+      {
+        path: "portal-guide/add",
+        element: <AddPortalPage />,
+      },
+      {
+        path: "portal-guide/list",
+        element: <PortGuidesList />,
       },
       {
         path: "phases/list",
