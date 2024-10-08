@@ -1,28 +1,20 @@
-import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-import InputField from '../shared/Inputfield';
+import React from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import InputField from "../../_components/shared/InputField";
+import { useCreateTeamsMutation } from "../../../redux/slices/teamApiSlice";
 
 const TeamForm = () => {
   const methods = useForm();
+  const [createTeam, { isLoading, isError, isSuccess, error }] = useCreateTeamsMutation();
 
-  const handleFormSubmit = (data) => {
-    // Handle form submission logic here
-    console.log('Form Data:', data);
-    // You can also send the data to an API endpoint
-    // fetch('/api/endpoint', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log('Success:', data);
-    // })
-    // .catch((error) => {
-    //   console.error('Error:', error);
-    // });
+  const handleFormSubmit = async (data) => {
+    try {
+      // Call the mutation and pass form data
+      const response = await createTeam(data).unwrap();
+      console.log("Team added successfully:", response);
+    } catch (err) {
+      console.error("Failed to add team:", err);
+    }
   };
 
   return (
@@ -55,24 +47,40 @@ const TeamForm = () => {
             errorMessage="Extension is required"
           />
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Status</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Status
+            </label>
             <select
-              {...methods.register('status', { required: 'Status is required' })}
+              {...methods.register("status", {
+                required: "Status is required",
+              })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
             >
               <option value="">Select Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
-            {methods.formState.errors.status && <p className="text-red-500 text-sm">{methods.formState.errors.status.message}</p>}
+            {methods.formState.errors.status && (
+              <p className="text-red-500 text-sm">
+                {methods.formState.errors.status.message}
+              </p>
+            )}
           </div>
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-primary text-white rounded-md"
+            className={`w-full px-4 py-2 bg-green-500 text-white rounded-md ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={isLoading}
           >
-            Add Team Member
+            {isLoading ? "Adding..." : "Add Team Member"}
           </button>
         </form>
+
+        {isSuccess && (
+          <p className="mt-4 text-green-500">Team member added successfully!</p>
+        )}
+        {isError && (
+          <p className="mt-4 text-red-500">Error: {error?.data?.message || "Failed to add team member"}</p>
+        )}
       </div>
     </FormProvider>
   );
