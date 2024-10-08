@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
+import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../../../redux/slices/associateWebsitesSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal"; // Assuming you have a modal component for confirmation
 
-const AssociatesWebsiteList = ({ onEdit }) => {
+const AssociatesWebsiteList = () => {
   const { data: Notice, isLoading, refetch } = useGetAssociateWebsitesQuery({});
   const [deleteAssociateWebsite] = useDeleteAssociateWebsiteMutation(); // Hook to delete a website
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,8 +33,10 @@ const AssociatesWebsiteList = ({ onEdit }) => {
       try {
         await deleteAssociateWebsite(selectedWebsiteId); // Trigger deletion
         refetch(); // Refetch data to update the list
+        toast.success("Associate website deleted successfully!"); // Show success toast
         handleModalClose(); // Close modal
       } catch (error) {
+        toast.error("Failed to delete associate website."); // Show error toast
         console.error("Error deleting website:", error);
       }
     }
@@ -49,10 +51,10 @@ const AssociatesWebsiteList = ({ onEdit }) => {
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1, // Serial number
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Logo",
@@ -85,18 +87,30 @@ const AssociatesWebsiteList = ({ onEdit }) => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      render: (status) => (
+        <span
+          className={`px-2 py-1 rounded-full text-white ${
+            status === "active" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {status.charAt(0).toUpperCase() + status.slice(1)}
+        </span>
+      ),
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)} className="text-blue-500">
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
             <FaEdit />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Open delete modal
-            className="text-red-500"
+            className="border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500"
           >
             <FaTrash />
           </a>

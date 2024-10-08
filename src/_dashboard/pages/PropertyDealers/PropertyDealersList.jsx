@@ -1,80 +1,102 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetPropertyDealerQuery } from "../../../redux/slices/propertyDealerSlice";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+import { toast } from "react-hot-toast";
+import {
+  useDeletePropertyDealerMutation,
+  useGetPropertyDealerQuery,
+} from "../../../redux/slices/propertyDealerSlice";
 
-const PropertyDealersList = ({ onEdit, onDelete }) => {
-  const { data: PropertyDealersList, isLoading } = useGetPropertyDealerQuery(
-    {}
-  );
-
-  console.log(PropertyDealersList);
-
+const PropertyDealersList = () => {
+  const {
+    data: PropertyDealersList,
+    isLoading,
+    refetch,
+  } = useGetPropertyDealerQuery({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedDealerId, setSelectedDealerId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // Track the deletion state
 
+  const [deletePropertyDealer] = useDeletePropertyDealerMutation();
+
+  // Open the delete confirmation modal
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
+    setSelectedDealerId(id);
     setIsModalOpen(true);
   };
 
+  // Close the modal
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedDealerId(null);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
-  };
+  // Confirm deletion and handle feedback with toast notifications
+  const handleConfirmDelete = async () => {
+    if (selectedDealerId) {
+      setIsDeleting(true);
+      toast.dismiss(); // Clear any previous toasts
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+      try {
+        await deletePropertyDealer(selectedDealerId).unwrap(); // Execute the delete mutation
+        refetch(); // Refetch the list after deletion
+        toast.success("Property dealer deleted successfully!"); // Success toast
+        handleModalClose(); // Close the modal
+      } catch (error) {
+        console.error("Error deleting property dealer:", error);
+        toast.error("Error deleting property dealer!"); // Error toast
+      } finally {
+        setIsDeleting(false); // Reset the deleting state
+      }
+    }
+  };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => index + 1, // Automatically generate serial number or use actual ID
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1, // Automatically generate serial numbers
     },
     {
       title: "Agency",
-      dataIndex: "agency", // Assuming `agency` contains the name of the agency
+      dataIndex: "agency",
       key: "agency",
     },
     {
       title: "Full Name",
-      dataIndex: "fullName", // Assuming `fullName` contains the full name of the individual
+      dataIndex: "fullName",
       key: "fullName",
     },
     {
       title: "Address",
-      dataIndex: "address", // Assuming `address` contains the full address
+      dataIndex: "address",
       key: "address",
     },
     {
       title: "Phone",
-      dataIndex: "phone", // Assuming `phone` contains the phone number
+      dataIndex: "phone",
       key: "phone",
     },
-    // {
-    //   title: "Affiliate ID",
-    //   dataIndex: "affiliateId", // Assuming `affiliateId` contains the affiliate ID
-    //   key: "affiliateId",
-    // },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
+          <a
+            onClick={() => handleEdit(record)}
+            className="border p-2 rounded-md hover:text-white hover:bg-primary-300 border-primary-500"
+          >
             <FaEdit />
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Ensure correct ID is passed
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -84,22 +106,23 @@ const PropertyDealersList = ({ onEdit, onDelete }) => {
 
   return (
     <div className="max-w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">List of PropertyDealersList</h2>
+      <h2 className="text-2xl font-bold mb-6">List of Property Dealers</h2>
       {isLoading ? (
         <Loader />
       ) : PropertyDealersList && PropertyDealersList?.doc ? (
         <DataTable columns={columns} data={PropertyDealersList?.doc} />
       ) : (
-        <p>PropertyDealersList not found!</p>
+        <p>Property dealers not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation Modal for delete action */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this property dealer?"
+      />
     </div>
   );
 };

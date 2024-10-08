@@ -3,80 +3,92 @@ import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import { useGetEngineersQuery } from "../../../redux/slices/engineers";
+import { toast } from "react-hot-toast"; // Import toast for notifications
+import {
+  useDeleteEngineerMutation,
+  useGetEngineersQuery,
+} from "../../../redux/slices/engineers";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 
-const EngineersList = ({ onEdit, onDelete }) => {
-  const { data: Engineers, isLoading } = useGetEngineersQuery({});
-
-  console.log(Engineers);
-
+const EngineersList = () => {
+  const { data: Engineers, isLoading, refetch } = useGetEngineersQuery({}); // Refetch after deletion
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedEngineerId, setSelectedEngineerId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // State to track deletion status
+  const [deleteEngineer] = useDeleteEngineerMutation(); // Delete mutation
 
+  // Handle delete click to show modal
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id);
+    setSelectedEngineerId(id);
     setIsModalOpen(true);
   };
 
+  // Close modal
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPhaseId(null);
+    setSelectedEngineerId(null);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(selectedPhaseId);
-    setIsModalOpen(false);
-    setSelectedPhaseId(null);
+  // Handle the confirm delete action
+  const handleConfirmDelete = async () => {
+    if (selectedEngineerId) {
+      setIsDeleting(true); // Set deleting state to true
+      toast.dismiss(); // Clear any previous toasts
+
+      try {
+        await deleteEngineer(selectedEngineerId).unwrap(); // Execute the delete mutation
+        refetch(); // Refetch engineers list to update the data
+        toast.success("Engineer deleted successfully!"); // Show success message
+        handleModalClose(); // Close the modal
+      } catch (error) {
+        console.error("Error deleting engineer:", error);
+        toast.error("Failed to delete the engineer!"); // Show error message
+      } finally {
+        setIsDeleting(false); // Reset deleting state
+      }
+    }
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = () => {
+    // Functionality for handling edit can be implemented here
+  };
 
   const columns = [
-    // {
-    //   title: "ID",
-    //   dataIndex: "id", // Assuming `registeredNumber` contains the firm's registered number
-    //   key: "id",
-    // },
+    {
+      title: "S.No",
+      dataIndex: "sno",
+      key: "sno",
+      render: (text, record, index) => index + 1, // Generate serial number
+    },
     {
       title: "Form Name",
-      dataIndex: "firmName", // Assuming `firmName` contains the name of the firm
+      dataIndex: "firmName",
       key: "firmName",
     },
     {
       title: "Engineer Name",
-      dataIndex: "engineerName", // Assuming `engineerName` contains the name of the engineer
+      dataIndex: "engineerName",
       key: "engineerName",
     },
     {
       title: "Address",
-      dataIndex: "address", // Assuming `address` contains the full address
+      dataIndex: "address",
       key: "address",
     },
     {
-      title: "Phone",
-      dataIndex: "phone", // Assuming `phone` contains the phone number
-      key: "phone",
-    },
-    {
       title: "Status",
-      dataIndex: "status", // Assuming `status` contains the status (e.g., Active, Inactive)
+      dataIndex: "status",
       key: "status",
       render: (status) => (
         <span
           className={`px-2 py-1 rounded-full text-white ${
-            status === "Active" ? "bg-green-500" : "bg-red-500"
+            status === "active" ? "bg-green-500" : "bg-red-500"
           }`}
         >
-          {status}
+          {status.charAt(0).toUpperCase() + status.slice(1)}
         </span>
       ),
     },
-    // {
-    //   title: "Affiliate ID",
-    //   dataIndex: "affiliateId", // Assuming `affiliateId` contains the affiliate ID
-    //   key: "affiliateId",
-    // },
     {
       title: "Action",
       key: "action",
@@ -84,8 +96,14 @@ const EngineersList = ({ onEdit, onDelete }) => {
         <div className="flex gap-2 items-center px-2">
           <a onClick={() => handleEdit(record)}>
             <FaEye />
+
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
+          <a
+            onClick={() => handleDeleteClick(record._id)} // Pass the ID to delete
+            className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
+              isDeleting ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
             <FaTrash />
           </a>
         </div>
@@ -104,13 +122,14 @@ const EngineersList = ({ onEdit, onDelete }) => {
         <p>Engineers not found!</p>
       )}
 
-      {/* <ConfirmationModal
+      {/* Confirmation Modal for delete */}
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
-        message="Are you sure you want to delete this phase?"
-      /> */}
+        message="Are you sure you want to delete this engineer?"
+      />
     </div>
   );
 };
