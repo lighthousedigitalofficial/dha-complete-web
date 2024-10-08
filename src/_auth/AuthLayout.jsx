@@ -10,10 +10,10 @@ const AuthLayout = () => {
 
 	useEffect(() => {
 		if (user && user.doc.role === "admin") {
-			navigate("/dashboard");
+			navigate("/");
 		} else if (user) {
 			navigate("/");
-		}
+		} else navigate("/user/auth/sign-in");
 	}, [navigate, user]);
 
 	return (
