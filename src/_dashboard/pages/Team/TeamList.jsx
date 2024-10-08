@@ -6,7 +6,7 @@ import Loader from "../../../components/shared/Loader";
 import {
   useGetTeamsQuery,
   useDeleteTeamMutation,
-} from "../../../redux/slices/teamsSlice";
+} from "../../../redux/slices/teamsApiSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast"; // Optional for notifications
 
