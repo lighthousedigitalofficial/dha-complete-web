@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
+
 import { BASE_URL } from "../constants";
 
 const baseQuery = fetchBaseQuery({
@@ -23,7 +24,7 @@ export const apiSlice = createApi({
 		"AssociatesWebsite",
 		"Phases",
 		"Events",
-		"Facilies",
+		"Facilities",
 		"Affiliates",
 		"Banners",
 		"Notices",

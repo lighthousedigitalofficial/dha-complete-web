@@ -1,4 +1,5 @@
 import HomePage from "../_user/pages/HomePage";
+import NotFoundPage from "../_user/pages/NotFoundPage";
 import UserLayout from "../_user/UserLayout";
 
 const userRoutes = [
@@ -9,6 +10,10 @@ const userRoutes = [
 			{
 				path: "",
 				element: <HomePage />,
+			},
+			{
+				path: "*",
+				element: <NotFoundPage />,
 			},
 		],
 	},
