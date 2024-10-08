@@ -25,7 +25,8 @@ const DashboardLayout = () => {
 		}
 	}, [navigate, user]);
 
-	// Loading or no user data
+
+	// // Loading or no user data
 	if (!user) {
 		return <Loader />;
 	}
