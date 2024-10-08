@@ -43,37 +43,45 @@ export const sidebarItems = [
     ],
   },
   {
-    label: 'Associates Websites',
+    label: 'Associates',
     icon: FaLink,
     subItems: [
       { path: '/dashboard/associates/add', label: 'Add Website', icon: FaPlus },
       { path: '/dashboard/associates/list', label: 'List Websites', icon: FaList },
     ],
   },
+	
+  
   {
-    label: 'Videos',
-    icon: FaVideo,
+    label: 'Gallery',
+		icon: FaImage,
     subItems: [
-      { path: '/dashboard/videos/add', label: 'Add Video', icon: FaPlus },
-      { path: '/dashboard/videos/list', label: 'List Videos', icon: FaList },
+      {
+				label: 'Videos',
+				icon: FaVideo,
+				subsubItems: [
+					{ path: '/dashboard/videos/add', label: 'Add Video', icon: FaPlus },
+					{ path: '/dashboard/videos/list', label: 'List Videos', icon: FaList },
+				],
+			},
+			{
+				label: 'Media',
+				icon: FaImage,
+				subsubItems: [
+					{ path: '/dashboard/media/add', label: 'Add Media', icon: FaPlus},
+					{ path: '/dashboard/media/list', label: 'List Media', icon: FaList}]
+			},
+			{
+				label: 'Events',
+				icon: FaCalendarAlt,
+				subsubItems: [
+					{ path: '/dashboard/events/add', label: 'Add Event', icon: FaPlus },
+					{ path: '/dashboard/events/list', label: 'List Events', icon: FaList },
+				],
+			},
     ],
   },
-  {
-    label: 'Advertisements',
-    icon: FaAd,
-    subItems: [
-      { path: '/dashboard/advertisements/add', label: 'Add Advertisement', icon: FaPlus },
-      { path: '/dashboard/advertisements/list', label: 'List Advertisements', icon: FaList },
-    ],
-  },
-  {
-    label: 'Events',
-    icon: FaCalendarAlt,
-    subItems: [
-      { path: '/dashboard/events/add', label: 'Add Event', icon: FaPlus },
-      { path: '/dashboard/events/list', label: 'List Events', icon: FaList },
-    ],
-  },
+  
   {
     label: 'Phases',
     icon: FaMapMarkerAlt,

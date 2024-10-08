@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
 
 import {
@@ -80,7 +80,7 @@ const BannerList = () => {
             onClick={() => handleEdit(record)}
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
-            <FaEdit />
+            <FaEye />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Set the selected banner ID for deletion

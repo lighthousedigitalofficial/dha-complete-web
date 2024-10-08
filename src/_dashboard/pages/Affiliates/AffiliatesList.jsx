@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
@@ -64,7 +64,7 @@ const AffiliatesList = ({ onEdit, onDelete }) => {
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
           <a onClick={() => handleEdit(record)}>
-            <FaEdit />
+            <FaEye/>
           </a>
           <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
             <FaTrash />

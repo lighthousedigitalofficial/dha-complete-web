@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 
 import { useGetPhasesQuery } from "../../../redux/slices/phasesSlice";
 import DataTable from "../../_components/shared/DataTable";
@@ -61,7 +61,7 @@ const PhasesList = ({ onEdit, onDelete }) => {
         <div className="flex gap-2 items-center px-2">
           {/* Example action buttons (Edit/Delete) */}
           <a onClick={() => handleEdit(record)}>
-            <FaEdit />
+            <FaEye />
           </a>
 
           <a onClick={() => handleDelete(record)} style={{ color: "red" }}>

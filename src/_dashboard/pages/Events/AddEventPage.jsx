@@ -2,8 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 const AddEventPage = () => {
-    const { register, handleSubmit, setValue } = useForm();
-
+    // const { register, handleSubmit, setValue } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
     const onSubmit = async (data) => {
         console.log("Form data submitted:", data); // Log the data
 
@@ -42,30 +42,50 @@ const AddEventPage = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <label htmlFor="title">Event Title</label>
-                <input
-                    {...register("title", { required: true })} // Add validation if needed
-                    placeholder="Event Title"
-                />
-            </div>
-            <div>
-                <label htmlFor="description">Event Description</label>
-                <input
-                    {...register("description", { required: true })} // Add validation if needed
-                    placeholder="Event Description"
-                />
-            </div>
-            <div>
-                <label htmlFor="images">Image URLs (comma-separated)</label>
-                <input
-                    onChange={handleImageInput} // Handle change for images
-                    placeholder="Image URLs (comma-separated)"
-                />
-            </div>
-            <button type="submit">Create Event</button>
-        </form>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-[80%] mx-auto shadow-md p-4 rounded-lg mt-8">
+        <div className="w-full">
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+            Event Title
+          </label>
+          <input
+            {...register("title", { required: true })} // Add validation if needed
+            placeholder="Event Title"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+          />
+          {errors.title && <p className="text-red-500 text-sm mt-1">Title is required</p>}
+        </div>
+        <div className="w-full">
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+            Event Description
+          </label>
+          <input
+            {...register("description", { required: true })} // Add validation if needed
+            placeholder="Event Description"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+          />
+          {errors.description && <p className="text-red-500 text-sm mt-1">Description is required</p>}
+        </div>
+        <div className="w-full">
+          <label htmlFor="images" className="block text-sm font-medium text-gray-700">
+            Event Images (comma separated URLs)
+          </label>
+          <input
+            type="text"
+            id="images"
+            onChange={handleImageInput}
+            placeholder="Enter image URLs separated by commas"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+          />
+        </div>
+        <div className="w-full flex justify-end">
+          <button
+            type="submit"
+            className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500"
+          >
+            Create Event
+          </button>
+        </div>
+      </form>
     );
 };
 

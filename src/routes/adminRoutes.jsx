@@ -28,6 +28,7 @@ import UserList from "./../_dashboard/pages/User/UserList";
 import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
 import RegistrationPropertyPage from "../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
 import RegistrationPropertyList from "./../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
+import UserDetailPage from "../_dashboard/pages/User/UserDetailPage";
 
 const adminRoutes = [
 	{
@@ -79,11 +80,11 @@ const adminRoutes = [
 			},
 
 			{
-				path: "associates-websites/add",
+				path: "associates/add",
 				element: <AddAssociatesWebsitesPage />,
 			},
 			{
-				path: "associates-websites/list",
+				path: "associates/list",
 				element: <AssociatesWebsiteList />,
 			},
 
@@ -163,6 +164,10 @@ const adminRoutes = [
 			{
 				path: "registration-property/list",
 				element: <RegistrationPropertyList />,
+			},
+			{
+				path: "profile",
+				element: <UserDetailPage />,
 			},
 		],
 	},

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { toast, Toaster } from "react-hot-toast"; // Import toast functions
+import { FaEye, FaTrash } from "react-icons/fa";
+import { toast,  } from "react-hot-toast"; // Import toast functions
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import {
@@ -78,7 +78,7 @@ const VideosList = () => {
             onClick={() => handleEdit(record)}
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
-            <FaEdit />
+            <FaEye />
           </a>
           <a
             onClick={() => handleDeleteClick(record._id)} // Pass the video ID to delete
