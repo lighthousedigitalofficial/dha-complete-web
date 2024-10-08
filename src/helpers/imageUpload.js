@@ -1,5 +1,4 @@
-import { Cloudinary } from "@cloudinary/url-gen";
-
+// import { Cloudinary } from "@cloudinary/url-gen";
 /**
  * Uploads an image to Cloudinary with auto-format and quality optimizations.
  * @param {File} file - The image file to be uploaded.
