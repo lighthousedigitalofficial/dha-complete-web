@@ -39,6 +39,7 @@ import EngineersForm from "./../_dashboard/pages/Engineers/AddEngineersPage";
 import TeamForm from "./../_dashboard/pages/Team/AddTeamPage";
 import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage";
 import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
+import NotFoundPage from "../_user/pages/NotFoundPage";
 
 const adminRoutes = [
 	{
@@ -231,6 +232,10 @@ const adminRoutes = [
 			{
 				path: "profile",
 				element: <UserDetailPage />,
+			},
+			{
+				path: "*",
+				element: <NotFoundPage />,
 			},
 		],
 	},
