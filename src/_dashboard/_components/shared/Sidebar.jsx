@@ -26,12 +26,9 @@ const Sidebar = ({ isSidebarOpen }) => {
     <>
       <button onClick={isSidebarOpen} className="md:hidden fixed top-4 left-4 z-50 text-white">
         <FaBars />
-      </button>
-      <div className='bg-primary-500 w-full flex items-center justify-center'>
-        <img src={logo} alt="" className='w-36 p-4' />
-      </div>
-      <div className={`fixed top-0 left-0 h-full w-72 py-4 bg-primary-500 min-h-screen overflow-y-auto text-white p-4 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:relative md:translate-x-0 custom-scrollbar`}>
-        <div className="w-full flex flex-col justify-center text-white">
+      </button>      
+      <div className={`fixed top-0 py-4 left-0 h-full w-72 bg-primary-500 min-h-screen overflow-y-auto custom-scrollbar text-white transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:relative md:translate-x-0 `}>
+        <div className="w-full flex flex-col justify-center text-white  ">
           {sidebarItems.map((item, index) => (
             <div key={index} className="mb-2">
               <div

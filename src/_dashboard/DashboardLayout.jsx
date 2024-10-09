@@ -8,6 +8,7 @@ import Sidebar from "./_components/shared/Sidebar";
 
 const DashboardLayout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [isAdmin, setIsAdmin] = useState(false);
 
 	const user = useAuth();
 	const navigate = useNavigate();
@@ -16,25 +17,25 @@ const DashboardLayout = () => {
 		setIsSidebarOpen(!isSidebarOpen);
 	};
 
+	console.log(user);
+
 	useEffect(() => {
 		if (!user) {
 			// Redirect to login if not authenticated
 			navigate("/user/auth/sign-in");
-		} else if (user.doc.role !== "admin") {
+		} else if (user && user?.doc && user?.doc?.role === "admin") {
+			setIsAdmin(true);
 			navigate("/");
-		}
+		} else navigate("/not-authorized");
 	}, [navigate, user]);
 
-	// // Loading or no user data
-	if (!user) {
-		return <Loader />;
-	}
-
 	// If user is authenticated and is an admin, render the dashboard layout
-	return (
+	return !isAdmin ? (
+		<Loader />
+	) : (
 		<div className="relative flex overflow-hidden">
 			<aside
-				className={`fixed top-0 inset-y-0 left-0 transform ${
+				className={`fixed top-16 inset-y-0 left-0 transform ${
 					isSidebarOpen ? "translate-x-0" : "-translate-x-full"
 				} transition-transform duration-200 ease-in-out  text-white w-72 md:relative md:translate-x-0`}
 			>
@@ -46,10 +47,10 @@ const DashboardLayout = () => {
 				<Sidebar isSidebarOpen={true} />
 			</aside>
 			<div className="flex-1 flex flex-col overflow-hidden">
-				<header className="fixed top-0 left-72 right-0 z-10">
+				<header className="fixed left-0 top-0 right-0 z-10">
 					<Navbar toggleSidebar={toggleSidebar} />
 				</header>
-				<main className="flex-1 overflow-y-auto mt-20 p-4">
+				<main className="flex-1 overflow-y-auto mt-20 p-2">
 					<Outlet />
 				</main>
 			</div>

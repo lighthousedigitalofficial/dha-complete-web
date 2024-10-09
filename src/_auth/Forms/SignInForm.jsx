@@ -9,6 +9,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { useLoginMutation } from "../../redux/slices/usersApiSlice";
 import { setCredentials } from "../../redux/slices/authSlice";
+import useAuth from "../../hooks/useAuth";
 
 const schema = z.object({
 	email: z.string().email("Invalid email address"),
@@ -27,13 +28,13 @@ const SignInForm = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [showPassword, setShowPassword] = useState(false);
-	const { userInfo } = useSelector((state) => state.auth);
+	const user = useAuth();
 
 	useEffect(() => {
-		if (userInfo && userInfo.user) {
+		if (user && user.doc) {
 			navigate("/");
 		}
-	}, [userInfo, navigate]);
+	}, [user, navigate]);
 
 	const [login, { isLoading }] = useLoginMutation();
 
@@ -45,10 +46,10 @@ const SignInForm = () => {
 			dispatch(setCredentials({ ...res }));
 			toast.success("Login successfully");
 			console.log(res);
-			navigate("/dashboard");
+			navigate("/");
 		} catch (err) {
 			console.error(err);
-			toast.error(err?.data?.message || err.data);
+			toast.error(err?.data?.message || err.error);
 		}
 	};
 
