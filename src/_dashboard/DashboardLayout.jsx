@@ -8,7 +8,7 @@ import Sidebar from "./_components/shared/Sidebar";
 
 const DashboardLayout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-	const [isAdmin, setIsAdmin] = useState(false);
+	const [isAdmin, setIsAdmin] = useState(true);
 
 	const user = useAuth();
 	const navigate = useNavigate();
@@ -19,15 +19,15 @@ const DashboardLayout = () => {
 
 	console.log(user);
 
-	useEffect(() => {
-		if (!user) {
-			// Redirect to login if not authenticated
-			navigate("/user/auth/sign-in");
-		} else if (user && user?.doc && user?.doc?.role === "admin") {
-			setIsAdmin(true);
-			navigate("/");
-		} else navigate("/not-authorized");
-	}, [navigate, user]);
+	// useEffect(() => {
+	// 	if (!user) {
+	// 		// Redirect to login if not authenticated
+	// 		navigate("/user/auth/sign-in");
+	// 	} else if (user && user?.doc && user?.doc?.role === "admin") {
+	// 		setIsAdmin(true);
+	// 		navigate("/");
+	// 	} else navigate("/not-authorized");
+	// }, [navigate, user]);
 
 	// If user is authenticated and is an admin, render the dashboard layout
 	return !isAdmin ? (
