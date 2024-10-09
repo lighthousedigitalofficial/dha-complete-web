@@ -23,63 +23,63 @@ const Dashboard = () => {
 			title: "Important Notices",
 			total: data?.doc?.totalNotice || 0,
 			bgColor: "bg-gradient-to-r from-yellow-500 to-yellow-700",
-			link: "/notices",
+			link: "/important-notices/list",
 			icon: MdNotificationImportant, // Changed icon
 		},
 		{
 			title: "Phases",
 			total: data?.doc?.totalPhases || 0,
 			bgColor: "bg-gradient-to-r from-green-500 to-green-700",
-			link: "/phases",
+			link: "/phases/list",
 			icon: FaRegListAlt, // Changed icon
 		},
 		{
 			title: "Engineers",
 			total: data?.doc?.totalEngineers || 0,
 			bgColor: "bg-gradient-to-r from-blue-500 to-blue-700",
-			link: "/engineers",
+			link: "/engineers/list",
 			icon: FaWrench, // Changed icon
 		},
 		{
 			title: "Users",
 			total: data?.doc?.totalUsers || 0,
 			bgColor: "bg-gradient-to-r from-purple-500 to-purple-700",
-			link: "/users",
+			link: "/users/list",
 			icon: FaUsersCog, // Changed icon
 		},
 		{
 			title: "Register Property",
 			total: data?.doc?.totalPropertyDealers || 0,
 			bgColor: "bg-gradient-to-r from-indigo-500 to-indigo-700",
-			link: "/registered-properties",
+			link: "/registration-property/list",
 			icon: FaBuilding, // Changed icon
 		},
 		{
 			title: "Sale Property",
 			total: data?.doc?.totalSalesProperty || 0,
 			bgColor: "bg-gradient-to-r from-red-500 to-red-700",
-			link: "/sale-properties",
+			link: "/sale-property/list",
 			icon: FaTag, // Changed icon
 		},
 		{
 			title: "Purchase Property",
 			total: data?.doc?.totalPurchaseProperty || 0,
 			bgColor: "bg-gradient-to-r from-teal-500 to-teal-700",
-			link: "/purchase-properties",
+			link: "/purchase-property/list",
 			icon: FaDollarSign, // Changed icon (same for demonstration)
 		},
 		{
 			title: "Property Dealer",
 			total: data?.doc?.totalPropertyDealers || 0,
 			bgColor: "bg-gradient-to-r from-gray-500 to-gray-700",
-			link: "/property-dealers",
+			link: "/property-dealers/list",
 			icon: FaUserTie, // Changed icon (same for demonstration)
 		},
 		{
 			title: "Events",
 			total: data?.doc?.totalEvents || 0,
 			bgColor: "bg-gradient-to-r from-pink-500 to-pink-700",
-			link: "/events",
+			link: "/events/list",
 			icon: FaRegCalendarAlt, // Changed icon
 		},
 	];
