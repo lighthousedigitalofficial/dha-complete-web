@@ -1,8 +1,10 @@
 // import { useGetEmployeesQuery } from "../../query/services/employeesApi";
 // import { useGetSectionsQuery } from "../../query/services/sectionApi";
 // import Loader from "./../../components/shared/Loader";
-import { FaBuilding, FaDollarSign, FaExclamationTriangle, FaHammer, FaRegCalendarAlt, FaRegListAlt, FaTag, FaUsersCog, FaUserTie, FaWrench } from "react-icons/fa";
+import { FaBuilding, FaDollarSign,  FaRegCalendarAlt, FaRegListAlt, FaTag, FaUsersCog, FaUserTie, FaWrench } from "react-icons/fa";
 import DashboardCard from "../_components/Dashboard/DashboardCard";
+import { MdNotificationImportant } from "react-icons/md";
+
 // import { useGetEmployeeAllowancesQuery } from "../../query/services/employeeAllowances";
 // import { useGetEmployeeDeductionsQuery } from "../../query/services/employeeDeductions";
 
@@ -32,7 +34,7 @@ const Dashboard = () => {
 			total: 0,
 			bgColor: "bg-gradient-to-r from-yellow-500 to-yellow-700",
 			link: "/notices",
-			icon: FaExclamationTriangle, // Changed icon
+			icon: MdNotificationImportant, // Changed icon
 		},
 		{
 			title: "Phases",
@@ -56,7 +58,7 @@ const Dashboard = () => {
 			icon: FaUsersCog, // Changed icon
 		},
 		{
-			title: "Registered Property",
+			title: "Register Property",
 			total: 0,
 			bgColor: "bg-gradient-to-r from-indigo-500 to-indigo-700",
 			link: "/registered-properties",
@@ -104,11 +106,8 @@ const Dashboard = () => {
 	// }
 
 	return (
-		<div className="p-4">
-			<h2 className="lg:text-3xl font-bold text-gray-800 mb-4 border-b-2 py-2">
-				Welcome to the DHA dashboard👋
-			</h2>
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+		<div className="p-2">			
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
 				{cardsData.map((card) => (
 					<DashboardCard
 						key={card.title}
@@ -116,7 +115,7 @@ const Dashboard = () => {
 						total={card.total}
 						bgColor={card.bgColor}
 						link={card.link}
-						icon={() => <card.icon size="4em" />}
+						icon={() => <card.icon size="3em" />}
 					/>
 				))}
 			</div>

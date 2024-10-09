@@ -34,7 +34,7 @@ const DashboardLayout = () => {
 	return (
 		<div className="relative flex overflow-hidden">
 			<aside
-				className={`fixed top-0 inset-y-0 left-0 transform ${
+				className={`fixed top-16 inset-y-0 left-0 transform ${
 					isSidebarOpen ? "translate-x-0" : "-translate-x-full"
 				} transition-transform duration-200 ease-in-out  text-white w-72 md:relative md:translate-x-0`}
 			>
@@ -46,10 +46,10 @@ const DashboardLayout = () => {
 				<Sidebar isSidebarOpen={true} />
 			</aside>
 			<div className="flex-1 flex flex-col overflow-hidden">
-				<header className="fixed top-0 left-72 right-0 z-10">
+				<header className="fixed left-0 top-0 right-0 z-10">
 					<Navbar toggleSidebar={toggleSidebar} />
 				</header>
-				<main className="flex-1 overflow-y-auto mt-20 p-4">
+				<main className="flex-1 overflow-y-auto mt-20 p-2">
 					<Outlet />
 				</main>
 			</div>

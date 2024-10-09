@@ -20,25 +20,32 @@ const AddPortalPage = () => {
 
 	return (
 		<FormProvider {...methods}>
-			<div className="max-w-md mx-auto bg-white p-8 rounded-md shadow-md">
+			<div className="w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
 				<h2 className="text-2xl font-bold mb-6">Add Portal</h2>
 				<form onSubmit={methods.handleSubmit(handleFormSubmit)}>
-					<InputField
-						label="Title"
-						name="title"
-						register={methods.register}
-						required
-						errors={methods.formState.errors}
-						errorMessage="Title is required"
-					/>
-					<InputField
-						label="Author"
-						name="author"
-						register={methods.register}
-						required
-						errors={methods.formState.errors}
-						errorMessage="Author is required"
-					/>
+					<div className="w-full flex gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="Title"
+								name="title"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Title is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="Author"
+								name="author"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Author is required"
+							/>
+						</div>
+					</div>
+
 					<InputField
 						label="Content"
 						name="content"
@@ -47,36 +54,42 @@ const AddPortalPage = () => {
 						errors={methods.formState.errors}
 						errorMessage="Content is required"
 					/>
-					<InputField
-						label="Video URL"
-						name="video"
-						register={methods.register}
-						required
-						errors={methods.formState.errors}
-						errorMessage="Video URL is required"
-					/>
-					<div className="mb-4">
-						<label className="block text-sm font-medium text-gray-700">
-							Status
-						</label>
-						<select
-							{...methods.register("status", {
-								required: "Status is required",
-							})}
-							className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-						>
-							<option value="published">Published</option>
-							<option value="draft">Draft</option>
-						</select>
-						{methods.formState.errors.status && (
-							<p className="text-red-500 text-sm">
-								{methods.formState.errors.status.message}
-							</p>
-						)}
+					<div className="w-full flex gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="Video URL"
+								name="video"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Video URL is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<div className="mb-4">
+								<label className="block text-sm font-medium text-gray-700">
+									Status
+								</label>
+								<select
+									{...methods.register("status", {
+										required: "Status is required",
+									})}
+									className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+								>
+									<option value="Inactive">Inactive</option>
+									<option value="active">Active</option>
+								</select>
+								{methods.formState.errors.status && (
+									<p className="text-red-500 text-sm">
+										{methods.formState.errors.status.message}
+									</p>
+								)}
+							</div>
+						</div>
 					</div>
 					<button
 						type="submit"
-						className="w-full px-4 py-2 bg-primary-500 text-white rounded-md"
+						className=" px-4 py-2 bg-primary-500 text-white rounded-md"
 						disabled={isLoading}
 					>
 						{isLoading ? "Adding..." : "Add Portal"}
