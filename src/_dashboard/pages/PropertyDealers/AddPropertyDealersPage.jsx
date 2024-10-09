@@ -170,13 +170,6 @@ const AddPropertyDealersPage = ({ initialData = {} }) => {
 				{/* Action Buttons */}
 				<div className="flex justify-end mt-6 gap-2">
 					<button
-						type="reset"
-						className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-						onClick={handleReset}
-					>
-						Reset
-					</button>
-					<button
 						type="submit"
 						className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500"
 						disabled={isCreating}
