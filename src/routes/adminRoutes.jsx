@@ -32,6 +32,11 @@ import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
 import UserDetailPage from "../_dashboard/pages/User/UserDetailPage";
 import AddUserPage from "../_dashboard/pages/User/AddUserPage";
 import UserList from "../_dashboard/pages/User/UserList";
+import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
+import EngineersForm from "../_dashboard/pages/Engineers/AddEngineersPage";
+import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
+import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/EditRegistrationProperty";
+import RegistrationPropertyPage from "../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
 
 // import UserList from "./../_dashboard/pages/User/UserList";
 // import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
@@ -151,6 +156,13 @@ const adminRoutes = [
         path: "portal-guide/list",
         element: <PortGuidesList />,
       },
+
+      {
+        path: "portal-guide/edit/:id",
+
+        element: <EditPortalguides />,
+      },
+
       {
         path: "phases/list",
         element: <PhasesList />,
@@ -166,8 +178,18 @@ const adminRoutes = [
       },
 
       {
+        path: "engineers/add",
+        element: <EngineersForm />,
+      },
+      {
         path: "engineers/list",
         element: <EngineersList />,
+      },
+
+      {
+        path: "engineers/edit/:id",
+
+        element: <EditEngineersPage />,
       },
 
       //   {
@@ -189,12 +211,19 @@ const adminRoutes = [
         path: "purchase-property/list",
         element: <PurchasePropertyList />,
       },
-
+      {
+        path: "registration-property/add",
+        element: <RegistrationPropertyPage />,
+      },
       {
         path: "registration-property/list",
         element: <RegistrationPropertyList />,
       },
+      {
+        path: "registration-property/edit/:id",
 
+        element: <EditRegistrationProperty />,
+      },
       {
         path: "team/list",
         element: <TeamList />,
@@ -209,6 +238,7 @@ const adminRoutes = [
         path: "users/list",
         element: <UserList />,
       },
+
       //   {
       //     path: "profile",
       //     element: <UserDetailPage />,
