@@ -39,7 +39,7 @@ import UserList from "../_dashboard/pages/User/UserList";
 
 const adminRoutes = [
   {
-    path: "/dashboard",
+    path: "/",
     element: <DashboardLayout />,
     children: [
       {
