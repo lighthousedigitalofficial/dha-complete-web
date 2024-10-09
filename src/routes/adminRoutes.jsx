@@ -41,6 +41,7 @@ import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurc
 import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
 import EditVideo from "../_dashboard/pages/Vidoes/EditVideo";
 import EditPropertyDealerPage from "../_dashboard/pages/PropertyDealers/EditPropertyDealer";
+import NotFoundPage from "../_user/pages/NotFoundPage";
 
 const adminRoutes = [
 	{
@@ -239,6 +240,10 @@ const adminRoutes = [
 			{
 				path: "profile",
 				element: <UserDetailPage />,
+			},
+			{
+				path: "*",
+				element: <NotFoundPage />,
 			},
 		],
 	},
