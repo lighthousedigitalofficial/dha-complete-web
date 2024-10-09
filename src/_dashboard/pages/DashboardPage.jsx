@@ -22,7 +22,7 @@ const Dashboard = () => {
 		{
 			title: "Important Notices",
 			total: data?.doc?.totalNotice || 0,
-			bgColor: "bg-gradient-to-r from-yellow-500 to-yellow-700",
+			bgColor: "bg-gradient-to-r from-yellow-700 to-yellow-900",
 			link: "/important-notices/list",
 			icon: MdNotificationImportant, // Changed icon
 		},
@@ -71,7 +71,7 @@ const Dashboard = () => {
 		{
 			title: "Property Dealer",
 			total: data?.doc?.totalPropertyDealers || 0,
-			bgColor: "bg-gradient-to-r from-gray-500 to-gray-700",
+			bgColor: "bg-gradient-to-r from-cyan-400 to-cyan-700",
 			link: "/property-dealers/list",
 			icon: FaUserTie, // Changed icon (same for demonstration)
 		},
@@ -84,14 +84,12 @@ const Dashboard = () => {
 		},
 	];
 
-	if (isLoading) {
-		return <Loader />;
-	}
-
-	return (
+	return isLoading ? (
+		<Loader />
+	) : cardsData ? (
 		<div className="p-2">
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
-				{cardsData.map((card) => (
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+				{cardsData?.map((card) => (
 					<DashboardCard
 						key={card.title}
 						title={card.title}
@@ -103,6 +101,8 @@ const Dashboard = () => {
 				))}
 			</div>
 		</div>
+	) : (
+		<h1>WELCOME TO DHA ADMIN DASHBOARD... 🙋‍♂️🙋‍♂️</h1>
 	);
 };
 
