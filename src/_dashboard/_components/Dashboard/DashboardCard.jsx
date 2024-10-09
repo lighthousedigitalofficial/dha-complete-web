@@ -15,7 +15,7 @@ const DashboardCard = ({
 		>
 			<div className="flex items-center justify-between p-4">
 				<div className="flex flex-col gap-2 items-center">
-					<IconComponent className="text-2xl" />
+					<IconComponent className="text-xl" />
 					<Link
 						to={link}
 						className="block mt-4 text-sm hover:underline transition-all ease-in  p-2"

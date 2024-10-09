@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import uploadImage from "../../../helpers/imageUpload";
 import uploadVideo from "../../../helpers/videoUpload";
 import InputField from "../../_components/shared/InputField";
@@ -10,18 +10,17 @@ const AddPhasePage = () => {
 	const [imagePreview, setImagePreview] = useState(null);
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [uploadedVideos, setUploadedVideos] = useState([]);
-
+	
 	const [createPhase, { isLoading }] = useCreatePhasesMutation();
 
 	const methods = useForm(); // Initialize useForm
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		reset,
-	} = methods;
+  const { register, handleSubmit, control, formState: { errors } } = methods;
 
+	const { fields, append, remove } = useFieldArray({
+    control,
+    name: "services"
+  });
 	// Helper function to handle image preview
 	const handleImagePreview = (e) => {
 		const file = e.target.files[0];
@@ -130,6 +129,37 @@ const AddPhasePage = () => {
 						placeholder="Enter Link"
 					/>
 				</div>
+				{/* Services Field */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Services</label>
+          <button
+            type="button"
+            onClick={() => append({ name: "" })}
+            className="bg-blue-500 text-white px-3 py-1 rounded mb-4"
+          >
+            Add Service
+          </button>
+          {fields.map((item, index) => (
+            <div key={item.id} className="flex items-center mb-2">
+              <InputField
+                label={`Service ${index + 1}`}
+                type="text"
+                name={`services.${index}.name`}
+                register={register}
+                required
+                errors={errors}
+                placeholder={`Service ${index + 1}`}
+              />
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="ml-2 bg-red-300 text-white px-3 py-1 rounded"
+              >
+                x
+              </button>
+            </div>
+          ))}
+        </div>
 
 				{/* Location Field */}
 				<div className="mb-4">
