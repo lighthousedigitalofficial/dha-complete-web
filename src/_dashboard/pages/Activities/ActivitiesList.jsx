@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
-import {
-  useGetActivityQuery,
-  useDeleteActivityMutation,
-} from "../../../redux/slices/activity";
+// import {
+//   useGetActivityQuery,
+//   useDeleteActivityMutation,
+// } from "../../../redux/slices/activity";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast"; // Import react-hot-toast
+import {
+  useDeleteActivityMutation,
+  useGetActivityByIdQuery,
+} from "../../../redux/slices/activitySlice";
 
 const ActivitiesList = () => {
-  const { data: Activities, isLoading, refetch } = useGetActivityQuery({});
+  const { data: Activities, isLoading, refetch } = useGetActivityByIdQuery({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
