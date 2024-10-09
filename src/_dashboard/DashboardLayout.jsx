@@ -36,7 +36,7 @@ const DashboardLayout = () => {
 			<aside
 				className={`fixed top-16 inset-y-0 left-0 transform ${
 					isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-				} transition-transform duration-200 ease-in-out  text-white w-72 md:relative md:translate-x-0`}
+				} transition-transform duration-200 ease-in-out overflow-y-auto custom-scrollbar text-white w-72 md:relative md:translate-x-0`}
 			>
 				<div className="flex items-center justify-between p-4 md:hidden">
 					<button onClick={toggleSidebar}>
