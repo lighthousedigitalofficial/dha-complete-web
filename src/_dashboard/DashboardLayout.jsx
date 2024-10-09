@@ -8,6 +8,7 @@ import Sidebar from "./_components/shared/Sidebar";
 
 const DashboardLayout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [isAdmin, setIsAdmin] = useState(false);
 
 	const user = useAuth();
 	const navigate = useNavigate();
@@ -16,22 +17,22 @@ const DashboardLayout = () => {
 		setIsSidebarOpen(!isSidebarOpen);
 	};
 
+	console.log(user);
+
 	useEffect(() => {
 		if (!user) {
 			// Redirect to login if not authenticated
 			navigate("/user/auth/sign-in");
-		} else if (user.doc.role !== "admin") {
+		} else if (user && user?.doc && user?.doc?.role === "admin") {
+			setIsAdmin(true);
 			navigate("/");
-		}
+		} else navigate("/not-authorized");
 	}, [navigate, user]);
 
-	// // Loading or no user data
-	if (!user) {
-		return <Loader />;
-	}
-
 	// If user is authenticated and is an admin, render the dashboard layout
-	return (
+	return !isAdmin ? (
+		<Loader />
+	) : (
 		<div className="relative flex overflow-hidden">
 			<aside
 				className={`fixed top-0 inset-y-0 left-0 transform ${
