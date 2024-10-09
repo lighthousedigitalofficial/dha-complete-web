@@ -42,14 +42,14 @@ export const sidebarItems = [
 			{ path: "/banners/list", label: "List Banners", icon: FaList },
 		],
 	},
-	{
-		label: "Associates",
-		icon: FaLink,
-		subItems: [
-			{ path: "/associates/add", label: "Add Website", icon: FaPlus },
-			{ path: "/associates/list", label: "List Websites", icon: FaList },
-		],
-	},
+	// {
+	// 	label: "Associates",
+	// 	icon: FaLink,
+	// 	subItems: [
+	// 		{ path: "/associates/add", label: "Add Website", icon: FaPlus },
+	// 		{ path: "/associates/list", label: "List Websites", icon: FaList },
+	// 	],
+	// },
 
 	{
 		label: "Gallery",
@@ -90,14 +90,14 @@ export const sidebarItems = [
 			{ path: "/phases/list", label: "List Phases", icon: FaList },
 		],
 	},
-	{
-		label: "Facilities",
-		icon: FaBuilding,
-		subItems: [
-			{ path: "/facilities/add", label: "Add Facility", icon: FaPlus },
-			{ path: "/facilities/list", label: "List Facilities", icon: FaList },
-		],
-	},
+	// {
+	// 	label: "Facilities",
+	// 	icon: FaBuilding,
+	// 	subItems: [
+	// 		{ path: "/facilities/add", label: "Add Facility", icon: FaPlus },
+	// 		{ path: "/facilities/list", label: "List Facilities", icon: FaList },
+	// 	],
+	// },
 	{
 		label: "Affiliates",
 		icon: FaUsers,

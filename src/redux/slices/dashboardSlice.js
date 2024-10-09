@@ -4,7 +4,7 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getDashboardStats: builder.query({
 			query: () => ({
-				url: `/totals`,
+				url: `/api/totals`,
 			}),
 			providesTags: ["Dashboard"],
 			keepUnusedDataFor: 5,

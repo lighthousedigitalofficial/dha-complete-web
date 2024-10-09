@@ -7,28 +7,33 @@ import toast from "react-hot-toast";
 import { useCreatePhasesMutation } from "../../../redux/slices/phasesSlice";
 
 const AddPhasePage = () => {
-	const [imagePreview, setImagePreview] = useState(null);
+	// const [imagePreview, setImagePreview] = useState(null);
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [uploadedVideos, setUploadedVideos] = useState([]);
-	
+
 	const [createPhase, { isLoading }] = useCreatePhasesMutation();
 
 	const methods = useForm(); // Initialize useForm
 
-  const { register, handleSubmit, control, formState: { errors } } = methods;
+	const {
+		register,
+		handleSubmit,
+		control,
+		formState: { errors },
+	} = methods;
 
 	const { fields, append, remove } = useFieldArray({
-    control,
-    name: "services"
-  });
+		control,
+		name: "services",
+	});
 	// Helper function to handle image preview
-	const handleImagePreview = (e) => {
-		const file = e.target.files[0];
-		if (file) {
-			setImagePreview(URL.createObjectURL(file));
-			handleImagesUpload([file]);
-		}
-	};
+	// const handleImagePreview = (e) => {
+	// 	const file = e.target.files[0];
+	// 	if (file) {
+	// 		setImagePreview(URL.createObjectURL(file));
+	// 		handleImagesUpload([file]);
+	// 	}
+	// };
 
 	// Helper function to handle single image upload and store the URL
 	const handleImagesUpload = async (files) => {
@@ -73,12 +78,16 @@ const AddPhasePage = () => {
 				return toast.error("Images or Videos not uploaded on cloud.");
 			}
 
+			const services = fields.map((item) => item.name);
+
 			// Step 2: Prepare the data to be sent to the server after uploads
 			const formData = {
-				...data,
-				mainImage: images.length ? images[0] : null, // Use the first uploaded image as the main image
-				images, // Array of uploaded image URLs
-				videos, // Array of uploaded video URLs
+				title: data.title,
+				description: data.description,
+				location: data.location,
+				services,
+				images,
+				videos,
 			};
 
 			console.log(formData);
@@ -88,12 +97,11 @@ const AddPhasePage = () => {
 
 			// Notify the user and reset form
 			toast.success("Phase successfully created!");
-			reset(); // Reset form after submission
+			methods.reset(); // Reset form after submission
 
 			// Clear states after form submission
 			setUploadedImages([]);
 			setUploadedVideos([]);
-			setImagePreview(null);
 		} catch (error) {
 			console.error("Error creating phase:", error);
 			toast.error(error.data.message || "Error creating phase");
@@ -117,49 +125,39 @@ const AddPhasePage = () => {
 					/>
 				</div>
 
-				{/* Link Field */}
-				<div className="mb-4">
-					<InputField
-						label="Link"
-						type="text"
-						name="link"
-						register={register}
-						required
-						errors={errors}
-						placeholder="Enter Link"
-					/>
-				</div>
 				{/* Services Field */}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Services</label>
-          <button
-            type="button"
-            onClick={() => append({ name: "" })}
-            className="bg-blue-500 text-white px-3 py-1 rounded mb-4"
-          >
-            Add Service
-          </button>
-          {fields.map((item, index) => (
-            <div key={item.id} className="flex items-center mb-2">
-              <InputField
-                label={`Service ${index + 1}`}
-                type="text"
-                name={`services.${index}.name`}
-                register={register}
-                required
-                errors={errors}
-                placeholder={`Service ${index + 1}`}
-              />
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="ml-2 bg-red-300 text-white px-3 py-1 rounded"
-              >
-                x
-              </button>
-            </div>
-          ))}
-        </div>
+				<div className="mb-4">
+					<label className="block text-gray-700 text-sm font-bold mb-2">
+						Services
+					</label>
+					<button
+						type="button"
+						onClick={() => append({ name: "" })}
+						className="bg-blue-500 text-white px-3 py-1 rounded mb-4"
+					>
+						Add Service
+					</button>
+					{fields.map((item, index) => (
+						<div key={item.id} className="flex items-center mb-2">
+							<InputField
+								label={`Service ${index + 1}`}
+								type="text"
+								name={`services.${index}.name`}
+								register={register}
+								required
+								errors={errors}
+								placeholder={`Service ${index + 1}`}
+							/>
+							<button
+								type="button"
+								onClick={() => remove(index)}
+								className="ml-2 bg-red-300 text-white px-3 py-1 rounded"
+							>
+								x
+							</button>
+						</div>
+					))}
+				</div>
 
 				{/* Location Field */}
 				<div className="mb-4">
@@ -184,26 +182,6 @@ const AddPhasePage = () => {
 					/>
 					{errors.description && (
 						<p className="text-red-600">Description is required</p>
-					)}
-				</div>
-
-				{/* Main Image Upload */}
-				<div className="mb-4">
-					<label>Main Image</label>
-					<input
-						type="file"
-						accept="image/*"
-						onChange={handleImagePreview}
-						className="block w-full border border-gray-300 p-2 rounded-md"
-					/>
-					{imagePreview && (
-						<div className="mt-4">
-							<img
-								src={imagePreview}
-								alt="Preview"
-								className="object-cover w-full h-40 rounded-md"
-							/>
-						</div>
 					)}
 				</div>
 
@@ -296,7 +274,7 @@ const AddPhasePage = () => {
 					<button
 						type="button"
 						className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md"
-						onClick={() => reset()}
+						onClick={() => methods.reset()}
 					>
 						Reset
 					</button>

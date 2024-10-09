@@ -1,6 +1,5 @@
 import DashboardLayout from "../_dashboard/DashboardLayout";
 import AddAffiliatesPage from "../_dashboard/pages/Affiliates/AddAffiliatesPage";
-import AddAssociatesWebsitesPage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitesPage";
 import AddBannerPage from "../_dashboard/pages/Banner/AddBannerPage";
 import AddEventPage from "../_dashboard/pages/Events/AddEventPage";
 import AddFacilitiesPage from "../_dashboard/pages/Facilities/AddFacilitiesPage";
@@ -41,6 +40,7 @@ import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurc
 import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
 import NotFoundPage from "../_user/pages/NotFoundPage";
 import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
+import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
 
 const adminRoutes = [
 	{
@@ -82,7 +82,7 @@ const adminRoutes = [
 			},
 			{
 				path: "associates/add",
-				element: <AddAssociatesWebsitesPage />,
+				element: <AddAssociatesWebsitePage />,
 			},
 			{
 				path: "associates/list",
@@ -106,16 +106,6 @@ const adminRoutes = [
 				path: "videos/list",
 				element: <VideosList />,
 			},
-
-			{
-				path: "associates/add",
-				element: <AddAssociatesWebsitesPage />,
-			},
-			{
-				path: "associates/list",
-				element: <AssociatesWebsiteList />,
-			},
-
 			{
 				path: "banners/add",
 				element: <AddBannerPage />,
