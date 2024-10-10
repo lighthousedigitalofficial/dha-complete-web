@@ -30,7 +30,7 @@ const EditImportantNotice = () => {
   useEffect(() => {
     if (getNoticeById?.doc) {
       methods.reset(getNoticeById?.doc);
-      setImagePreview(getNoticeById?.image || "");
+      setImagePreview(getNoticeById?.doc?.image || "");
     }
   }, [getNoticeById, methods]);
 
