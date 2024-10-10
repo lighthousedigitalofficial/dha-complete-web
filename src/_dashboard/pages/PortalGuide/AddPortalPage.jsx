@@ -76,8 +76,8 @@ const AddPortalPage = () => {
 									})}
 									className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
 								>
-									<option value="Inactive">Inactive</option>
-									<option value="active">Active</option>
+									<option value="draft">Draft</option>
+									<option value="published">Published</option>
 								</select>
 								{methods.formState.errors.status && (
 									<p className="text-red-500 text-sm">
