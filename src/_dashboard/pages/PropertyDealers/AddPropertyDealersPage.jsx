@@ -1,185 +1,149 @@
-import React, { useState, useEffect } from "react";
-import FormInput from "../../_components/Form/FormInput/FormInput";
-import { useCreatePropertyDealerMutation } from "../../../redux/slices/propertyDealerSlice";
-import { useGetAffiliatesQuery } from "../../../redux/slices/affiliates";
+import React from 'react'
+import { useForm, FormProvider } from 'react-hook-form'
+import InputField from '../../_components/shared/InputField'
+import { useCreatePropertyDealerMutation } from '../../../redux/slices/propertyDealerSlice'
+import { useGetAffiliatesQuery } from '../../../redux/slices/affiliates'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 const AddPropertyDealersPage = ({ initialData = {} }) => {
-	const [agency, setAgency] = useState(initialData.agency || "");
-	const [fullName, setFullName] = useState(initialData.fullName || "");
-	const [address, setAddress] = useState(initialData.address || "");
-	const [phone, setPhone] = useState(initialData.phone || "");
-	const [affiliateId, setAffiliateId] = useState(initialData.affiliateId || "");
+    const methods = useForm()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = methods
+    const [createPropertyDealer, { isLoading }] =
+        useCreatePropertyDealerMutation()
+    const navigate = useNavigate()
 
-	const [createPropertyDealer, { isLoading: isCreating }] =
-		useCreatePropertyDealerMutation();
+    // Fetch affiliates
+    const {
+        data: affiliates,
+        isLoading: isLoadingAffiliates,
+        error,
+    } = useGetAffiliatesQuery()
 
-	// Fetch affiliates
-	const {
-		data: affiliates,
-		isLoading: isLoadingAffiliates,
-		error,
-	} = useGetAffiliatesQuery();
+    // Ensure affiliates is an array
+    const affiliateList = Array.isArray(affiliates?.doc) ? affiliates.doc : []
 
-	// Ensure affiliates is an array
-	const affiliateList = Array.isArray(affiliates?.doc) ? affiliates.doc : [];
+    // Handle form submission
+    const handleFormSubmit = async (data) => {
+        try {
+            await createPropertyDealer(data).unwrap()
+            toast.success('Property Dealer added successfully!')
+            reset() // Reset the form
+            navigate('/property-dealers/list') // Redirect after successful submission
+        } catch (error) {
+            console.error('Error submitting form:', error)
+            toast.error(error.data.message || 'Failed to add Property Dealer.')
+        }
+    }
 
-	// Handle form submission
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		const formData = {
-			agency,
-			fullName,
-			address,
-			phone,
-			affiliateId,
-		};
+    if (isLoadingAffiliates) return <div>Loading affiliates...</div>
+    if (error) {
+        console.error('Error loading affiliates:', error.message)
+        return <div>Error loading affiliates: {error.message}</div>
+    }
 
-		try {
-			await createPropertyDealer(formData).unwrap();
-			alert("Property Dealer form submitted!");
-			handleReset();
-		} catch (error) {
-			console.error("Error submitting form:", error);
-		}
-	};
+    return (
+        <FormProvider {...methods}>
+            <div className="w-xl mx-auto bg-white p-8 rounded-md shadow-md">
+                <h2 className="text-2xl font-bold mb-6">Add Property Dealer</h2>
 
-	const handleReset = () => {
-		setAgency("");
-		setFullName("");
-		setAddress("");
-		setPhone("");
-		setAffiliateId("");
-	};
+                <form onSubmit={handleSubmit(handleFormSubmit)}>
+                    <div className="w-full flex gap-4 mb-4">
+                        <div className="w-1/2">
+                            <InputField
+                                label="Agency"
+                                name="agency"
+                                register={register}
+                                required
+                                errors={errors}
+                                errorMessage="Agency is required"
+                                placeholder="Enter Agency Name"
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <InputField
+                                label="Full Name"
+                                name="fullName"
+                                register={register}
+                                required
+                                errors={errors}
+                                errorMessage="Full Name is required"
+                                placeholder="Enter Full Name"
+                            />
+                        </div>
+                    </div>
 
-	if (isLoadingAffiliates) return <div>Loading affiliates...</div>;
-	if (error) {
-		console.error("Error loading affiliates:", error.message);
-		return <div>Error loading affiliates: {error.message}</div>;
-	}
+                    <div className="w-full flex gap-4 mb-4">
+                        <div className="w-1/2">
+                            <InputField
+                                label="Address"
+                                name="address"
+                                register={register}
+                                required
+                                errors={errors}
+                                errorMessage="Address is required"
+                                placeholder="Enter Address"
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <InputField
+                                label="Phone"
+                                name="phone"
+                                register={register}
+                                required
+                                errors={errors}
+                                errorMessage="Phone is required"
+                                placeholder="Enter Phone Number"
+                            />
+                        </div>
+                    </div>
 
-	return (
-		<div className="p-4 rounded-md shadow-md m-5">
-			<h2 className="text-2xl font-semibold mb-6">Add Property Dealer</h2>
+                    {/* Affiliate Selection */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Affiliate
+                        </label>
+                        <select
+                            {...register('affiliateId', {
+                                required: 'Affiliate is required',
+                            })}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                        >
+                            <option value="" disabled>
+                                Select Affiliates
+                            </option>
+                            {affiliateList.map((affiliate) => (
+                                <option
+                                    key={affiliate._id}
+                                    value={affiliate._id}
+                                >
+                                    {affiliate.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.affiliateId && (
+                            <p className="text-red-500 text-sm">
+                                {errors.affiliateId.message}
+                            </p>
+                        )}
+                    </div>
 
-			<form onSubmit={handleSubmit}>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-					{/* Agency Field */}
-					<div className="mb-4">
-						<label
-							className="block text-[1rem] font-semibold mb-2"
-							htmlFor="agency"
-						>
-							Agency
-						</label>
-						<FormInput
-							type="text"
-							id="agency"
-							name="agency"
-							value={agency}
-							onChange={(e) => setAgency(e.target.value)}
-							placeholder="Enter Agency Name"
-							required
-						/>
-					</div>
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-green-500 text-white rounded-md"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Adding...' : 'Add Property Dealer'}
+                    </button>
+                </form>
+            </div>
+        </FormProvider>
+    )
+}
 
-					{/* Full Name Field */}
-					<div className="mb-4">
-						<label
-							className="block text-[1rem] font-semibold mb-2"
-							htmlFor="fullName"
-						>
-							Full Name
-						</label>
-						<FormInput
-							type="text"
-							id="fullName"
-							name="fullName"
-							value={fullName}
-							onChange={(e) => setFullName(e.target.value)}
-							placeholder="Enter Full Name"
-							required
-						/>
-					</div>
-
-					{/* Address Field */}
-					<div className="mb-4">
-						<label
-							className="block text-[1rem] font-semibold mb-2"
-							htmlFor="address"
-						>
-							Address
-						</label>
-						<FormInput
-							type="text"
-							id="address"
-							name="address"
-							value={address}
-							onChange={(e) => setAddress(e.target.value)}
-							placeholder="Enter Address"
-							required
-						/>
-					</div>
-
-					{/* Phone Field */}
-					<div className="mb-4">
-						<label
-							className="block text-[1rem] font-semibold mb-2"
-							htmlFor="phone"
-						>
-							Phone
-						</label>
-						<FormInput
-							type="text"
-							id="phone"
-							name="phone"
-							value={phone}
-							onChange={(e) => setPhone(e.target.value)}
-							placeholder="Enter Phone Number"
-							required
-						/>
-					</div>
-
-					{/* Affiliate Field */}
-					<div className="mb-4">
-						<label
-							className="block text-[1rem] font-semibold mb-2"
-							htmlFor="affiliateId"
-						>
-							Affiliate
-						</label>
-						<select
-							id="affiliateId"
-							name="affiliateId"
-							value={affiliateId}
-							onChange={(e) => setAffiliateId(e.target.value)}
-							className="block w-full border border-gray-300 p-2 rounded-md"
-							required
-						>
-							<option value="" disabled>
-								Select Affiliate
-							</option>
-							{affiliateList.map((affiliate) => (
-								<option key={affiliate._id} value={affiliate._id}>
-									{affiliate.name}
-								</option>
-							))}
-						</select>
-					</div>
-				</div>
-
-				{/* Action Buttons */}
-				<div className="flex justify-end mt-6 gap-2">
-					<button
-						type="submit"
-						className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500"
-						disabled={isCreating}
-					>
-						{isCreating ? "Adding..." : "Add"}
-					</button>
-				</div>
-			</form>
-		</div>
-	);
-};
-
-export default AddPropertyDealersPage;
+export default AddPropertyDealersPage
