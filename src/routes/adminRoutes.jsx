@@ -20,7 +20,6 @@ import PropertyDealersList from "../_dashboard/pages/PropertyDealers/PropertyDea
 import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPropertyDealersPage";
 import MediaList from "../_dashboard/pages/Media/MediaList";
 import EngineersList from "../_dashboard/pages/Engineers/EngineersList";
-import ActivitiesList from "../_dashboard/pages/Activities/ActivitiesList";
 import ActivityForm from "../_dashboard/pages/Activities/AddActivityPage";
 import SalePropertyList from "../_dashboard/pages/SaleProperty/SalePropertyList";
 import PurchasePropertyList from "../_dashboard/pages/PurchaseProperty/PurchasePropertyList";
@@ -29,6 +28,8 @@ import TeamList from "../_dashboard/pages/Team/TeamList";
 import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
 import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
 
+// import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
+// import ActivitiesList from "../_dashboard/pages/Activities/ActivitiesList";
 import UserList from "./../_dashboard/pages/User/UserList";
 import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
 import UserDetailPage from "./../_dashboard/pages/User/UserDetailPage";
@@ -38,7 +39,6 @@ import RegistrationPropertyPage from "./../_dashboard/pages/RegistrationProperty
 import EngineersForm from "./../_dashboard/pages/Engineers/AddEngineersPage";
 import TeamForm from "./../_dashboard/pages/Team/AddTeamPage";
 import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage";
-import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
 import EditVideo from "../_dashboard/pages/Vidoes/EditVideo";
 import EditPropertyDealerPage from "../_dashboard/pages/PropertyDealers/EditPropertyDealer";
 import NotFoundPage from "../_user/pages/NotFoundPage";
@@ -276,7 +276,6 @@ const adminRoutes = [
 				path: "teams/edit/:id",
 				element: <EditTeamPage />,
 			},
-			
 
 			{
 				path: "portal-guide/list",

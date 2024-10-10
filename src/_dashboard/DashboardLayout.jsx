@@ -8,7 +8,7 @@ import Sidebar from "./_components/shared/Sidebar";
 
 const DashboardLayout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-	const [isAdmin, setIsAdmin] = useState(true);
+	const [isAdmin, setIsAdmin] = useState(false);
 
 	const user = useAuth();
 	const navigate = useNavigate();
