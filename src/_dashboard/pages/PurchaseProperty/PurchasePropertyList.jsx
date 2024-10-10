@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import {
@@ -11,6 +11,7 @@ import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast"; // Import toast for notifications
 
 const PurchasePropertyList = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const {
     data: PurchaseProperty,
     isLoading,
@@ -52,8 +53,8 @@ const PurchasePropertyList = () => {
   };
 
   const handleEdit = (record) => {
-    // Handle edit logic here
-    console.log("Edit record", record);
+    // Navigate to the edit page with the selected property ID
+    navigate(`/purchase-property/edit/${record._id}`); // Adjust the URL as needed
   };
 
   const columns = [
@@ -68,7 +69,6 @@ const PurchasePropertyList = () => {
       dataIndex: "name", // Assuming `name` contains the person's or entity's name
       key: "name",
     },
-
     {
       title: "Type",
       dataIndex: "type", // Assuming `type` contains the property type
@@ -119,7 +119,7 @@ const PurchasePropertyList = () => {
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
           <a
-            onClick={() => handleEdit(record)}
+            onClick={() => handleEdit(record)} // Navigate to edit property page
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
             <FaEdit />
