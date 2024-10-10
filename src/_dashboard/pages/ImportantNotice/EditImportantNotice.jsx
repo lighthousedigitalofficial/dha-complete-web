@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import uploadImage from '../../../helpers/imageUpload'
 import {
@@ -12,6 +12,7 @@ import Loader from '../../../components/shared/Loader'
 
 const EditImportantNotice = () => {
     const { id } = useParams()
+    const navigate = useNavigate()
     const { data: notice, isLoading, refetch } = useGetNoticeQuery(id)
     const [updateNotice, { isLoading: isUpdating, isError }] =
         useUpdateNoticeMutation()
@@ -65,6 +66,7 @@ const EditImportantNotice = () => {
             await updateNotice(noticeData).unwrap()
             toast.success('Notice updated successfully')
             refetch()
+            navigate('/important-notices/list')
             methods.reset() // Reset form after successful submission
             setImagePreview(null) // Clear image preview
         } catch (error) {
