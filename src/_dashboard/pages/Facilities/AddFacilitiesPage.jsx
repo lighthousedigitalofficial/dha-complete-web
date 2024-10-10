@@ -3,6 +3,7 @@ import { FaTrash } from "react-icons/fa";
 import { CiCircleRemove } from "react-icons/ci";
 import FormInput from "../../_components/Form/FormInput/FormInput";
 import { useCreateFacilitiesMutation } from "../../../redux/slices/facilitiesApiSlice";
+import toast from "react-hot-toast";
 
 const AddFacilitiesPage = ({ initialData = {} }) => {
   const [imagePreview, setImagePreview] = useState(initialData.image || null);

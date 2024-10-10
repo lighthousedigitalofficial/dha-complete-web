@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import {
@@ -9,54 +8,73 @@ import {
   // useGetSalePropertySliceQuery,
 } from "../../../redux/slices/salePropertyApiSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
-import { toast } from "react-hot-toast"; // Add toast for notifications
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const SalePropertyList = () => {
+  const navigate = useNavigate(); // Create a navigate function
   const {
     data: SaleProperty,
     isLoading,
     refetch,
   } = useGetSalePropertiesQuery({});
 
-  console.log(SaleProperty);
-
+  const [deleteSaleProperty] = useDeleteSalePropertyMutation(); // Added delete mutation
+  const [updateSaleProperty] = useUpdateSalePropertyMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
-  const [isDeleting, setIsDeleting] = useState(false); // Track deletion state
-
-  const [deleteSaleProperty] = useDeleteSalePropertyMutation();
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editedProperties, setEditedProperties] = useState({});
 
   const handleDeleteClick = (id) => {
-    setSelectedPhaseId(id); // Set the selected property ID to delete
-    setIsModalOpen(true); // Open the confirmation modal
+    setSelectedPhaseId(id);
+    setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false); // Close the modal
-    setSelectedPhaseId(null); // Reset selected property ID
+    setIsModalOpen(false);
+    setSelectedPhaseId(null);
   };
 
   const handleConfirmDelete = async () => {
     if (selectedPhaseId) {
-      setIsDeleting(true); // Set deleting state to true
+      setIsDeleting(true);
       try {
-        await deleteSaleProperty(selectedPhaseId).unwrap(); // Trigger delete mutation
-        toast.success("Sale property deleted successfully!"); // Show success toast
-        refetch(); // Refetch the list to update it
-        setIsModalOpen(false); // Close the modal
-        setSelectedPhaseId(null); // Clear selected property ID
+        await deleteSaleProperty(selectedPhaseId).unwrap(); // Call the delete mutation
+        toast.success("Sale property deleted successfully!");
+        refetch();
+        setIsModalOpen(false);
+        setSelectedPhaseId(null);
       } catch (error) {
-        toast.error("Failed to delete sale property."); // Show error toast
+        toast.error("Failed to delete sale property.");
         console.error("Error deleting sale property:", error);
       } finally {
-        setIsDeleting(false); // Reset deleting state
+        setIsDeleting(false);
       }
     }
   };
 
-  const handleEdit = (record) => {
-    // Handle edit logic here
-    console.log("Edit record", record);
+  const handleEditToggle = (record) => {
+    // Redirect to the edit page with the property ID
+    navigate(`/sale-property/edit/${record._id}`);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedProperties((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveChanges = async (id) => {
+    try {
+      await updateSaleProperty({ id, data: editedProperties }).unwrap();
+      toast.success("Sale property updated successfully!");
+      setEditMode(false);
+      refetch();
+    } catch (error) {
+      toast.error("Failed to update sale property.");
+      console.error("Error updating sale property:", error);
+    }
   };
 
   const columns = [
@@ -64,34 +82,65 @@ const SalePropertyList = () => {
       title: "S.No",
       dataIndex: "sno",
       key: "sno",
-      render: (text, record, index) => index + 1, // Generate serial number
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Name",
-      dataIndex: "name", // Assuming `name` contains the name of the individual or entity
+      dataIndex: "name",
       key: "name",
+      render: (text, record) =>
+        editMode ? (
+          <input
+            type="text"
+            name="name"
+            value={editedProperties.name}
+            onChange={handleInputChange}
+            onBlur={() => handleSaveChanges(record._id)}
+            className="border rounded px-2 py-1"
+          />
+        ) : (
+          <span>{text}</span>
+        ),
     },
-
-    // {
-    //   title: "Plot Number",
-    //   dataIndex: "plotNum", // Assuming `plotNum` contains the plot number
-    //   key: "plotNum",
-    // },
-
     {
       title: "Sector",
-      dataIndex: "sector", // Assuming `sector` contains the sector information
+      dataIndex: "sector",
       key: "sector",
+      render: (text, record) =>
+        editMode ? (
+          <input
+            type="text"
+            name="sector"
+            value={editedProperties.sector}
+            onChange={handleInputChange}
+            onBlur={() => handleSaveChanges(record._id)}
+            className="border rounded px-2 py-1"
+          />
+        ) : (
+          <span>{text}</span>
+        ),
     },
     {
       title: "Size",
-      dataIndex: "size", // Assuming `size` contains the size of the property
+      dataIndex: "size",
       key: "size",
+      render: (text, record) =>
+        editMode ? (
+          <input
+            type="text"
+            name="size"
+            value={editedProperties.size}
+            onChange={handleInputChange}
+            onBlur={() => handleSaveChanges(record._id)}
+            className="border rounded px-2 py-1"
+          />
+        ) : (
+          <span>{text}</span>
+        ),
     },
-
     {
       title: "Type",
-      dataIndex: "type", // Assuming `type` contains the property type (Enum)
+      dataIndex: "type",
       key: "type",
       render: (type) => (
         <span
@@ -107,24 +156,9 @@ const SalePropertyList = () => {
         </span>
       ),
     },
-    // {
-    //   title: "Document",
-    //   dataIndex: "document", // Assuming `document` contains the document URL
-    //   key: "document",
-    //   render: (document) => (
-    //     <a
-    //       href={document}
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //       className="text-blue-500 underline"
-    //     >
-    //       View Document
-    //     </a>
-    //   ),
-    // },
     {
       title: "Status",
-      dataIndex: "status", // Assuming `status` contains the status (Enum)
+      dataIndex: "status",
       key: "status",
       render: (status) => (
         <span
@@ -141,14 +175,17 @@ const SalePropertyList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
+          {/* Edit Button */}
           <a
-            onClick={() => handleEdit(record)}
+            onClick={() => handleEditToggle(record)} // Redirect to the edit page
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
             <FaEdit />
           </a>
+
+          {/* Delete Button */}
           <a
-            onClick={() => handleDeleteClick(record._id)} // Pass the selected property ID for deletion
+            onClick={() => handleDeleteClick(record._id)}
             className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
               isDeleting ? "opacity-50 pointer-events-none" : ""
             }`}
@@ -175,7 +212,7 @@ const SalePropertyList = () => {
       <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete} // Confirm delete action
+        onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
         message="Are you sure you want to delete this sale property?"
       />

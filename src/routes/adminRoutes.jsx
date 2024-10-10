@@ -54,14 +54,14 @@ import EditImportantNotice from "../_dashboard/pages/ImportantNotice/EditImporta
 import EditBannerPage from "../_dashboard/pages/Banner/EditBannerPage";
 
 const adminRoutes = [
-	{
-		path: "/",
-		element: <DashboardLayout />,
-		children: [
-			{
-				path: "",
-				element: <DashboardPage />,
-			},
+  {
+    path: "/",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "",
+        element: <DashboardPage />,
+      },
 
 			{
 				path: "sale-property/add",
@@ -134,14 +134,14 @@ const adminRoutes = [
 				element: <AssociatesWebsiteList />,
 			},
 
-			{
-				path: "banners/add",
-				element: <AddBannerPage />,
-			},
-			{
-				path: "banners/list",
-				element: <BannerList />,
-			},
+      {
+        path: "banners/add",
+        element: <AddBannerPage />,
+      },
+      {
+        path: "banners/list",
+        element: <BannerList />,
+      },
 
 			{
 				path: "events/add",
@@ -174,14 +174,14 @@ const adminRoutes = [
 				element: <EditImportantNotice />,
 			},
 
-			{
-				path: "media/add",
-				element: <AddMediaPage />,
-			},
-			{
-				path: "media/list",
-				element: <MediaList />,
-			},
+      {
+        path: "media/add",
+        element: <AddMediaPage />,
+      },
+      {
+        path: "media/list",
+        element: <MediaList />,
+      },
 
 			{
 				path: "phases/add",
@@ -252,10 +252,10 @@ const adminRoutes = [
 				element: <ActivityForm />,
 			},
 
-			{
-				path: "sale-property/list",
-				element: <SalePropertyList />,
-			},
+      {
+        path: "sale-property/list",
+        element: <SalePropertyList />,
+      },
 
 			{
 				path: "purchase-property/list",

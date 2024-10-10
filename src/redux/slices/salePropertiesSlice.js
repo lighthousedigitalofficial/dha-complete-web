@@ -4,10 +4,10 @@ import { apiSlice } from "./apiSlice";
 export const salePropertiesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createSaleProperties: builder.mutation({
-      query: (teamData) => ({
+      query: (data) => ({
         url: SALE_PROPERTIES_URL,
         method: "POST",
-        body: teamData,
+        body: data,
       }),
       invalidatesTags: ["SaleProperties"],
     }),

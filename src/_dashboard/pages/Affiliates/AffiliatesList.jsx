@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom"; //im[port]
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
@@ -15,6 +16,7 @@ const AffiliatesList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAffiliateId, setSelectedAffiliateId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false); // Track delete state
+  const navigate = useNavigate();
 
   const [deleteAffiliate] = useDeleteAffiliateMutation();
 
@@ -49,6 +51,11 @@ const AffiliatesList = () => {
     }
   };
 
+  // Placeholder function for editing
+  const handleEditClick = (id) => {
+    navigate(`/affiliates/edit/${id}`); // Redirect to the edit page with the affiliate ID
+  };
+
   const columns = [
     {
       title: "S.No",
@@ -80,9 +87,19 @@ const AffiliatesList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
-            <FaEye/>
+          {/* View button */}
+          <a onClick={() => handleEditClick(record)}>
+            <FaEye />
           </a>
+
+          {/* Edit button */}
+          <Link
+            to={`/affiliates/edit/${record._id}`}
+            className="border p-2 rounded-md text-blue-500 hover:text-white hover:bg-blue-500 border-primary-500"
+          >
+            <FaEdit />
+          </Link>
+
           {/* Delete button */}
           <a
             onClick={() => handleDeleteClick(record._id)} // Ensure the correct ID is passed

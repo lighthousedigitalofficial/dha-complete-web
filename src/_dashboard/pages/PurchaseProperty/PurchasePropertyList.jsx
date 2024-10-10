@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import {
