@@ -39,9 +39,14 @@ import EngineersForm from "./../_dashboard/pages/Engineers/AddEngineersPage";
 import TeamForm from "./../_dashboard/pages/Team/AddTeamPage";
 import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage";
 import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
+import EditVideo from "../_dashboard/pages/Vidoes/EditVideo";
+import EditPropertyDealerPage from "../_dashboard/pages/PropertyDealers/EditPropertyDealer";
 import NotFoundPage from "../_user/pages/NotFoundPage";
 import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
 import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
+
+import EventEditPage from "../_dashboard/pages/Events/EventEditPage";
+import EditTeamPage from "../_dashboard/pages/Team/EditTeamPage";
 import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/EditRegistrationProperty";
 import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
 import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
@@ -116,6 +121,19 @@ const adminRoutes = [
 				element: <VideosList />,
 			},
 			{
+				path: "video/edit/:id",
+				element: <EditVideo />,
+			},
+			// {
+			// 	path: "associates/add",
+			// 	element: <AddAssociatesWebsitesPage />,
+			// },
+			{
+				path: "associates/list",
+				element: <AssociatesWebsiteList />,
+			},
+
+			{
 				path: "banners/add",
 				element: <AddBannerPage />,
 			},
@@ -132,7 +150,10 @@ const adminRoutes = [
 				path: "events/list",
 				element: <EventsList />,
 			},
-
+			{
+				path: "events/edit/:id",
+				element: <EventEditPage />,
+			},
 			{
 				path: "important-notices/add",
 				element: <AddImportantNoticePage />,
@@ -196,7 +217,10 @@ const adminRoutes = [
 				path: "property-dealers/list",
 				element: <PropertyDealersList />,
 			},
-
+			{
+				path: "property-dealers/edit/:id",
+				element: <EditPropertyDealerPage />,
+			},
 			{
 				path: "engineers/add",
 				element: <EngineersForm />,
@@ -248,6 +272,11 @@ const adminRoutes = [
 				path: "team/list",
 				element: <TeamList />,
 			},
+			{
+				path: "teams/edit/:id",
+				element: <EditTeamPage />,
+			},
+			
 
 			{
 				path: "portal-guide/list",
