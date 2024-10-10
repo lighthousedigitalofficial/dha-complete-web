@@ -36,43 +36,44 @@ const EditTeamPage = () => {
     try {
       // Call the mutation and pass form data along with team ID
       const response = await updateTeam({ id: teamId, ...data }).unwrap();
-      console.log("Team updated successfully:", response);
+      toast.success("Team updated successfully");
       navigate("/team/list"); // Navigate to the teams page after successful update
     } catch (err) {
       console.error("Failed to update team:", err);
+      toast.error(err.data.message || "Failed to update team")
     }
-  };
 
-  return (
-    <FormProvider {...methods}>
-      <div className="w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-2xl font-bold mb-6">Edit Team Member</h2>
-        {isFetching ? (
-          <p>Loading...</p> // Show loading state while fetching
-        ) : (
-          <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
-            <div className="w-full flex gap-4">
-              <div className="w-1/2">
-                <InputField
-                  label="Name"
-                  name="name"
-                  register={methods.register}
-                  required
-                  errors={methods.formState.errors}
-                  errorMessage="Name is required"
-                />
-              </div>
-              <div className="w-1/2">
-                <InputField
-                  label="Designation"
-                  name="designation"
-                  register={methods.register}
-                  required
-                  errors={methods.formState.errors}
-                  errorMessage="Designation is required"
-                />
-              </div>
-            </div>
+    return (
+        <FormProvider {...methods}>
+            <div className="w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
+                <h2 className="text-2xl font-bold mb-6">Edit Team Member</h2>
+                {isFetching ? (
+                    <p>Loading...</p> // Show loading state while fetching
+                ) : (
+                    <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+                        <div className="w-full flex gap-4">
+                            <div className="w-1/2">
+                                <InputField
+                                    label="Name"
+                                    name="name"
+                                    register={methods.register}
+                                    required
+                                    errors={methods.formState.errors}
+                                    errorMessage="Name is required"
+                                />
+                            </div>
+                            <div className="w-1/2">
+                                <InputField
+                                    label="Designation"
+                                    name="designation"
+                                    register={methods.register}
+                                    required
+                                    errors={methods.formState.errors}
+                                    errorMessage="Designation is required"
+                                />
+                            </div>
+                        </div>
+
 
             <div className="w-full flex gap-4">
               <div className="w-1/2">
@@ -138,4 +139,4 @@ const EditTeamPage = () => {
   );
 };
 
-export default EditTeamPage;
+export default EditTeamPage

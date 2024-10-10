@@ -1,39 +1,41 @@
 import { useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import uploadImage from "../../../helpers/imageUpload";
 import uploadVideo from "../../../helpers/videoUpload";
 import InputField from "../../_components/shared/InputField";
 import toast from "react-hot-toast";
 import { useCreatePhasesMutation } from "../../../redux/slices/phasesSlice";
+import { FiX } from "react-icons/fi";
 
 const AddPhasePage = () => {
-  // const [imagePreview, setImagePreview] = useState(null);
-  const [uploadedImages, setUploadedImages] = useState([]);
-  const [uploadedVideos, setUploadedVideos] = useState([]);
+	// const [imagePreview, setImagePreview] = useState(null);
+	const [uploadedImages, setUploadedImages] = useState([]);
+	const [uploadedVideos, setUploadedVideos] = useState([]);
+  const [services, setServices] = useState([]);
+	const [newService, setNewService] = useState('');
 
-  const [createPhase, { isLoading }] = useCreatePhasesMutation();
+	const handleAddService = () => {
+    if (newService.trim() !== '') {
+      setServices([...services, newService]);
+      setNewService('');
+    }
+  };
+	const [createPhase, { isLoading }] = useCreatePhasesMutation();
 
   const methods = useForm(); // Initialize useForm
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = methods;
+	const { register, handleSubmit, formState: { errors } } = methods;
+		
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "services",
-  });
-  // Helper function to handle image preview
-  // const handleImagePreview = (e) => {
-  // 	const file = e.target.files[0];
-  // 	if (file) {
-  // 		setImagePreview(URL.createObjectURL(file));
-  // 		handleImagesUpload([file]);
-  // 	}
-  // };
+	// Helper function to handle image preview
+	// const handleImagePreview = (e) => {
+	// 	const file = e.target.files[0];
+	// 	if (file) {
+	// 		setImagePreview(URL.createObjectURL(file));
+	// 		handleImagesUpload([file]);
+	// 	}
+	// };
+
 
   // Helper function to handle single image upload and store the URL
   const handleImagesUpload = async (files) => {
@@ -77,8 +79,6 @@ const AddPhasePage = () => {
       if (!images || !videos) {
         return toast.error("Images or Videos not uploaded on cloud.");
       }
-
-      const services = fields.map((item) => item.name);
 
       // Step 2: Prepare the data to be sent to the server after uploads
       const formData = {
@@ -125,18 +125,49 @@ const AddPhasePage = () => {
           />
         </div>
 
-        {/* Status Field */}
-        <div className="mb-4">
-          <label>Status</label>
-          <select
-            {...register("status", { required: true })}
-            className="block w-full border border-gray-300 p-2 rounded-md"
+
+				{/* Services Field */}
+				<div className="mb-4">
+        <label htmlFor="services" className="block text-sm font-medium text-gray-700">Services</label>
+				
+        <div className="flex mb-2">
+					
+          <input
+            type="text"
+            value={newService}
+            onChange={(e) => setNewService(e.target.value)}
+            placeholder="Enter Service"
+            className="mr-2 p-2 border border-gray-300 rounded flex-1"
+          />
+          <button
+            type="button"
+            onClick={handleAddService}
+            className="px-4 py-2 bg-primary-200 text-white rounded hover:bg-primary-300"
           >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-          {errors.status && <p className="text-red-600">Status is required</p>}
+            Add
+          </button>					
         </div>
+				<div className="flex flex-col gap-2"> 
+				{services.map((service, index) => (
+          <div key={index} className="flex items-center mb-2 ">
+            <div className="p-1 bg-gray-100 w-36 flex justify-between rounded-lg">
+							<span>{service}</span>
+							<button
+              type="button"
+              onClick={() => {
+                const newServices = services.filter((_, i) => i !== index);
+                setServices(newServices);
+              }}
+              className=" text-red-500 hover:text-red-700"
+            >
+              <FiX />
+            </button> 
+            </div>
+            
+          </div>
+        ))}
+				</div>
+      </div>
 
         {/* Link Field */}
         <div className="mb-4">
