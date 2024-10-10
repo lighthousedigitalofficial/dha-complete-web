@@ -11,28 +11,21 @@ const AddPhasePage = () => {
 	// const [imagePreview, setImagePreview] = useState(null);
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [uploadedVideos, setUploadedVideos] = useState([]);
+  const [services, setServices] = useState([]);
+	const [newService, setNewService] = useState('');
 
+	const handleAddService = () => {
+    if (newService.trim() !== '') {
+      setServices([...services, newService]);
+      setNewService('');
+    }
+  };
 	const [createPhase, { isLoading }] = useCreatePhasesMutation();
 
 	const methods = useForm(); // Initialize useForm
 
-  const { register, handleSubmit,  formState: { errors } } = methods;
-	const [service, setService] = useState("");
-  const [servicesList, setServicesList] = useState([]);
-
-  // Handle adding a service
-  const addService = (e) => {
-    e.preventDefault();
-    if (service.trim() !== "") {
-      setServicesList([...servicesList, service.trim()]);
-      setService(""); // Clear the input after adding
-    }
-  };
-
-  // Handle removing a service
-  const removeService = (indexToRemove) => {
-    setServicesList(servicesList.filter((_, index) => index !== indexToRemove));
-  };
+	const { register, handleSubmit, formState: { errors } } = methods;
+		
 
 	// Helper function to handle image preview
 	// const handleImagePreview = (e) => {
@@ -77,44 +70,37 @@ const AddPhasePage = () => {
 
 	// Form submission logic
 	const onSubmit = async (data) => {
+		console.log('Form Data:', data);
+console.log('Services:', services);
 		try {
-			// Step 1: Upload images and videos to the cloud
-			const images = await handleImagesUpload(uploadedImages);
-			const videos = await handleVideosUpload(uploadedVideos);
+				// Step 1: Upload images and videos to the cloud
+				const images = await handleImagesUpload(uploadedImages);
+				const videos = await handleVideosUpload(uploadedVideos);
 
-			if (!images || !videos) {
-				return toast.error("Images or Videos not uploaded on cloud.");
-			}
+				if (!images || !videos) {
+						return toast.error("Images or Videos not uploaded on cloud.");
+				}
 
-			const services = fields.map((item) => item.name);
+				// Step 2: Submit the form data along with uploaded images and videos
+				const formData = {
+						...data,
+						services,
+						images,
+						videos
+				};
 
-			// Step 2: Prepare the data to be sent to the server after uploads
-			const formData = {
-				title: data.title,
-				description: data.description,
-				location: data.location,
-				services,
-				images,
-				videos,
-			};
+				// Submit formData to your backend or API
+				console.log('Final Form Data:', formData);
 
-			console.log(formData);
-
-			// Step 3:createPhase action with form data
-			await createPhase(formData).unwrap();
-
-			// Notify the user and reset form
-			toast.success("Phase successfully created!");
-			methods.reset(); // Reset form after submission
-
-			// Clear states after form submission
-			setUploadedImages([]);
-			setUploadedVideos([]);
+				// Reset the form and services after successful submission
+				reset();
+				setServices([]);
+				toast.success("Phase added successfully!");
 		} catch (error) {
-			console.error("Error creating phase:", error);
-			toast.error(error.data.message || "Error creating phase");
+				console.error("Error submitting form:", error);
+				toast.error("Failed to submit form!");
 		}
-	};
+};
 
 	return (
 		<div className="p-4 rounded-md shadow-md m-5">
@@ -134,31 +120,48 @@ const AddPhasePage = () => {
 				</div>
 
 				{/* Services Field */}
-				<div className="service-container">
-      <form onSubmit={addService}>
-        <input
-          type="text"
-          value={service}
-          onChange={(e) => setService(e.target.value)}
-          placeholder="Enter a service"
-        />
-        <button type="submit">Add Service</button>
-      </form>
+				<div className="mb-4">
+        <label htmlFor="services" className="block text-sm font-medium text-gray-700">Services</label>
+				
+        <div className="flex mb-2">
+					
+          <input
+            type="text"
+            value={newService}
+            onChange={(e) => setNewService(e.target.value)}
+            placeholder="Enter Service"
+            className="mr-2 p-2 border border-gray-300 rounded flex-1"
+          />
+          <button
+            type="button"
+            onClick={handleAddService}
+            className="px-4 py-2 bg-primary-200 text-white rounded hover:bg-primary-300"
+          >
+            Add
+          </button>					
+        </div>
+				<div className="flex flex-col gap-2"> 
+				{services.map((service, index) => (
+          <div key={index} className="flex items-center mb-2 ">
+            <div className="p-1 bg-gray-100 w-36 flex justify-between rounded-lg">
+							<span>{service}</span>
+							<button
+              type="button"
+              onClick={() => {
+                const newServices = services.filter((_, i) => i !== index);
+                setServices(newServices);
+              }}
+              className=" text-red-500 hover:text-red-700"
+            >
+              <FiX />
+            </button> 
+            </div>
+            
+          </div>
+        ))}
+				</div>
+      </div>
 
-      {servicesList.length > 0 && (
-        <ul className="service-list">
-          {servicesList.map((service, index) => (
-            <li key={index} className="service-item">
-              {service}
-              <FiX
-                className="remove-icon"
-                onClick={() => removeService(index)}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
 
 				{/* Location Field */}
 				<div className="mb-4">
