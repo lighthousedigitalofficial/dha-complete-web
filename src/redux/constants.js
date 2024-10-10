@@ -1,7 +1,7 @@
-// export const BASE_URL = "http://localhost:5000"; // If using proxy
+export const BASE_URL = "http://localhost:5000"; // If using proxy
 // export const BASE_URL = "https://dha-api.vercel.app"; // If not using proxy
-export const BASE_URL =
-	"https://dha-api-light-houses-projects-8457c583.vercel.app"; // If not using proxy
+// export const BASE_URL =
+// 	"https://dha-api-git-dev-light-houses-projects-8457c583.vercel.app"; // If not using proxy
 
 // API ROUTES
 export const ASSOCIATE_WEBSITES_URL = "/api/associate-websites";
@@ -11,6 +11,7 @@ export const USERS_URL = "/api/users";
 export const PROPERTY_DEALER_URL = "/api/property-dealer";
 export const EVENTS_URL = "/api/events";
 export const FACILITIES_URL = "/api/facilities";
+
 
 export const AFFILIATES_URL = "/api/affiliates";
 export const BANNERS_URL = "/api/banners";
@@ -22,6 +23,7 @@ export const PURCHASE_PROPERTIES_URL = "/api/purchase-properties";
 
 export const REGISTRATION_PROPERTIES_URL = "/api/registration-properties";
 export const PORTAL_GUIDES_URL = "/api/portal-guides";
+
 export const TEAMS_URL = "/api/teams";
 export const SALE_PROPERTIES_URL = "/api/sale-properties";
 export const ENGINEERS_URL = "/api/engineers";

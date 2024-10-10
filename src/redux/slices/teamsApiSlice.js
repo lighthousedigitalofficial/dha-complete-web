@@ -1,7 +1,7 @@
 import { TEAMS_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
-export const teamsSlice = apiSlice.injectEndpoints({
+export const teamsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         // Fetch all teams
         getTeams: builder.query({
@@ -58,4 +58,4 @@ export const {
     useUpdateTeamMutation,
     useDeleteTeamMutation,
     useGetTeamByIdQuery,
-} = teamsSlice;
+} = teamsApiSlice;

@@ -1,7 +1,7 @@
 import { SALE_PROPERTIES_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
-export const salePropertySlice = apiSlice.injectEndpoints({
+export const salePropertyApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         // Fetch all sale properties
         getSaleProperties: builder.query({
@@ -58,4 +58,4 @@ export const {
     useUpdateSalePropertyMutation,
     useDeleteSalePropertyMutation,
     useGetSalePropertyByIdQuery,
-} = salePropertySlice;
+} = salePropertyApiSlice;

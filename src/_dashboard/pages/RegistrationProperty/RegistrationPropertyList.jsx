@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import {
@@ -8,7 +7,8 @@ import {
   useGetRegistrationPropertiesQuery,
 } from "../../../redux/slices/registrationPropertySlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
-import { toast } from "react-hot-toast"; // Import toast for notifications
+import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const RegistrationPropertyList = () => {
   const {
@@ -19,40 +19,39 @@ const RegistrationPropertyList = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
-  const [isDeleting, setIsDeleting] = useState(false); // Loading state for delete
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [deleteRegistrationProperty] = useDeleteRegistrationPropertyMutation();
 
   const handleDeleteClick = (id) => {
-    setSelectedPropertyId(id); // Set the ID of the property to be deleted
-    setIsModalOpen(true); // Open the confirmation modal
+    setSelectedPropertyId(id);
+    setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPropertyId(null); // Clear the selected property ID
+    setSelectedPropertyId(null);
   };
 
   const handleConfirmDelete = async () => {
     if (selectedPropertyId) {
-      setIsDeleting(true); // Set loading state for delete
+      setIsDeleting(true);
       try {
-        await deleteRegistrationProperty(selectedPropertyId).unwrap(); // Call the delete mutation
-        toast.success("Registration property deleted successfully!"); // Show success message
-        refetch(); // Refetch the registration property list
-        setIsModalOpen(false); // Close the modal
-        setSelectedPropertyId(null); // Clear the selected property ID
+        await deleteRegistrationProperty(selectedPropertyId).unwrap();
+        toast.success("Registration property deleted successfully!");
+        refetch();
+        setIsModalOpen(false);
+        setSelectedPropertyId(null);
       } catch (error) {
-        toast.error("Failed to delete registration property."); // Show error message
+        toast.error("Failed to delete registration property.");
         console.error("Delete error:", error);
       } finally {
-        setIsDeleting(false); // Reset loading state
+        setIsDeleting(false);
       }
     }
   };
 
   const handleEdit = (record) => {
-    // Handle edit logic here
     console.log("Edit record", record);
   };
 
@@ -61,21 +60,21 @@ const RegistrationPropertyList = () => {
       title: "S.No",
       dataIndex: "sno",
       key: "sno",
-      render: (text, record, index) => index + 1, // Generate serial number
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Name",
-      dataIndex: "name", // Assuming `name` contains the person's or entity's name
+      dataIndex: "name",
       key: "name",
     },
     {
       title: "Phone",
-      dataIndex: "phone", // Assuming `phone` contains the phone number
+      dataIndex: "phone",
       key: "phone",
     },
     {
       title: "Status",
-      dataIndex: "status", // Assuming `status` contains the status (Enum: active, inactive)
+      dataIndex: "status",
       key: "status",
       render: (status) => (
         <span
@@ -92,14 +91,14 @@ const RegistrationPropertyList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a
-            onClick={() => handleEdit(record)}
+          <Link
+            to={`/registration-property/edit/${record._id}`}
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
             <FaEdit />
-          </a>
+          </Link>
           <a
-            onClick={() => handleDeleteClick(record._id)} // Pass the correct property ID for deletion
+            onClick={() => handleDeleteClick(record._id)}
             className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
               isDeleting ? "opacity-50 pointer-events-none" : ""
             }`}
@@ -128,7 +127,7 @@ const RegistrationPropertyList = () => {
       <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete} // Confirm deletion
+        onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
         message="Are you sure you want to delete this registration property?"
       />
