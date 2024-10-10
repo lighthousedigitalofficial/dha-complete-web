@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
 import uploadimage from "../../../helpers/imageUpload";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import {
   useGetEventQuery,
   useUpdateEventMutation,
@@ -12,6 +12,7 @@ import Loader from "../../../components/shared/Loader";
 
 const EventEditPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // Initialize navigate function
 
   // Fetch event data by ID
   const {
@@ -59,7 +60,7 @@ const EventEditPage = () => {
 
       setUploading(false);
 
-      // Prepare event data for updat
+      // Prepare event data for update
       const updatedEventData = {
         id,
         title: data.title,
@@ -78,6 +79,9 @@ const EventEditPage = () => {
       methods.reset(); // Reset form
       setImagePreviews([]);
       setUploadedImages([]);
+
+      // Navigate to the events list or another page after success
+      navigate("/events/list"); // Adjust the path as needed
     } catch (error) {
       setUploading(false);
       console.error("Update error:", error); // Log the error

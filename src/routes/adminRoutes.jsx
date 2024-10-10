@@ -51,6 +51,7 @@ import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/E
 import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
 import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
 import EditImportantNotice from "../_dashboard/pages/ImportantNotice/EditImportantNotice";
+import EditBannerPage from "../_dashboard/pages/Banner/EditBannerPage";
 
 const adminRoutes = [
 	{
@@ -153,6 +154,11 @@ const adminRoutes = [
 			{
 				path: "events/edit/:id",
 				element: <EventEditPage />,
+			},
+
+			{
+				path: "banner/edit/:id",
+				element: <EditBannerPage />,
 			},
 			{
 				path: "important-notices/add",
