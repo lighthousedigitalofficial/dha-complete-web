@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
-import { useGetTeamByIdQuery, useUpdateTeamMutation } from "../../../redux/slices/teamApiSlice";
+import { useGetTeamByIdQuery, useUpdateTeamMutation } from "../../../redux/slices/teamsApiSlice";
 
 const EditTeamPage = ({ teamId }) => { // Accept teamId as a prop
   const methods = useForm();

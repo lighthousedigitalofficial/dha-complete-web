@@ -51,6 +51,7 @@ import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/E
 import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
 import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
 import EditImportantNotice from "../_dashboard/pages/ImportantNotice/EditImportantNotice";
+import EditPropertyDealer from "../_dashboard/pages/PropertyDealers/EditPropertyDealer";
 
 const adminRoutes = [
 	{
@@ -219,7 +220,7 @@ const adminRoutes = [
 			},
 			{
 				path: "property-dealers/edit/:id",
-				element: <EditPropertyDealerPage />,
+				element: <EditPropertyDealer />,
 			},
 			{
 				path: "engineers/add",
