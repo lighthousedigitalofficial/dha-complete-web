@@ -1,60 +1,63 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import PropTypes from "prop-types";
 import InputField from "../../_components/shared/InputField";
 import uploadImage from "../../../helpers/imageUpload";
 import { useCreateSalePropertiesMutation } from "../../../redux/slices/salePropertiesSlice";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const SalePropertyForm = () => {
-	const methods = useForm();
-	const [uploadedImage, setUploadedImage] = useState(null);
-	const [uploading, setUploading] = useState(false);
-	const [createSaleProperty, { isLoading, isError, isSuccess, error }] =
-		useCreateSalePropertiesMutation();
+  const methods = useForm();
+  const [imageFile, setImageFile] = useState(null); // Store the actual image file
+  const [imagePreview, setImagePreview] = useState(null); // Store preview for display
+  const [createSaleProperty, { isLoading, isError, isSuccess, error }] =
+    useCreateSalePropertiesMutation();
+  const navigate = useNavigate(); // Initialize navigate
 
-	const handleFormSubmit = async (data) => {
-		console.log("Form submitted with data:", data);
-		try {
-			setUploading(true);
+  // Handle image change and preview
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file); // Store the actual file for upload
+      setImagePreview(URL.createObjectURL(file)); // Set the preview for display
+    } else {
+      console.error("No image file selected");
+    }
+  };
 
-			// Check if an image file is provided
-			if (!data.image || data.image.length === 0) {
-				console.error("Image is required");
-				return;
-			}
+  // Form submit logic
+  const handleFormSubmit = async (data) => {
+    try {
+      console.log("Form submitted with data:", data);
 
-			console.log("Uploading image...");
-			const imageUrl = await uploadImage(data.image[0], "image_uploads");
-			console.log("Image uploaded successfully:", imageUrl);
-			setUploading(false);
+      let url = null;
+      // Check if an image file is selected and upload it to Cloudinary
+      if (imageFile) {
+        url = await uploadImage(imageFile, "image_uploads"); // Upload image to Cloudinary
+        if (!url) {
+          toast.error("Image upload failed");
+          return;
+        }
+      }
 
-			const salePropertyData = {
-				...data,
-				document: imageUrl,
-			};
+      const salePropertyData = {
+        ...data,
+        document: url || null, // Include uploaded image URL if available
+      };
 
-			await createSaleProperty(salePropertyData).unwrap();
-			console.log("Sale property created successfully!");
-			methods.reset();
-			setUploadedImage(null);
-		} catch (err) {
-			setUploading(false);
-			console.error("Failed to create sale property: ", err);
-			// Log the error with more context if needed
-		}
-	};
+      await createSaleProperty(salePropertyData).unwrap(); // Send data to the backend
+      toast.success("Sale property added successfully");
+      methods.reset();
+      setImagePreview(null); // Clear image preview
+      setImageFile(null); // Clear the image file state
 
-	const handleImageChange = (event) => {
-		const file = event.target.files[0];
-		if (file) {
-			const imageURL = URL.createObjectURL(file);
-			setUploadedImage(imageURL);
-			methods.setValue("image", event.target.files); // Set value to the file list
-			console.log("Image selected:", file.name); // Log the selected image file
-		} else {
-			console.error("No image file selected");
-		}
-	};
+      navigate("/sale-property/list"); // Navigate to the sale property list page
+    } catch (err) {
+      console.error("Failed to create sale property: ", err);
+      toast.error("Error creating sale property");
+    }
+  };
 
 	return (
 		<FormProvider {...methods}>
@@ -243,15 +246,19 @@ const SalePropertyForm = () => {
 						)}
 					</div>
 
-					{/* Image preview section */}
-					{uploadedImage && (
-						<div className="mb-4">
-							<label className="block text-sm font-medium text-gray-700">
-								Image Preview
-							</label>
-							<img src={uploadedImage} alt="Uploaded" className="w-full" />
-						</div>
-					)}
+          {/* Image preview section */}
+          {imagePreview && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Image Preview
+              </label>
+              <img
+                src={imagePreview}
+                alt="Uploaded"
+                className="w-32 h-32 object-cover" // Set width and height for the preview
+              />
+            </div>
+          )}
 
 
 
@@ -263,24 +270,24 @@ const SalePropertyForm = () => {
 						{uploading || isLoading ? "Uploading..." : "Add Sale Property"}
 					</button>
 
-					{isError && (
-						<p className="text-red-500 text-sm mt-2">
-							Failed to add sale property: {error.message}
-						</p>
-					)}
-					{isSuccess && (
-						<p className="text-green-500 text-sm mt-2">
-							Sale property added successfully!
-						</p>
-					)}
-				</form>
-			</div>
-		</FormProvider>
-	);
+          {isError && (
+            <p className="text-red-500 text-sm mt-2">
+              Failed to add sale property: {error.message}
+            </p>
+          )}
+          {isSuccess && (
+            <p className="text-green-500 text-sm mt-2">
+              Sale property added successfully!
+            </p>
+          )}
+        </form>
+      </div>
+    </FormProvider>
+  );
 };
 
 SalePropertyForm.propTypes = {
-	onSubmit: PropTypes.func,
+  onSubmit: PropTypes.func,
 };
 
 export default SalePropertyForm;

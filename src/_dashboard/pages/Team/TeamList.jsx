@@ -9,6 +9,7 @@ import {
 } from "../../../redux/slices/teamsApiSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast"; // Optional for notifications
+import { Link } from "react-router-dom";
 
 const TeamList = () => {
 	const { data: Teams, isLoading, refetch } = useGetTeamsQuery({});
@@ -89,12 +90,12 @@ const TeamList = () => {
 			key: "action",
 			render: (_, record) => (
 				<div className="flex gap-2 items-center px-2">
-					<a
+					<Link to={`/teams/edit/${record._id}`} 
 						onClick={() => handleEdit(record)}
 						className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
 					>
 						<FaEdit />
-					</a>
+					</Link>
 					<a
 						onClick={() => handleDeleteClick(record._id)} // Pass team ID for delete action
 						className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
