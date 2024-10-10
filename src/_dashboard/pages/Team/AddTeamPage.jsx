@@ -3,9 +3,11 @@ import InputField from "../../_components/shared/InputField";
 import { useCreateTeamMutation } from "../../../redux/slices/teamsApiSlice";
 
 const TeamForm = () => {
+
 	const methods = useForm();
 	const [createTeam, { isLoading, isError, isSuccess, error }] =
 		useCreateTeamMutation();
+
 
 	const handleFormSubmit = async (data) => {
 		try {

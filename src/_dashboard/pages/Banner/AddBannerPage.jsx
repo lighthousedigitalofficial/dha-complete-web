@@ -232,7 +232,7 @@ const AddBannerPage = () => {
 					className="px-4 py-2 bg-primary-500 text-white rounded-md"
 					disabled={uploading || isLoading}
 				>
-					{uploading || isLoading ? "Uploading..." : "Add Video"}
+					{uploading || isLoading ? "Uploading..." : "Add "}
 				</button>
 			</div>
 		</div>
