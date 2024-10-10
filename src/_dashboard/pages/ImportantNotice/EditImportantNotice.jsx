@@ -4,16 +4,17 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import uploadImage from "../../../helpers/imageUpload";
 import {
-  //   useGetNoticeByIdQuery,
+  //   usenoticeQuery,
   useGetNoticeQuery,
   useUpdateNoticeMutation,
 } from "../../../redux/slices/noticesApiSlice";
 import InputField from "../../_components/shared/InputField";
-import { useGetNoticeByIdQuery } from "../../../redux/slices/importantNoticeSlice";
+import Loader from "../../../components/shared/Loader";
+// import { useGetNoticeByIdQuery } from "../../../redux/slices/importantNoticeSlice";
 
 const EditImportantNotice = () => {
   const { id } = useParams();
-  const { data: getNoticeById, isLoading, refetch } = useGetNoticeByIdQuery(id);
+  const { data: notice, isLoading, refetch } = useGetNoticeQuery(id);
   const [updateNotice, { isLoading: isUpdating, isError }] =
     useUpdateNoticeMutation();
 
@@ -23,16 +24,16 @@ const EditImportantNotice = () => {
   const methods = useForm({
     mode: "onBlur",
     defaultValues: useMemo(() => {
-      return getNoticeById?.doc || {};
-    }, [getNoticeById?.doc]),
+      return notice?.doc || {};
+    }, [notice?.doc]),
   });
 
   useEffect(() => {
-    if (getNoticeById?.doc) {
-      methods.reset(getNoticeById?.doc);
-      setImagePreview(getNoticeById?.doc?.image || "");
+    if (notice?.doc) {
+      methods.reset(notice?.doc);
+      setImagePreview(notice?.doc?.image || "");
     }
-  }, [getNoticeById, methods]);
+  }, [notice, methods]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -45,7 +46,7 @@ const EditImportantNotice = () => {
   // Form submit logic
   const handleFormSubmit = async (data) => {
     try {
-      let imageUrl = getNoticeById?.image || null;
+      let imageUrl = notice?.image || null;
 
       if (imageFile) {
         imageUrl = await uploadImage(imageFile);
@@ -73,7 +74,9 @@ const EditImportantNotice = () => {
     }
   };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : notice && notice?.doc ? (
     <FormProvider {...methods}>
       <div className="p-4 rounded-md shadow-md m-5 bg-white">
         <h2 className="text-2xl font-semibold mb-6">Update Important Notice</h2>
@@ -173,6 +176,8 @@ const EditImportantNotice = () => {
         </form>
       </div>
     </FormProvider>
+  ) : (
+    <p>Importance Notice data not found.</p>
   );
 };
 
