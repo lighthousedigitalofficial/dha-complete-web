@@ -8,6 +8,7 @@ import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const EventsList = () => {
 	const { data: Events, isLoading, refetch } = useGetEventsQuery({});
@@ -77,12 +78,11 @@ const EventsList = () => {
 			key: "action",
 			render: (_, record) => (
 				<div className="flex gap-2 items-center px-2">
-					<a
-						onClick={() => handleEdit(record)}
+					<Link to ={`/events/edit/${record._id}`}
 						className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
 					>
-						<FaEye />
-					</a>
+						<FaEdit />
+					</Link>
 					<a
 						onClick={() => handleDeleteClick(record._id)} // Pass the event ID to delete
 						className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${

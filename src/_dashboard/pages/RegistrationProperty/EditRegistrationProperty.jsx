@@ -3,13 +3,14 @@ import { useForm, FormProvider } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
 import toast from "react-hot-toast";
 import {
-  useGetRegistrationPropertyByIdQuery,
-  useUpdateRegistrationPropertyMutation,
+	useGetRegistrationPropertyByIdQuery,
+	useUpdateRegistrationPropertyMutation,
 } from "../../../redux/slices/registrationPropertySlice";
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../../components/shared/Loader";
 
 const EditRegistrationProperty = () => {
+<<<<<<< HEAD
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -18,16 +19,24 @@ const EditRegistrationProperty = () => {
     isLoading: isLoadingProperty,
     refetch,
   } = useGetRegistrationPropertyByIdQuery(id);
+=======
+	const { id } = useParams();
+	const {
+		data: propertyData,
+		isLoading: isLoadingProperty,
+		refetch,
+	} = useGetRegistrationPropertyByIdQuery(id);
+>>>>>>> ea673b861405f805b7dcb6d29d1a9b7ebe0ccd17
 
-  const [updateRegistrationProperty, { isLoading, isError }] =
-    useUpdateRegistrationPropertyMutation();
+	const [updateRegistrationProperty, { isLoading, isError }] =
+		useUpdateRegistrationPropertyMutation();
 
-  const methods = useForm({
-    mode: "onBlur",
-    defaultValues: useMemo(() => {
-      return propertyData?.doc || {};
-    }, [propertyData?.doc]),
-  });
+	const methods = useForm({
+		mode: "onBlur",
+		defaultValues: useMemo(() => {
+			return propertyData?.doc || {};
+		}, [propertyData?.doc]),
+	});
 
   useEffect(() => {
     if (propertyData?.doc) {

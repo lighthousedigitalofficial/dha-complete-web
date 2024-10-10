@@ -21,7 +21,7 @@ const AddAffiliatesPage = ({ initialData = {} }) => {
   const onSubmit = async (data) => {
     try {
       await createAffiliate(data).unwrap();
-      alert("Affiliate form submitted!");
+      toast.success("Affiliate form submitted!");
       reset(); // Reset the form after successful submission
     } catch (error) {
       console.error("Failed to save the affiliate:", error);
