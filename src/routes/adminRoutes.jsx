@@ -41,6 +41,8 @@ import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
 import NotFoundPage from "../_user/pages/NotFoundPage";
 import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
 import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
+import EventEditPage from "../_dashboard/pages/Events/EventEditPage";
+import EditTeamPage from "../_dashboard/pages/Team/EditTeamPage";
 
 const adminRoutes = [
 	{
@@ -123,7 +125,10 @@ const adminRoutes = [
 				path: "events/list",
 				element: <EventsList />,
 			},
-
+			{
+				path: "events/edit/:id",
+				element: <EventEditPage />,
+			},
 			{
 				path: "important-notices/add",
 				element: <AddImportantNoticePage />,
@@ -210,6 +215,11 @@ const adminRoutes = [
 				path: "team/list",
 				element: <TeamList />,
 			},
+			{
+				path: "teams/edit/:id",
+				element: <EditTeamPage />,
+			},
+			
 
 			{
 				path: "portal-guide/list",

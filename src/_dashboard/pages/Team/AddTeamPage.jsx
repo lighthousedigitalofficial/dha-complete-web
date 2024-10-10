@@ -1,11 +1,11 @@
 import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
-import { useCreateTeamsMutation } from "../../../redux/slices/teamApiSlice";
+import { useCreateTeamMutation } from "../../../redux/slices/teamsApiSlice";
 
 const TeamForm = () => {
   const methods = useForm();
-  const [createTeam, { isLoading, isError, isSuccess, error }] = useCreateTeamsMutation();
+  const [createTeam, { isLoading, isError, isSuccess, error }] = useCreateTeamMutation();
 
   const handleFormSubmit = async (data) => {
     try {
