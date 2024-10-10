@@ -60,7 +60,11 @@ export const sidebarItems = [
 				icon: FaVideo,
 				subsubItems: [
 					{ path: "/videos/add", label: "Add Video", icon: FaPlus },
-					{ path: "/videos/list", label: "List Videos", icon: FaList },
+					{
+						path: "/videos/list",
+						label: "List Videos",
+						icon: FaList,
+					},
 				],
 			},
 			{
@@ -76,7 +80,11 @@ export const sidebarItems = [
 				icon: FaCalendarAlt,
 				subsubItems: [
 					{ path: "/events/add", label: "Add Event", icon: FaPlus },
-					{ path: "/events/list", label: "List Events", icon: FaList },
+					{
+						path: "/events/list",
+						label: "List Events",
+						icon: FaList,
+					},
 				],
 			},
 		],

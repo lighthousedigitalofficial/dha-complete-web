@@ -21,6 +21,7 @@ import AddPropertyDealersPage from "../_dashboard/pages/PropertyDealers/AddPrope
 import MediaList from "../_dashboard/pages/Media/MediaList";
 import EngineersList from "../_dashboard/pages/Engineers/EngineersList";
 import ActivitiesList from "../_dashboard/pages/Activities/ActivitiesList";
+import ActivityForm from "../_dashboard/pages/Activities/AddActivityPage";
 import SalePropertyList from "../_dashboard/pages/SaleProperty/SalePropertyList";
 import PurchasePropertyList from "../_dashboard/pages/PurchaseProperty/PurchasePropertyList";
 import RegistrationPropertyList from "../_dashboard/pages/RegistrationProperty/RegistrationPropertyList";
@@ -43,6 +44,13 @@ import EditPropertyDealerPage from "../_dashboard/pages/PropertyDealers/EditProp
 import NotFoundPage from "../_user/pages/NotFoundPage";
 import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
 import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
+
+import EventEditPage from "../_dashboard/pages/Events/EventEditPage";
+import EditTeamPage from "../_dashboard/pages/Team/EditTeamPage";
+import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/EditRegistrationProperty";
+import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
+import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
+import EditImportantNotice from "../_dashboard/pages/ImportantNotice/EditImportantNotice";
 
 const adminRoutes = [
 	{
@@ -96,6 +104,10 @@ const adminRoutes = [
 				element: <FacilitiesList />,
 			},
 			{
+				path: "facilities/list",
+				element: <FacilitiesList />,
+			},
+			{
 				path: "facilities/add",
 				element: <AddFacilitiesPage />,
 			},
@@ -138,7 +150,10 @@ const adminRoutes = [
 				path: "events/list",
 				element: <EventsList />,
 			},
-
+			{
+				path: "events/edit/:id",
+				element: <EventEditPage />,
+			},
 			{
 				path: "important-notices/add",
 				element: <AddImportantNoticePage />,
@@ -146,6 +161,11 @@ const adminRoutes = [
 			{
 				path: "important-notices/list",
 				element: <ImportantNoticeList />,
+			},
+
+			{
+				path: "important-notices/edit/:id",
+				element: <EditImportantNotice />,
 			},
 
 			{
@@ -177,6 +197,13 @@ const adminRoutes = [
 				path: "portal-guide/list",
 				element: <PortGuidesList />,
 			},
+
+			{
+				path: "portal-guide/edit/:id",
+
+				element: <EditPortalguides />,
+			},
+
 			{
 				path: "phases/list",
 				element: <PhasesList />,
@@ -195,18 +222,28 @@ const adminRoutes = [
 				element: <EditPropertyDealerPage />,
 			},
 			{
+				path: "engineers/add",
+				element: <EngineersForm />,
+			},
+			{
 				path: "engineers/list",
 				element: <EngineersList />,
 			},
 
 			{
-				path: "activities/list",
-				element: <ActivitiesList />,
+				path: "engineers/edit/:id",
+
+				element: <EditEngineersPage />,
 			},
+
+			//   {
+			//     path: "activities/list",
+			//     element: <ActivitiesList />,
+			//   },
 
 			{
 				path: "activities/add",
-				element: <AddActivityPage />,
+				element: <ActivityForm />,
 			},
 
 			{
@@ -218,22 +255,33 @@ const adminRoutes = [
 				path: "purchase-property/list",
 				element: <PurchasePropertyList />,
 			},
-
+			{
+				path: "registration-property/add",
+				element: <RegistrationPropertyPage />,
+			},
 			{
 				path: "registration-property/list",
 				element: <RegistrationPropertyList />,
 			},
+			{
+				path: "registration-property/edit/:id",
 
+				element: <EditRegistrationProperty />,
+			},
 			{
 				path: "team/list",
 				element: <TeamList />,
 			},
+			{
+				path: "teams/edit/:id",
+				element: <EditTeamPage />,
+			},
+			
 
 			{
 				path: "portal-guide/list",
 				element: <PortGuidesList />,
 			},
-
 			{
 				path: "users/list",
 				element: <UserList />,
