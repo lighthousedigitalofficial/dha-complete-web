@@ -1,4 +1,5 @@
 import HomePage from "../_user/pages/HomePage";
+import NotFoundPage from "../_user/pages/NotFoundPage";
 import UserLayout from "../_user/UserLayout";
 
 import GuidePage from "./../_user/pages/GuidePage";
@@ -229,6 +230,10 @@ const userRoutes = [
 			{
 				path: "new-editions/portal",
 				element: <ComingSoon />,
+			},
+			{
+				path: "*",
+				element: <NotFoundPage />,
 			},
 		],
 	},

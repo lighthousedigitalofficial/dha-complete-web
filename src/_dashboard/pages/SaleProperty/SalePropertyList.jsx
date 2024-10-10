@@ -7,7 +7,7 @@ import {
   useDeleteSalePropertyMutation,
   useGetSalePropertiesQuery,
   // useGetSalePropertySliceQuery,
-} from "../../../redux/slices/salePropertySlice";
+} from "../../../redux/slices/salePropertyApiSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast"; // Add toast for notifications
 
