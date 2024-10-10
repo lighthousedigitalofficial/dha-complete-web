@@ -29,189 +29,222 @@ import RegistrationPropertyList from "../_dashboard/pages/RegistrationProperty/R
 import TeamList from "../_dashboard/pages/Team/TeamList";
 import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
 import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
+import UserDetailPage from "../_dashboard/pages/User/UserDetailPage";
+import AddUserPage from "../_dashboard/pages/User/AddUserPage";
+import UserList from "../_dashboard/pages/User/UserList";
+import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
+import EngineersForm from "../_dashboard/pages/Engineers/AddEngineersPage";
+import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
+import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/EditRegistrationProperty";
+import RegistrationPropertyPage from "../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
 
-import UserList from "./../_dashboard/pages/User/UserList";
-import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
-import UserDetailPage from "./pages/User/UserDetailPage";
+// import UserList from "./../_dashboard/pages/User/UserList";
+// import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
+// import UserDetailPage from "./pages/User/UserDetailPage";
 
 const adminRoutes = [
-	{
-		path: "/dashboard",
-		element: <DashboardLayout />,
-		children: [
-			{
-				path: "",
-				element: <DashboardPage />,
-			},
+  {
+    path: "/",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "",
+        element: <DashboardPage />,
+      },
 
-			{
-				path: "affiliates/add",
-				element: <AddAffiliatesPage />,
-			},
-			{
-				path: "affiliates/list",
-				element: <AffiliatesList />,
-			},
-			{
-				path: "associates/add",
-				element: <AddAssociatesWebsitesPage />,
-			},
-			{
-				path: "associates/list",
-				element: <AssociatesWebsiteList />,
-			},
+      {
+        path: "affiliates/add",
+        element: <AddAffiliatesPage />,
+      },
+      {
+        path: "affiliates/list",
+        element: <AffiliatesList />,
+      },
+      {
+        path: "associates/add",
+        element: <AddAssociatesWebsitesPage />,
+      },
+      {
+        path: "associates/list",
+        element: <AssociatesWebsiteList />,
+      },
 
-			{
-				path: "facilities/list",
-				element: <FacilitiesList />,
-			},
-			{
-				path: "facilities/list",
-				element: <FacilitiesList />,
-			},
-			{
-				path: "facilities/add",
-				element: <AddFacilitiesPage />,
-			},
+      {
+        path: "facilities/list",
+        element: <FacilitiesList />,
+      },
+      {
+        path: "facilities/list",
+        element: <FacilitiesList />,
+      },
+      {
+        path: "facilities/add",
+        element: <AddFacilitiesPage />,
+      },
 
-			{
-				path: "videos/add",
-				element: <AddVideoPage />,
-			},
-			{
-				path: "videos/list",
-				element: <VideosList />,
-			},
+      {
+        path: "videos/add",
+        element: <AddVideoPage />,
+      },
+      {
+        path: "videos/list",
+        element: <VideosList />,
+      },
 
-			{
-				path: "associates/add",
-				element: <AddAssociatesWebsitesPage />,
-			},
-			{
-				path: "associates/list",
-				element: <AssociatesWebsiteList />,
-			},
+      {
+        path: "associates/add",
+        element: <AddAssociatesWebsitesPage />,
+      },
+      {
+        path: "associates/list",
+        element: <AssociatesWebsiteList />,
+      },
 
-			{
-				path: "banners/add",
-				element: <AddBannerPage />,
-			},
-			{
-				path: "banners/list",
-				element: <BannerList />,
-			},
+      {
+        path: "banners/add",
+        element: <AddBannerPage />,
+      },
+      {
+        path: "banners/list",
+        element: <BannerList />,
+      },
 
-			{
-				path: "events/add",
-				element: <AddEventPage />,
-			},
-			{
-				path: "events/list",
-				element: <EventsList />,
-			},
+      {
+        path: "events/add",
+        element: <AddEventPage />,
+      },
+      {
+        path: "events/list",
+        element: <EventsList />,
+      },
 
-			{
-				path: "important-notices/add",
-				element: <AddImportantNoticePage />,
-			},
-			{
-				path: "important-notices/list",
-				element: <ImportantNoticeList />,
-			},
+      {
+        path: "important-notices/add",
+        element: <AddImportantNoticePage />,
+      },
+      {
+        path: "important-notices/list",
+        element: <ImportantNoticeList />,
+      },
 
-			{
-				path: "media/add",
-				element: <AddMediaPage />,
-			},
-			{
-				path: "media/list",
-				element: <MediaList />,
-			},
+      {
+        path: "media/add",
+        element: <AddMediaPage />,
+      },
+      {
+        path: "media/list",
+        element: <MediaList />,
+      },
 
-			{
-				path: "phases/add",
-				element: <AddPhasePage />,
-			},
-			{
-				path: "users/add",
-				element: <AddUserPage />,
-			},
-			{
-				path: "users/list",
-				element: <UserList />,
-			},
-			{
-				path: "portal-guide/add",
-				element: <AddPortalPage />,
-			},
-			{
-				path: "portal-guide/list",
-				element: <PortGuidesList />,
-			},
-			{
-				path: "phases/list",
-				element: <PhasesList />,
-			},
+      {
+        path: "phases/add",
+        element: <AddPhasePage />,
+      },
+      {
+        path: "users/add",
+        element: <AddUserPage />,
+      },
+      {
+        path: "users/list",
+        element: <UserList />,
+      },
+      {
+        path: "portal-guide/add",
+        element: <AddPortalPage />,
+      },
+      {
+        path: "portal-guide/list",
+        element: <PortGuidesList />,
+      },
 
-			{
-				path: "property-dealers/add",
-				element: <AddPropertyDealersPage />,
-			},
-			{
-				path: "property-dealers/list",
-				element: <PropertyDealersList />,
-			},
+      {
+        path: "portal-guide/edit/:id",
 
-			{
-				path: "engineers/list",
-				element: <EngineersList />,
-			},
+        element: <EditPortalguides />,
+      },
 
-			{
-				path: "activities/list",
-				element: <ActivitiesList />,
-			},
+      {
+        path: "phases/list",
+        element: <PhasesList />,
+      },
 
-			{
-				path: "activities/add",
-				element: <ActivityForm />,
-			},
+      {
+        path: "property-dealers/add",
+        element: <AddPropertyDealersPage />,
+      },
+      {
+        path: "property-dealers/list",
+        element: <PropertyDealersList />,
+      },
 
-			{
-				path: "sale-property/list",
-				element: <SalePropertyList />,
-			},
+      {
+        path: "engineers/add",
+        element: <EngineersForm />,
+      },
+      {
+        path: "engineers/list",
+        element: <EngineersList />,
+      },
 
-			{
-				path: "purchase-property/list",
-				element: <PurchasePropertyList />,
-			},
+      {
+        path: "engineers/edit/:id",
 
-			{
-				path: "registration-property/list",
-				element: <RegistrationPropertyList />,
-			},
+        element: <EditEngineersPage />,
+      },
 
-			{
-				path: "team/list",
-				element: <TeamList />,
-			},
+      //   {
+      //     path: "activities/list",
+      //     element: <ActivitiesList />,
+      //   },
 
-			{
-				path: "portal-guide/list",
-				element: <PortGuidesList />,
-			},
+      {
+        path: "activities/add",
+        element: <ActivityForm />,
+      },
 
-			{
-				path: "users/list",
-				element: <UserList />,
-			},
-			{
-				path: "profile",
-				element: <UserDetailPage />,
-			},
-		],
-	},
+      {
+        path: "sale-property/list",
+        element: <SalePropertyList />,
+      },
+
+      {
+        path: "purchase-property/list",
+        element: <PurchasePropertyList />,
+      },
+      {
+        path: "registration-property/add",
+        element: <RegistrationPropertyPage />,
+      },
+      {
+        path: "registration-property/list",
+        element: <RegistrationPropertyList />,
+      },
+      {
+        path: "registration-property/edit/:id",
+
+        element: <EditRegistrationProperty />,
+      },
+      {
+        path: "team/list",
+        element: <TeamList />,
+      },
+
+      {
+        path: "portal-guide/list",
+        element: <PortGuidesList />,
+      },
+
+      {
+        path: "users/list",
+        element: <UserList />,
+      },
+
+      //   {
+      //     path: "profile",
+      //     element: <UserDetailPage />,
+      //   },
+    ],
+  },
 ];
 
 export default adminRoutes;

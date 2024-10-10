@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
 import { useCreateEngineersMutation } from "../../../redux/slices/engineersApiSlice";
 import { useGetAffiliatesQuery } from "../../../redux/slices/affiliates";
+import { useUpdateEngineerMutation } from "../../../redux/slices/engineers";
 
-const EngineersForm = () => {
+const EditEngineersPage = () => {
   const {
     register,
     handleSubmit,
@@ -14,8 +15,8 @@ const EngineersForm = () => {
     watch,
   } = useForm();
 
-  const [createEngineers, { isLoading, isError, error }] =
-    useCreateEngineersMutation();
+  const [updateEngineers, { isLoading, isError, error }] =
+    useUpdateEngineerMutation();
 
   // State for success and error messages
   const [successMessage, setSuccessMessage] = useState("");
@@ -34,7 +35,7 @@ const EngineersForm = () => {
   const onSubmit = async (data) => {
     console.log("Form data:", data);
     try {
-      const response = await createEngineers(data).unwrap();
+      const response = await updateEngineers(data).unwrap();
       console.log("Engineer added:", response);
 
       // Show success message and reset the form
@@ -56,7 +57,7 @@ const EngineersForm = () => {
 
   return (
     <div className="border border-primary bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Add Engineer</h2>
+      <h2 className="text-2xl font-bold mb-6">Update Engineer</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
@@ -171,11 +172,11 @@ const EngineersForm = () => {
           className=" px-4 py-2 bg-green-500 text-white rounded-md"
           disabled={isLoading}
         >
-          {isLoading ? "Adding..." : "Add Engineer"}
+          {isLoading ? "Update..." : "Update Engineer"}
         </button>
       </div>
     </div>
   );
 };
 
-export default EngineersForm;
+export default EditEngineersPage;
