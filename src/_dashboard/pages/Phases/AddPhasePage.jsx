@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import uploadImage from "../../../helpers/imageUpload";
 import uploadVideo from "../../../helpers/videoUpload";
 import InputField from "../../_components/shared/InputField";
 import toast from "react-hot-toast";
 import { useCreatePhasesMutation } from "../../../redux/slices/phasesSlice";
+import { FiX } from "react-icons/fi";
 
 const AddPhasePage = () => {
 	const [imagePreview, setImagePreview] = useState(null);
@@ -15,12 +16,24 @@ const AddPhasePage = () => {
 
 	const methods = useForm(); // Initialize useForm
 
-  const { register, handleSubmit, control, formState: { errors } } = methods;
+  const { register, handleSubmit,  formState: { errors } } = methods;
+	const [service, setService] = useState("");
+  const [servicesList, setServicesList] = useState([]);
 
-	const { fields, append, remove } = useFieldArray({
-    control,
-    name: "services"
-  });
+  // Handle adding a service
+  const addService = (e) => {
+    e.preventDefault();
+    if (service.trim() !== "") {
+      setServicesList([...servicesList, service.trim()]);
+      setService(""); // Clear the input after adding
+    }
+  };
+
+  // Handle removing a service
+  const removeService = (indexToRemove) => {
+    setServicesList(servicesList.filter((_, index) => index !== indexToRemove));
+  };
+
 	// Helper function to handle image preview
 	const handleImagePreview = (e) => {
 		const file = e.target.files[0];
@@ -130,36 +143,31 @@ const AddPhasePage = () => {
 					/>
 				</div>
 				{/* Services Field */}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Services</label>
-          <button
-            type="button"
-            onClick={() => append({ name: "" })}
-            className="bg-blue-500 text-white px-3 py-1 rounded mb-4"
-          >
-            Add Service
-          </button>
-          {fields.map((item, index) => (
-            <div key={item.id} className="flex items-center mb-2">
-              <InputField
-                label={`Service ${index + 1}`}
-                type="text"
-                name={`services.${index}.name`}
-                register={register}
-                required
-                errors={errors}
-                placeholder={`Service ${index + 1}`}
+				<div className="service-container">
+      <form onSubmit={addService}>
+        <input
+          type="text"
+          value={service}
+          onChange={(e) => setService(e.target.value)}
+          placeholder="Enter a service"
+        />
+        <button type="submit">Add Service</button>
+      </form>
+
+      {servicesList.length > 0 && (
+        <ul className="service-list">
+          {servicesList.map((service, index) => (
+            <li key={index} className="service-item">
+              {service}
+              <FiX
+                className="remove-icon"
+                onClick={() => removeService(index)}
               />
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="ml-2 bg-red-300 text-white px-3 py-1 rounded"
-              >
-                x
-              </button>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
+      )}
+    </div>
 
 				{/* Location Field */}
 				<div className="mb-4">
