@@ -9,12 +9,12 @@ import {
 import { useParams } from "react-router-dom";
 
 const EditRegistrationProperty = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Get the property ID from the URL
   const {
     data: propertyData,
     isLoading: isLoadingProperty,
     refetch,
-  } = useGetRegistrationPropertyByIdQuery(id);
+  } = useGetRegistrationPropertyByIdQuery(id); // Fetch existing property
 
   const [updateRegistrationProperty, { isLoading, isError }] =
     useUpdateRegistrationPropertyMutation();

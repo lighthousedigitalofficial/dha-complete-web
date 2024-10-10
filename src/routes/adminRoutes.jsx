@@ -179,7 +179,6 @@ const adminRoutes = [
 
       {
         path: "portal-guide/edit/:id",
-
         element: <EditPortalguides />,
       },
 
@@ -196,7 +195,10 @@ const adminRoutes = [
         path: "property-dealers/list",
         element: <PropertyDealersList />,
       },
-
+      {
+        path: "property-dealers/list",
+        element: <PropertyDealersList />,
+      },
       {
         path: "engineers/add",
         element: <EngineersForm />,
