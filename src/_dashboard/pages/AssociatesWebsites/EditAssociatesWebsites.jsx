@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../_components/Form/FormInput/FormInput";
 
-const AddAssociatesWebsitesPage = ({ initialData = {} }) => {
+const EditAssociatesWebsites = ({ initialData = {} }) => {
   const [imagePreview, setImagePreview] = useState(initialData.image || null);
   const [title, setTitle] = useState(initialData.title || "");
   const [link, setLink] = useState(initialData.link || "");
@@ -51,7 +51,9 @@ const AddAssociatesWebsitesPage = ({ initialData = {} }) => {
 
   return (
     <div className="p-4 rounded-md shadow-md m-5">
-      <h2 className="text-2xl font-semibold mb-6">Associates Websites</h2>
+      <h2 className="text-2xl font-semibold mb-6">
+        Update Associates Websites
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <form onSubmit={handleSubmit}>
@@ -171,11 +173,11 @@ const AddAssociatesWebsitesPage = ({ initialData = {} }) => {
           className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500"
           onClick={handleSubmit}
         >
-          Add
+          Update
         </button>
       </div>
     </div>
   );
 };
 
-export default AddAssociatesWebsitesPage;
+export default EditAssociatesWebsites;

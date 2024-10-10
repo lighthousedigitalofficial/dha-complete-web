@@ -42,14 +42,14 @@ export const sidebarItems = [
 			{ path: "/banners/list", label: "List Banners", icon: FaList },
 		],
 	},
-	{
-		label: "Associates",
-		icon: FaLink,
-		subItems: [
-			{ path: "/associates/add", label: "Add Website", icon: FaPlus },
-			{ path: "/associates/list", label: "List Websites", icon: FaList },
-		],
-	},
+	// {
+	// 	label: "Associates",
+	// 	icon: FaLink,
+	// 	subItems: [
+	// 		{ path: "/associates/add", label: "Add Website", icon: FaPlus },
+	// 		{ path: "/associates/list", label: "List Websites", icon: FaList },
+	// 	],
+	// },
 
 	{
 		label: "Gallery",
@@ -60,7 +60,11 @@ export const sidebarItems = [
 				icon: FaVideo,
 				subsubItems: [
 					{ path: "/videos/add", label: "Add Video", icon: FaPlus },
-					{ path: "/videos/list", label: "List Videos", icon: FaList },
+					{
+						path: "/videos/list",
+						label: "List Videos",
+						icon: FaList,
+					},
 				],
 			},
 			{
@@ -76,7 +80,11 @@ export const sidebarItems = [
 				icon: FaCalendarAlt,
 				subsubItems: [
 					{ path: "/events/add", label: "Add Event", icon: FaPlus },
-					{ path: "/events/list", label: "List Events", icon: FaList },
+					{
+						path: "/events/list",
+						label: "List Events",
+						icon: FaList,
+					},
 				],
 			},
 		],
@@ -90,14 +98,14 @@ export const sidebarItems = [
 			{ path: "/phases/list", label: "List Phases", icon: FaList },
 		],
 	},
-	{
-		label: "Facilities",
-		icon: FaBuilding,
-		subItems: [
-			{ path: "/facilities/add", label: "Add Facility", icon: FaPlus },
-			{ path: "/facilities/list", label: "List Facilities", icon: FaList },
-		],
-	},
+	// {
+	// 	label: "Facilities",
+	// 	icon: FaBuilding,
+	// 	subItems: [
+	// 		{ path: "/facilities/add", label: "Add Facility", icon: FaPlus },
+	// 		{ path: "/facilities/list", label: "List Facilities", icon: FaList },
+	// 	],
+	// },
 	{
 		label: "Affiliates",
 		icon: FaUsers,

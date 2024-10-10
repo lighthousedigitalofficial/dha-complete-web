@@ -59,134 +59,192 @@ const SalePropertyForm = () => {
     }
   };
 
-  return (
-    <FormProvider {...methods}>
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-2xl font-bold mb-6">Add Sale Property</h2>
-        <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <InputField
-              label="Name"
-              name="name"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Name is required"
-            />
-            <InputField
-              label="CNIC"
-              name="cnic"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="CNIC is required"
-            />
-            <InputField
-              label="Phone"
-              name="phone"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Phone is required"
-            />
-            <InputField
-              label="Email"
-              name="email"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Email is required"
-            />
-            <InputField
-              label="Plot Number"
-              name="plotNum"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Plot Number is required"
-            />
-            <InputField
-              label="Street Number"
-              name="streetNum"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Street Number is required"
-            />
-            <InputField
-              label="Sector"
-              name="sector"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Sector is required"
-            />
-            <InputField
-              label="Size"
-              name="size"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Size is required"
-            />
-            <InputField
-              label="Phase"
-              name="phase"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Phase is required"
-            />
-            <InputField
-              label="Demand"
-              name="demand"
-              register={methods.register}
-              required
-              errors={methods.formState.errors}
-              errorMessage="Demand is required"
-            />
-          </div>
+	return (
+		<FormProvider {...methods}>
+			<div className="w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
+				<h2 className="text-2xl font-bold mb-6">Add Sale Property</h2>
+				<form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+					<div className="w-full flex gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="Name"
+								name="name"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Name is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="CNIC"
+								name="cnic"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="CNIC is required"
+							/>
+						</div>
+					</div>
+					<div className="w-full flex gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="Phone"
+								name="phone"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Phone is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="Email"
+								name="email"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Email is required"
+							/>
+						</div>
+					</div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Type
-            </label>
-            <select
-              {...methods.register("type", { required: "Type is required" })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-            >
-              <option value="">Select Type</option>
-              <option value="residential">Residential</option>
-              <option value="commercial">Commercial</option>
-              <option value="shop">Shop</option>
-              <option value="apartment">Apartment</option>
-            </select>
-            {methods.formState.errors.type && (
-              <p className="text-red-500 text-sm">
-                {methods.formState.errors.type.message}
-              </p>
-            )}
-          </div>
+					<div className="w-full flex gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="Plot Number"
+								name="plotNum"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Plot Number is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="Street Number"
+								name="streetNum"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Street Number is required"
+							/>
+						</div>
+					</div>
 
-          {/* Image Upload */}
-          <div className="mt-4 w-full">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Choose Image
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className={`block w-full text-sm text-gray-500 border ${
-                methods.formState.errors.image
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } rounded-md cursor-pointer p-2 focus:outline-none focus:ring focus:ring-blue-200`}
-            />
-            {methods.formState.errors.image && (
-              <p className="text-red-500 text-sm mt-1">Image is required</p>
-            )}
-          </div>
+					<div className="w-full flex gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="Sector"
+								name="sector"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Sector is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="Size"
+								name="size"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Size is required"
+							/>
+						</div>
+					</div>
+
+					<div className="w-full flex gap-4">
+						<div className="w-1/2">
+							<InputField
+								label="Phase"
+								name="phase"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Phase is required"
+							/>
+						</div>
+						<div className="w-1/2">
+							<InputField
+								label="Demand"
+								name="demand"
+								register={methods.register}
+								required
+								errors={methods.formState.errors}
+								errorMessage="Demand is required"
+							/>
+						</div>
+					</div>
+
+					<div className="w-full flex gap-4">
+						<div className="w-1/2">
+						<div className="mb-4">
+							<label className="block text-sm font-medium text-gray-700">
+								Type
+							</label>
+							<select
+								{...methods.register("type", { required: "Type is required" })}
+								className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+							>
+								<option value="">Select Type</option>
+								<option value="residential">Residential</option>
+								<option value="commercial">Commercial</option>
+								<option value="shop">Shop</option>
+								<option value="apartment">Apartment</option>
+							</select>
+							{methods.formState.errors.type && (
+								<p className="text-red-500 text-sm">
+									{methods.formState.errors.type.message}
+								</p>
+							)}
+						</div>
+						</div>
+						
+						<div className="w-1/2">
+							<div className="w-full mb-4">
+								<label className="block text-sm font-medium text-gray-700">
+									Status
+								</label>
+								<select
+									{...methods.register("status", {
+										required: "Status is required",
+									})}
+									className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+								>
+									<option value="">Select Status</option>
+									<option value="available">Available</option>
+									<option value="sold">Sold</option>
+									<option value="pending">Pending</option>
+								</select>
+								{methods.formState.errors.status && (
+									<p className="text-red-500 text-sm">
+										{methods.formState.errors.status.message}
+									</p>
+								)}
+							</div>
+						</div>
+					</div>
+					<div className="mb-4">
+						<label className="block text-sm font-medium text-gray-700">
+							Upload Image
+						</label>
+						<input
+							type="file"
+							accept="image/*"
+							{...methods.register("image", {
+								required: "Image file is required",
+							})}
+							onChange={handleImageChange}
+							className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+						/>
+						{methods.formState.errors.image && (
+							<p className="text-red-500 text-sm">
+								{methods.formState.errors.image.message}
+							</p>
+						)}
+					</div>
 
           {/* Image preview section */}
           {imagePreview && (
@@ -202,35 +260,15 @@ const SalePropertyForm = () => {
             </div>
           )}
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Status
-            </label>
-            <select
-              {...methods.register("status", {
-                required: "Status is required",
-              })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-            >
-              <option value="">Select Status</option>
-              <option value="available">Available</option>
-              <option value="sold">Sold</option>
-              <option value="pending">Pending</option>
-            </select>
-            {methods.formState.errors.status && (
-              <p className="text-red-500 text-sm">
-                {methods.formState.errors.status.message}
-              </p>
-            )}
-          </div>
 
-          <button
-            type="submit"
-            className="w-34 ml-auto flex justify-center items-center px-4 py-2 bg-green-500 text-white rounded-md whitespace-nowrap"
-            disabled={isLoading}
-          >
-            {isLoading ? "Uploading..." : "Add Sale Property"}
-          </button>
+
+					<button
+						type="submit"
+						className="px-4 py-2 bg-green-500 text-white rounded-md"
+						disabled={uploading || isLoading}
+					>
+						{uploading || isLoading ? "Uploading..." : "Add Sale Property"}
+					</button>
 
           {isError && (
             <p className="text-red-500 text-sm mt-2">

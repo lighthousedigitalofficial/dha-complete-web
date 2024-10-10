@@ -19,8 +19,6 @@ const ProfileMenu = ({
 	const user = useAuth();
 	const dispatch = useDispatch();
 
-	console.log(user);
-
 	const logoutHandler = async () => {
 		try {
 			if (user && user.token) {

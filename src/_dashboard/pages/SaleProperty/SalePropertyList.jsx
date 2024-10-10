@@ -5,8 +5,8 @@ import Loader from "../../../components/shared/Loader";
 import {
   useDeleteSalePropertyMutation,
   useGetSalePropertiesQuery,
-  useUpdateSalePropertyMutation,
-} from "../../../redux/slices/salePropertySlice";
+  // useGetSalePropertySliceQuery,
+} from "../../../redux/slices/salePropertyApiSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom"; // Import useNavigate

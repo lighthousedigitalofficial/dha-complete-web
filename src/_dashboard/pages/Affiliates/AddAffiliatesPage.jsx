@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { useCreateAffiliateMutation } from "../../../redux/slices/affiliates";
-import { toast } from "react-hot-toast";
 // import { useCreateAffiliateMutation } from '../features/affiliates/affiliatesApi'; // Adjust the import based on your file structure
 
 const AddAffiliatesPage = ({ initialData = {} }) => {

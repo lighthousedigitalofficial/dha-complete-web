@@ -3,18 +3,24 @@ import { Outlet, useNavigate } from "react-router-dom";
 import logo from "./../assets/Images/dhalogo.png";
 import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
+import { logout } from "../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const AuthLayout = () => {
 	const user = useAuth();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (user && user.doc.role === "admin") {
+		if (user && user?.doc && user.doc?.role === "admin") {
 			navigate("/");
-		} else if (user) {
+		} else if (user && user?.doc) {
 			navigate("/");
-		} else navigate("/user/auth/sign-in");
-	}, [navigate, user]);
+		} else {
+			dispatch(logout());
+			navigate("/user/auth/sign-in");
+		}
+	}, [dispatch, navigate, user]);
 
 	return (
 		<div className="my-4 p-8 flex justify-between items-center flex-col">

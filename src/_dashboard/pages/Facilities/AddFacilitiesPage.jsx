@@ -5,45 +5,30 @@ import FormInput from "../../_components/Form/FormInput/FormInput";
 import { useCreateFacilitiesMutation } from "../../../redux/slices/facilitiesApiSlice";
 import toast from "react-hot-toast";
 
-const AddFacilitiesPage = () => {
-  const [imagePreview, setImagePreview] = useState(null);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [mainImage, setMainImage] = useState("");
-  const [images, setImages] = useState([]);
-  const [services, setServices] = useState([]);
+const AddFacilitiesPage = ({ initialData = {} }) => {
+  const [imagePreview, setImagePreview] = useState(initialData.image || null);
+  const [title, setTitle] = useState(initialData.title || "");
+  const [description, setDescription] = useState(initialData.description || "");
+  // const [mainImage, setMainImage] = useState(initialData.mainImage || "");
+  const [mainImage, setMainImage] = useState(initialData.mainImage || "");
+
+  const [images, setImages] = useState(initialData.images || []);
+  const [services, setServices] = useState(initialData.services || []);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
-  const [link, setLink] = useState("");
-
-  // Validation state
-  const [errors, setErrors] = useState({});
+  const [link, setLink] = useState(initialData.link || "");
 
   // Use the createFacilities mutation
-  const [createFacilities, { isLoading }] = useCreateFacilitiesMutation();
-
-  const validateForm = () => {
-    const newErrors = {};
-    // Validate title
-
-    // Validate description
-    if (!description.trim()) {
-      newErrors.description = "Description is required.";
-    }
-    // Validate link
-
-    // Validate main image
-    if (!mainImage) {
-      newErrors.mainImage = "Please provide a main image.";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
-  };
+  const [createFacilities, { isLoading, isError, isSuccess }] =
+    useCreateFacilitiesMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
-      return; // Stop submission if validation fails
+
+    // Check if mainImage is set
+    if (!mainImage) {
+      alert("Please provide a main image.");
+      return;
     }
 
     const formData = {
@@ -61,28 +46,32 @@ const AddFacilitiesPage = () => {
     try {
       // Call the mutation to create the facility
       await createFacilities(formData).unwrap();
-      toast.success("Facilities form submitted successfully!"); // Replace alert with toast
+      alert("Facilities form submitted successfully!");
       console.log("Facilities submitted successfully");
-      handleReset(); // Reset form on success
     } catch (error) {
       console.error("Failed to submit the form:", error);
-      toast.error("There was an error submitting the form."); // Replace alert with toast
+      alert("There was an error submitting the form.");
     }
   };
-
   const handleMainImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Create a URL for the file
       const imageUrl = URL.createObjectURL(file);
-      setMainImage(imageUrl);
+      setMainImage(imageUrl); // Set the URL as the main image
       setImagePreview(imageUrl);
       console.log("Main image URL:", imageUrl);
-      // Clear main image error if set
-      if (errors.mainImage) {
-        setErrors((prev) => ({ ...prev, mainImage: null }));
-      }
     }
   };
+
+  // const handleMainImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setMainImage(file); // Set the main image
+  //     setImagePreview(URL.createObjectURL(file));
+  //     console.log("Main image selected:", file);
+  //   }
+  // };
 
   const handleAddImages = (e) => {
     const files = Array.from(e.target.files);
@@ -90,6 +79,15 @@ const AddFacilitiesPage = () => {
     setImages((prevImages) => [...prevImages, ...newImages]);
     console.log("Additional images added:", newImages);
   };
+
+  // const handleMainImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setMainImage(file); // Set the main image
+  //     setImagePreview(URL.createObjectURL(file));
+  //     console.log("Main image selected:", file);
+  //   }
+  // };
 
   const handleReset = () => {
     setTitle("");
@@ -100,8 +98,17 @@ const AddFacilitiesPage = () => {
     setInputValue("");
     setLink("");
     setImagePreview(null);
-    setErrors({}); // Reset errors
+    setImage(null);
     console.log("Form reset");
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+      console.log("Image changed:", file);
+    }
   };
 
   const removeImage = (index) => {
@@ -135,6 +142,7 @@ const AddFacilitiesPage = () => {
   return (
     <div className="p-4 rounded-md shadow-md m-5">
       <h2 className="text-2xl font-semibold mb-6">Facilities</h2>
+
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Title Field */}
@@ -149,15 +157,10 @@ const AddFacilitiesPage = () => {
               type="text"
               id="title"
               value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-                setErrors((prev) => ({ ...prev, title: null })); // Clear error
-              }}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter Title"
               required
             />
-            {errors.title && <p className="text-red-500">{errors.title}</p>}{" "}
-            {/* Show error message */}
           </div>
 
           {/* Link Field */}
@@ -172,15 +175,10 @@ const AddFacilitiesPage = () => {
               type="text"
               id="link"
               value={link}
-              onChange={(e) => {
-                setLink(e.target.value);
-                setErrors((prev) => ({ ...prev, link: null })); // Clear error
-              }}
+              onChange={(e) => setLink(e.target.value)}
               placeholder="Enter Link URL"
               required
             />
-            {errors.link && <p className="text-red-500">{errors.link}</p>}{" "}
-            {/* Show error message */}
           </div>
 
           {/* Services */}
@@ -227,17 +225,11 @@ const AddFacilitiesPage = () => {
             <textarea
               id="description"
               value={description}
-              onChange={(e) => {
-                setDescription(e.target.value);
-                setErrors((prev) => ({ ...prev, description: null })); // Clear error
-              }}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter Description"
               className="block w-full border border-gray-300 p-2 rounded-md"
               required
             />
-            {errors.description && (
-              <p className="text-red-500">{errors.description}</p> // Show error message
-            )}
           </div>
 
           {/* Main Image Upload */}
@@ -250,7 +242,7 @@ const AddFacilitiesPage = () => {
                 type="file"
                 accept="image/*"
                 className="absolute inset-0 opacity-0 cursor-pointer"
-                onChange={handleMainImageChange}
+                onChange={handleMainImageChange} // Use separate function for main image
                 required // Ensure this field is required
               />
               <div className="text-center">
@@ -258,44 +250,52 @@ const AddFacilitiesPage = () => {
                 <p className="text-gray-500">Add Main Image</p>
               </div>
             </div>
-            {mainImage && (
-              <div className="mt-2">
+            {imagePreview && (
+              <div className="mt-4">
                 <img
-                  src={mainImage}
-                  alt="Main Preview"
-                  className="h-32 object-cover rounded-md"
+                  src={imagePreview}
+                  alt="Preview"
+                  className="object-cover w-full h-40 rounded-md"
                 />
               </div>
             )}
-            {errors.mainImage && (
-              <p className="text-red-500">{errors.mainImage}</p> // Show error message
-            )}
           </div>
 
-          {/* Additional Images Upload */}
+          {/* Image Upload Field */}
           <div className="mb-4">
             <label className="block text-[1rem] font-semibold mb-2">
-              Additional Images
+              Upload Images
             </label>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleAddImages}
-              className="border rounded-md px-2 py-1"
-            />
-            <div className="mt-2">
+            <div className="relative bg-gray-100 border-2 border-dashed border-gray-500 rounded-md h-40 flex items-center justify-center cursor-pointer">
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                className="absolute inset-0 opacity-0 cursor-pointer"
+                onChange={handleAddImages} // Use separate function for additional images
+              />
+              <div className="text-center">
+                <div className="text-gray-500 text-3xl">+</div>
+                <p className="text-gray-500">Add Images</p>
+              </div>
+            </div>
+
+            {/* Preview the selected images */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
               {images.map((image, index) => (
-                <div key={index} className="relative inline-block mr-2">
+                <div
+                  key={index}
+                  className="relative group border border-gray-300 rounded-md overflow-hidden"
+                >
                   <img
                     src={image}
                     alt={`Preview ${index}`}
-                    className="h-20 w-20 object-cover rounded-md"
+                    className="object-cover w-full h-32"
                   />
                   <button
                     type="button"
+                    className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
                     onClick={() => removeImage(index)}
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
                   >
                     <FaTrash />
                   </button>
@@ -305,13 +305,23 @@ const AddFacilitiesPage = () => {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="bg-primary-400 text-white rounded-md px-4 py-2"
-          disabled={isLoading}
-        >
-          {isLoading ? "Submitting..." : "Add Facility"}
-        </button>
+        {/* Submit and Reset buttons */}
+        <div className="flex justify-end mt-6">
+          <button
+            type="button"
+            onClick={handleReset}
+            className="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-md mr-2"
+          >
+            Reset
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="bg-primary-500 text-white font-semibold py-2 px-4 rounded-md"
+          >
+            {isLoading ? "Adding..." : "Add Facility"}
+          </button>
+        </div>
       </form>
     </div>
   );

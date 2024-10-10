@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 import DataTable from "../../_components/shared/DataTable";
@@ -10,7 +10,7 @@ import {
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast"; // Optional for notifications
 
-const PortGuidesList = () => {
+const PortGuidesList = ({ onEdit }) => {
 	const { data: PortalGuides, isLoading, refetch } = useGetGuidesQuery({});
 
 	console.log(PortalGuides);
@@ -49,7 +49,9 @@ const PortGuidesList = () => {
 		}
 	};
 
-	const handleEdit = (record) => {};
+	const handleEdit = (record) => {
+		onEdit(record); // Call parent onEdit function for editing logic
+	};
 
 	const columns = [
 		{
@@ -63,6 +65,7 @@ const PortGuidesList = () => {
 			dataIndex: "title", // Assuming `name` contains the guide name
 			key: "title",
 		},
+
 		{
 			title: "Author",
 			dataIndex: "author", // Assuming `designation` contains the designation/title

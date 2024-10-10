@@ -8,6 +8,7 @@ import {
 	useDeletePropertyDealerMutation,
 	useGetPropertyDealerQuery,
 } from "../../../redux/slices/propertyDealerSlice";
+import { Link } from "react-router-dom";
 
 const PropertyDealersList = () => {
 	const {
@@ -85,17 +86,16 @@ const PropertyDealersList = () => {
 			key: "action",
 			render: (_, record) => (
 				<div className="flex gap-2 items-center px-2">
-					<a
-						onClick={() => handleEdit(record)}
+					<Link to={`/property-dealers/edit/${record._id}`}
+						// onClick={() => handleEdit(record)}
 						className="border p-2 rounded-md hover:text-white hover:bg-primary-300 border-primary-500"
 					>
 						<FaEdit />
-					</a>
+					</Link>
 					<a
 						onClick={() => handleDeleteClick(record._id)} // Ensure correct ID is passed
-						className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
-							isDeleting ? "opacity-50 pointer-events-none" : ""
-						}`}
+						className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${isDeleting ? "opacity-50 pointer-events-none" : ""
+							}`}
 					>
 						<FaTrash />
 					</a>
