@@ -16,8 +16,6 @@ import Loader from "../../components/shared/Loader";
 const Dashboard = () => {
 	const { data, isLoading } = useGetDashboardStatsQuery({});
 
-	console.log(data);
-
 	const cardsData = [
 		{
 			title: "Important Notices",
