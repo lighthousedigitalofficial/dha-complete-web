@@ -46,6 +46,7 @@ import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/E
 import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
 import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
 import EditImportantNotice from "../_dashboard/pages/ImportantNotice/EditImportantNotice";
+import EditMediaPage from "../_dashboard/pages/Media/EditMediaPage";
 
 const adminRoutes = [
   {
@@ -155,7 +156,10 @@ const adminRoutes = [
         path: "media/list",
         element: <MediaList />,
       },
-
+      {
+        path: "media/edit/:id",
+        element: <EditMediaPage />,
+      },
       {
         path: "phases/add",
         element: <AddPhasePage />,

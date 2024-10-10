@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
 import toast from "react-hot-toast";
@@ -6,15 +6,18 @@ import {
   useGetRegistrationPropertyByIdQuery,
   useUpdateRegistrationPropertyMutation,
 } from "../../../redux/slices/registrationPropertySlice";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Loader from "../../../components/shared/Loader";
 
 const EditRegistrationProperty = () => {
-  const { id } = useParams(); // Get the property ID from the URL
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const {
     data: propertyData,
     isLoading: isLoadingProperty,
     refetch,
-  } = useGetRegistrationPropertyByIdQuery(id); // Fetch existing property
+  } = useGetRegistrationPropertyByIdQuery(id);
 
   const [updateRegistrationProperty, { isLoading, isError }] =
     useUpdateRegistrationPropertyMutation();
@@ -28,11 +31,10 @@ const EditRegistrationProperty = () => {
 
   useEffect(() => {
     if (propertyData?.doc) {
-      methods.reset(propertyData.doc); // Reset form with existing data
+      methods.reset(propertyData.doc);
     }
   }, [propertyData, methods]);
 
-  // Handle form submit
   const handleFormSubmit = async (data) => {
     try {
       const formData = {
@@ -52,14 +54,17 @@ const EditRegistrationProperty = () => {
       toast.success("Property updated successfully!");
       refetch();
       methods.reset(); // Reset form after successful submission
+      navigate("/registration-property/list"); // Navigate to the list page
     } catch (error) {
       toast.error("Failed to update the property. Please try again.");
     }
   };
 
-  return (
+  return isLoadingProperty ? (
+    <Loader />
+  ) : propertyData && propertyData?.doc ? (
     <FormProvider {...methods}>
-      <div className=" bg-white p-8 rounded-md shadow-md">
+      <div className="bg-white p-8 rounded-md shadow-md">
         <h2 className="text-2xl font-bold mb-6">Update Property</h2>
         <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -164,7 +169,7 @@ const EditRegistrationProperty = () => {
           <div className="flex justify-end items-center">
             <button
               type="submit"
-              className=" px-4 py-2 bg-primary-500 text-white rounded-md"
+              className="px-4 py-2 bg-primary-500 text-white rounded-md"
               disabled={isLoading}
             >
               {isLoading ? "Updating..." : "Update Property"}
@@ -179,6 +184,8 @@ const EditRegistrationProperty = () => {
         </form>
       </div>
     </FormProvider>
+  ) : (
+    <p>Property data not found.</p>
   );
 };
 

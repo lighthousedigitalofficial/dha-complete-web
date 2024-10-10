@@ -9,6 +9,7 @@ import {
 } from "../../../redux/slices/mediaApiSlice";
 import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import { toast } from "react-hot-toast"; // Optional: for notifications
+import { Link } from "react-router-dom";
 
 const MediaList = () => {
   const { data: Media, isLoading, refetch } = useGetMediaQuery({});
@@ -62,6 +63,12 @@ const MediaList = () => {
       render: (text, record, index) => index + 1, // Automatically generate index
     },
     {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      // Automatically generate index
+    },
+    {
       title: "Description",
       dataIndex: "description", // Assuming `description` contains the media description
       key: "description",
@@ -71,10 +78,12 @@ const MediaList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a onClick={() => handleEdit(record)}>
-            <FaEye />
-
-          </a>
+          <Link
+            to={`/media/edit/${record._id}`}
+            className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
+          >
+            <FaEdit />
+          </Link>
           <a
             onClick={() => handleDeleteClick(record._id)} // Pass the media ID for deletion
             className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
