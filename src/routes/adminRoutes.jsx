@@ -40,6 +40,7 @@ import EngineersForm from "./../_dashboard/pages/Engineers/AddEngineersPage";
 import TeamForm from "./../_dashboard/pages/Team/AddTeamPage";
 import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage";
 import EditVideo from "../_dashboard/pages/Vidoes/EditVideo";
+import EditPropertyDealerPage from "../_dashboard/pages/PropertyDealers/EditPropertyDealer";
 import NotFoundPage from "../_user/pages/NotFoundPage";
 import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
 import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
@@ -51,6 +52,7 @@ import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
 import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
 import EditImportantNotice from "../_dashboard/pages/ImportantNotice/EditImportantNotice";
 import EditBannerPage from "../_dashboard/pages/Banner/EditBannerPage";
+import EditPhase from "../_dashboard/pages/Phases/EditPhase";
 
 const adminRoutes = [
   {
@@ -213,7 +215,10 @@ const adminRoutes = [
 				path: "phases/list",
 				element: <PhasesList />,
 			},
-
+			{
+				path: "phases/edit/:id",
+				element: <EditPhase />,
+			},
 			{
 				path: "property-dealers/add",
 				element: <AddPropertyDealersPage />,
@@ -224,7 +229,7 @@ const adminRoutes = [
 			},
 			{
 				path: "property-dealers/edit/:id",
-				element: <EditPropertyDealer />,
+				element: <EditPropertyDealerPage />,
 			},
 			{
 				path: "engineers/add",

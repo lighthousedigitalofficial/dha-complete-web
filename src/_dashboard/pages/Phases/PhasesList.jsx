@@ -9,6 +9,7 @@ import {
 	useDeletePhaseMutation,
 	useGetPhasesQuery,
 } from "../../../redux/slices/phasesApiSlice";
+import { Link } from "react-router-dom";
 
 const PhasesList = () => {
 	const { data: phases, isLoading, refetch } = useGetPhasesQuery({});
@@ -72,9 +73,9 @@ const PhasesList = () => {
 			render: (_, record) => (
 				<div className="flex gap-2 items-center px-2">
 					{/* Example action buttons (Edit/Delete) */}
-					<a onClick={() => handleEdit(record)}>
-						<FaEye />
-					</a>
+					<Link to={`/phases/edit/${record._id}`} >
+						<FaEdit />
+					</Link>
 
 					{/* Delete button */}
 					<a
