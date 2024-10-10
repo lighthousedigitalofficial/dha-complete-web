@@ -62,9 +62,9 @@ const PhasesList = () => {
 			key: "title",
 		},
 		{
-			title: "Type",
-			dataIndex: "type",
-			key: "type",
+			title: "Location",
+			dataIndex: "location",
+			key: "location",
 		},
 		{
 			title: "Action",

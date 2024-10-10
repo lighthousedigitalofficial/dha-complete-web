@@ -1,5 +1,7 @@
-export const BASE_URL = "http://localhost:5000"; // If using proxy
+// export const BASE_URL = "http://localhost:5000"; // If using proxy
 // export const BASE_URL = "https://dha-api.vercel.app"; // If not using proxy
+export const BASE_URL =
+	"https://dha-api-light-houses-projects-8457c583.vercel.app"; // If not using proxy
 
 // API ROUTES
 export const ASSOCIATE_WEBSITES_URL = "/api/associate-websites";

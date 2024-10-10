@@ -1,6 +1,5 @@
 import DashboardLayout from "../_dashboard/DashboardLayout";
 import AddAffiliatesPage from "../_dashboard/pages/Affiliates/AddAffiliatesPage";
-import AddAssociatesWebsitesPage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitesPage";
 import AddBannerPage from "../_dashboard/pages/Banner/AddBannerPage";
 import AddEventPage from "../_dashboard/pages/Events/AddEventPage";
 import AddFacilitiesPage from "../_dashboard/pages/Facilities/AddFacilitiesPage";
@@ -42,6 +41,8 @@ import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
 import EditVideo from "../_dashboard/pages/Vidoes/EditVideo";
 import EditPropertyDealerPage from "../_dashboard/pages/PropertyDealers/EditPropertyDealer";
 import NotFoundPage from "../_user/pages/NotFoundPage";
+import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
+import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
 
 const adminRoutes = [
 	{
@@ -83,7 +84,7 @@ const adminRoutes = [
 			},
 			{
 				path: "associates/add",
-				element: <AddAssociatesWebsitesPage />,
+				element: <AddAssociatesWebsitePage />,
 			},
 			{
 				path: "associates/list",
@@ -111,10 +112,10 @@ const adminRoutes = [
 				path: "video/edit/:id",
 				element: <EditVideo />,
 			},
-			{
-				path: "associates/add",
-				element: <AddAssociatesWebsitesPage />,
-			},
+			// {
+			// 	path: "associates/add",
+			// 	element: <AddAssociatesWebsitesPage />,
+			// },
 			{
 				path: "associates/list",
 				element: <AssociatesWebsiteList />,
@@ -241,11 +242,16 @@ const adminRoutes = [
 				path: "profile",
 				element: <UserDetailPage />,
 			},
+
 			{
 				path: "*",
 				element: <NotFoundPage />,
 			},
 		],
+	},
+	{
+		path: "/not-authorized",
+		element: <NotAuthorizedPage />,
 	},
 ];
 

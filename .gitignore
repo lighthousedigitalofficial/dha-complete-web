@@ -9,6 +9,13 @@ uploads/
 ./uploads
 uploads
 
+dist 
+./dist 
+/dist 
+
+dist.rar
+./dist.rar
+
 
 /.pnp
 .pnp.js
