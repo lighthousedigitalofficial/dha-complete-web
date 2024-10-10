@@ -29,9 +29,9 @@ import TeamList from "../_dashboard/pages/Team/TeamList";
 import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
 import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
 
-import UserList from "./../_dashboard/pages/User/UserList";
-import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
-import UserDetailPage from "./../_dashboard/pages/User/UserDetailPage";
+// import UserList from "./../_dashboard/pages/User/UserList";
+// import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
+// import UserDetailPage from "./../_dashboard/pages/User/UserDetailPage";
 
 import SalePropertyForm from "./../_dashboard/pages/SaleProperty/AddSalePropertyPage";
 import RegistrationPropertyPage from "./../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
@@ -42,6 +42,10 @@ import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
 import NotFoundPage from "../_user/pages/NotFoundPage";
 import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
 import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
+import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/EditRegistrationProperty";
+import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
+import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
+import EditImportantNotice from "../_dashboard/pages/ImportantNotice/EditImportantNotice";
 
 const adminRoutes = [
   {
@@ -139,6 +143,11 @@ const adminRoutes = [
       },
 
       {
+        path: "important-notices/edit/:id",
+        element: <EditImportantNotice />,
+      },
+
+      {
         path: "media/add",
         element: <AddMediaPage />,
       },
@@ -151,14 +160,14 @@ const adminRoutes = [
         path: "phases/add",
         element: <AddPhasePage />,
       },
-      {
-        path: "users/add",
-        element: <AddUserPage />,
-      },
-      {
-        path: "users/list",
-        element: <UserList />,
-      },
+      // {
+      //   path: "users/add",
+      //   element: <AddUserPage />,
+      // },
+      // {
+      //   path: "users/list",
+      //   element: <UserList />,
+      // },
       {
         path: "portal-guide/add",
         element: <AddPortalPage />,
@@ -245,14 +254,14 @@ const adminRoutes = [
         element: <PortGuidesList />,
       },
 
-      {
-        path: "users/list",
-        element: <UserList />,
-      },
-      {
-        path: "profile",
-        element: <UserDetailPage />,
-      },
+      // {
+      //   path: "users/list",
+      //   element: <UserList />,
+      // },
+      // {
+      //   path: "profile",
+      //   element: <UserDetailPage />,
+      // },
 
       {
         path: "*",

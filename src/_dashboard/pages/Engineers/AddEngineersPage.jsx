@@ -57,10 +57,7 @@ const EngineersForm = () => {
   return (
     <div className="border border-primary bg-white p-8 rounded-md shadow-md">
       <h2 className="text-2xl font-bold mb-6">Add Engineer</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           label="Registered Number"
           name="registerNumber"
@@ -134,14 +131,14 @@ const EngineersForm = () => {
 
         {/* Affiliate Dropdown */}
         <div className="mb-4">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700">
             Affiliate ID
           </label>
           <select
             {...register("affiliateId", {
               required: "Affiliate ID is required",
             })}
-            className="block px-2 py-2  w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           >
             <option value="">Select Affiliate</option>
             {isLoadingAffiliates ? (
@@ -159,21 +156,20 @@ const EngineersForm = () => {
           )}
         </div>
 
+        <button
+          type="submit"
+          className="w-full px-4 py-2 bg-green-500 text-white rounded-md"
+          disabled={isLoading}
+        >
+          {isLoading ? "Adding..." : "Add Engineer"}
+        </button>
+
         {successMessage && (
           <p className="text-green-500 mt-4">{successMessage}</p>
         )}
 
         {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
       </form>
-      <div className="flex justify-end items-center">
-        <button
-          type="submit"
-          className=" px-4 py-2 bg-green-500 text-white rounded-md"
-          disabled={isLoading}
-        >
-          {isLoading ? "Adding..." : "Add Engineer"}
-        </button>
-      </div>
     </div>
   );
 };

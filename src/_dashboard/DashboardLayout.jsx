@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 import Loader from "./../components/shared/Loader";
 import { FaTimes } from "react-icons/fa";
 import Navbar from "./_components/header/Navbar";
@@ -8,26 +8,26 @@ import Sidebar from "./_components/shared/Sidebar";
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
 
-  const user = useAuth();
-  const navigate = useNavigate();
+  // const user = useAuth();
+  // const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  console.log(user);
+  // console.log(user);
 
-  useEffect(() => {
-    if (!user) {
-      // Redirect to login if not authenticated
-      navigate("/user/auth/sign-in");
-    } else if (user && user?.doc && user?.doc?.role === "admin") {
-      setIsAdmin(true);
-      navigate("/");
-    } else navigate("/not-authorized");
-  }, [navigate, user]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     // Redirect to login if not authenticated
+  //     navigate("/user/auth/sign-in");
+  //   } else if (user && user?.doc && user?.doc?.role === "admin") {
+  //     setIsAdmin(true);
+  //     navigate("/");
+  //   } else navigate("/not-authorized");
+  // }, [navigate, user]);
 
   // If user is authenticated and is an admin, render the dashboard layout
   return !isAdmin ? (

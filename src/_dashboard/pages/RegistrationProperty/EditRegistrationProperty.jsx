@@ -1,37 +1,66 @@
+import { useEffect, useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
-
 import toast from "react-hot-toast";
 import {
-  useCreateRegistrationPropertyMutation,
+  useGetRegistrationPropertyByIdQuery,
   useUpdateRegistrationPropertyMutation,
 } from "../../../redux/slices/registrationPropertySlice";
+import { useParams } from "react-router-dom";
 
 const EditRegistrationProperty = () => {
-  const methods = useForm();
-  //   const [updateRegistrationProperty] =
-  //     useUpdateRegistrationPropertyMutation();
+  const { id } = useParams();
+  const {
+    data: propertyData,
+    isLoading: isLoadingProperty,
+    refetch,
+  } = useGetRegistrationPropertyByIdQuery(id);
 
   const [updateRegistrationProperty, { isLoading, isError }] =
     useUpdateRegistrationPropertyMutation();
-  // const [deleteEngineer] = useDeleteEngineerMutation();
+
+  const methods = useForm({
+    mode: "onBlur",
+    defaultValues: useMemo(() => {
+      return propertyData?.doc || {};
+    }, [propertyData?.doc]),
+  });
+
+  useEffect(() => {
+    if (propertyData?.doc) {
+      methods.reset(propertyData.doc); // Reset form with existing data
+    }
+  }, [propertyData, methods]);
 
   // Handle form submit
   const handleFormSubmit = async (data) => {
     try {
-      // Call the mutation to create a registration property
-      await updateRegistrationProperty(data).unwrap();
-      toast.success("Property registered successfully!");
-      methods.reset(); // Reset the form after successful submission
+      const formData = {
+        id,
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        country: data.country,
+        requirement: data.requirement,
+        phase: data.phase,
+        size: data.size,
+        budget: data.budget,
+        remarks: data.remarks,
+      };
+
+      await updateRegistrationProperty(formData).unwrap();
+      toast.success("Property updated successfully!");
+      refetch();
+      methods.reset(); // Reset form after successful submission
     } catch (error) {
-      toast.error("Failed to register the property. Please try again.");
+      toast.error("Failed to update the property. Please try again.");
     }
   };
 
   return (
     <FormProvider {...methods}>
       <div className=" bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-2xl font-bold mb-6">Update Register Property</h2>
+        <h2 className="text-2xl font-bold mb-6">Update Property</h2>
         <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField
@@ -49,6 +78,10 @@ const EditRegistrationProperty = () => {
               required
               errors={methods.formState.errors}
               errorMessage="Phone is required"
+              pattern={{
+                value: /^[0-9]{10}$/, // Example regex for phone number validation
+                message: "Phone number must be 10 digits",
+              }}
             />
             <InputField
               label="Email"
@@ -57,6 +90,10 @@ const EditRegistrationProperty = () => {
               required
               errors={methods.formState.errors}
               errorMessage="Email is required"
+              pattern={{
+                value: /^\S+@\S+$/i,
+                message: "Email format is invalid",
+              }}
             />
             <InputField
               label="Country"
@@ -112,6 +149,7 @@ const EditRegistrationProperty = () => {
               required
               errors={methods.formState.errors}
               errorMessage="Budget Price is required"
+              type="number" // Adding type number for better UX
             />
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
@@ -129,9 +167,10 @@ const EditRegistrationProperty = () => {
               className=" px-4 py-2 bg-primary-500 text-white rounded-md"
               disabled={isLoading}
             >
-              {isLoading ? "Update..." : "Update  Register Property"}
+              {isLoading ? "Updating..." : "Update Property"}
             </button>
           </div>
+
           {isError && (
             <p className="text-red-500 text-sm mt-2">
               Something went wrong, please try again.
@@ -144,5 +183,3 @@ const EditRegistrationProperty = () => {
 };
 
 export default EditRegistrationProperty;
-
-EditRegistrationProperty.js;
