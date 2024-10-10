@@ -1,6 +1,5 @@
 import DashboardLayout from "../_dashboard/DashboardLayout";
 import AddAffiliatesPage from "../_dashboard/pages/Affiliates/AddAffiliatesPage";
-import AddAssociatesWebsitesPage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitesPage";
 import AddBannerPage from "../_dashboard/pages/Banner/AddBannerPage";
 import AddEventPage from "../_dashboard/pages/Events/AddEventPage";
 import AddFacilitiesPage from "../_dashboard/pages/Facilities/AddFacilitiesPage";
@@ -29,18 +28,20 @@ import RegistrationPropertyList from "../_dashboard/pages/RegistrationProperty/R
 import TeamList from "../_dashboard/pages/Team/TeamList";
 import PortGuidesList from "../_dashboard/pages/PortalGuide/PortalGuidesList";
 import AddPortalPage from "../_dashboard/pages/PortalGuide/AddPortalPage";
-import UserDetailPage from "../_dashboard/pages/User/UserDetailPage";
-import AddUserPage from "../_dashboard/pages/User/AddUserPage";
-import UserList from "../_dashboard/pages/User/UserList";
-import EditEngineersPage from "../_dashboard/pages/Engineers/EditEngineersPage";
-import EngineersForm from "../_dashboard/pages/Engineers/AddEngineersPage";
-import EditPortalguides from "../_dashboard/pages/PortalGuide/EditPortalguides";
-import EditRegistrationProperty from "../_dashboard/pages/RegistrationProperty/EditRegistrationProperty";
-import RegistrationPropertyPage from "../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
 
-// import UserList from "./../_dashboard/pages/User/UserList";
-// import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
-// import UserDetailPage from "./pages/User/UserDetailPage";
+import UserList from "./../_dashboard/pages/User/UserList";
+import AddUserPage from "./../_dashboard/pages/User/AddUserPage";
+import UserDetailPage from "./../_dashboard/pages/User/UserDetailPage";
+
+import SalePropertyForm from "./../_dashboard/pages/SaleProperty/AddSalePropertyPage";
+import RegistrationPropertyPage from "./../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage";
+import EngineersForm from "./../_dashboard/pages/Engineers/AddEngineersPage";
+import TeamForm from "./../_dashboard/pages/Team/AddTeamPage";
+import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage";
+import AddActivityPage from "../_dashboard/pages/Activities/AddActivityPage";
+import NotFoundPage from "../_user/pages/NotFoundPage";
+import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
+import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
 
 const adminRoutes = [
   {
@@ -53,6 +54,26 @@ const adminRoutes = [
       },
 
       {
+        path: "sale-property/add",
+        element: <SalePropertyForm />,
+      },
+      {
+        path: "registration-property/add",
+        element: <RegistrationPropertyPage />,
+      },
+      {
+        path: "purchase-property/add",
+        element: <PurchasePropertyForm />,
+      },
+      {
+        path: "engineers/add",
+        element: <EngineersForm />,
+      },
+      {
+        path: "team/add",
+        element: <TeamForm />,
+      },
+      {
         path: "affiliates/add",
         element: <AddAffiliatesPage />,
       },
@@ -62,7 +83,7 @@ const adminRoutes = [
       },
       {
         path: "associates/add",
-        element: <AddAssociatesWebsitesPage />,
+        element: <AddAssociatesWebsitePage />,
       },
       {
         path: "associates/list",
@@ -90,16 +111,6 @@ const adminRoutes = [
         path: "videos/list",
         element: <VideosList />,
       },
-
-      {
-        path: "associates/add",
-        element: <AddAssociatesWebsitesPage />,
-      },
-      {
-        path: "associates/list",
-        element: <AssociatesWebsiteList />,
-      },
-
       {
         path: "banners/add",
         element: <AddBannerPage />,
@@ -238,12 +249,20 @@ const adminRoutes = [
         path: "users/list",
         element: <UserList />,
       },
+      {
+        path: "profile",
+        element: <UserDetailPage />,
+      },
 
-      //   {
-      //     path: "profile",
-      //     element: <UserDetailPage />,
-      //   },
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
     ],
+  },
+  {
+    path: "/not-authorized",
+    element: <NotAuthorizedPage />,
   },
 ];
 
