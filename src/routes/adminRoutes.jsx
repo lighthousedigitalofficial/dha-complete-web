@@ -40,7 +40,6 @@ import EngineersForm from "./../_dashboard/pages/Engineers/AddEngineersPage";
 import TeamForm from "./../_dashboard/pages/Team/AddTeamPage";
 import PurchasePropertyForm from "./../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage";
 import EditVideo from "../_dashboard/pages/Vidoes/EditVideo";
-import EditPropertyDealerPage from "../_dashboard/pages/PropertyDealers/EditPropertyDealer";
 import NotFoundPage from "../_user/pages/NotFoundPage";
 import NotAuthorizedPage from "../_dashboard/pages/NotAuthorizedPage";
 import AddAssociatesWebsitePage from "../_dashboard/pages/AssociatesWebsites/AddAssociatesWebsitePage";
