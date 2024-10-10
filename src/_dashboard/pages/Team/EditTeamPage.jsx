@@ -1,30 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
-import { useGetTeamByIdQuery, useUpdateTeamMutation } from "../../../redux/slices/teamApiSlice";
+import {
+  useGetTeamByIdQuery,
+  useUpdateTeamMutation,
+} from "../../../redux/slices/teamsApiSlice";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 
-const EditTeamPage = ({ teamId }) => { // Accept teamId as a prop
+const EditTeamPage = () => {
+  const { id: teamId } = useParams(); // Fetch team ID from URL parameters
+  const navigate = useNavigate(); // Initialize navigation
   const methods = useForm();
   const { data: teamData, isLoading: isFetching } = useGetTeamByIdQuery(teamId); // Fetch team data by ID
-  const [updateTeam, { isLoading, isError, isSuccess, error }] = useUpdateTeamMutation();
+  const [updateTeam, { isLoading, isError, isSuccess, error }] =
+    useUpdateTeamMutation();
+
+  // State for image preview or status (if applicable)
+  const [status, setStatus] = useState("");
 
   // Set default values when teamData is fetched
   useEffect(() => {
-    if (teamData) {
+    if (teamData?.doc) {
       methods.reset({
-        name: teamData.name,
-        designation: teamData.designation,
-        extn: teamData.extn,
-        status: teamData.status,
+        name: teamData?.doc?.name,
+        designation: teamData?.doc?.designation,
+        extn: teamData?.doc?.extn,
+        status: teamData?.doc?.status,
       });
+      setStatus(teamData?.doc?.status); // Update the status or other state variables
     }
-  }, [teamData, methods]);
+  }, [teamData?.doc, methods]);
 
+  // Handle form submission
   const handleFormSubmit = async (data) => {
     try {
       // Call the mutation and pass form data along with team ID
       const response = await updateTeam({ id: teamId, ...data }).unwrap();
       console.log("Team updated successfully:", response);
+      navigate("/team/list"); // Navigate to the teams page after successful update
     } catch (err) {
       console.error("Failed to update team:", err);
     }
@@ -82,6 +95,8 @@ const EditTeamPage = ({ teamId }) => { // Accept teamId as a prop
                       required: "Status is required",
                     })}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                    value={status} // Control the select value from state
+                    onChange={(e) => setStatus(e.target.value)} // Update the status state on change
                   >
                     <option value="">Select Status</option>
                     <option value="active">Active</option>
@@ -98,7 +113,9 @@ const EditTeamPage = ({ teamId }) => { // Accept teamId as a prop
 
             <button
               type="submit"
-              className={`px-4 py-2 bg-green-500 text-white rounded-md ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`px-4 py-2 bg-green-500 text-white rounded-md ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               disabled={isLoading}
             >
               {isLoading ? "Updating..." : "Update Member"}
@@ -107,10 +124,14 @@ const EditTeamPage = ({ teamId }) => { // Accept teamId as a prop
         )}
 
         {isSuccess && (
-          <p className="mt-4 text-green-500">Team member updated successfully!</p>
+          <p className="mt-4 text-green-500">
+            Team member updated successfully!
+          </p>
         )}
         {isError && (
-          <p className="mt-4 text-red-500">Error: {error?.data?.message || "Failed to update team member"}</p>
+          <p className="mt-4 text-red-500">
+            Error: {error?.data?.message || "Failed to update team member"}
+          </p>
         )}
       </div>
     </FormProvider>
