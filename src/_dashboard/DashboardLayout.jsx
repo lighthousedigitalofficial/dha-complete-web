@@ -17,8 +17,6 @@ const DashboardLayout = () => {
 		setIsSidebarOpen(!isSidebarOpen);
 	};
 
-	console.log(user);
-
 	useEffect(() => {
 		if (!user) {
 			// Redirect to login if not authenticated
