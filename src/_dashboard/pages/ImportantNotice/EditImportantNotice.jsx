@@ -59,7 +59,7 @@ const EditImportantNotice = () => {
                 id,
                 title: data.title,
                 description: data.description,
-                image: data.imageUrl, // Use the new or existing image
+                image: imageUrl || data.imageUrl, // Use the new or existing image
             }
 
             await updateNotice(noticeData).unwrap()

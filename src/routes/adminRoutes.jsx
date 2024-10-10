@@ -36,7 +36,6 @@ import UserDetailPage from './../_dashboard/pages/User/UserDetailPage'
 
 import SalePropertyForm from './../_dashboard/pages/SaleProperty/AddSalePropertyPage'
 import RegistrationPropertyPage from './../_dashboard/pages/RegistrationProperty/AddPropertyRegistrationPage'
-import EngineersForm from './../_dashboard/pages/Engineers/AddEngineersPage'
 import TeamForm from './../_dashboard/pages/Team/AddTeamPage'
 import PurchasePropertyForm from './../_dashboard/pages/PurchaseProperty/AddPurchasePropertyPage'
 import EditVideo from '../_dashboard/pages/Vidoes/EditVideo'
@@ -53,6 +52,7 @@ import EditEngineersPage from '../_dashboard/pages/Engineers/EditEngineersPage'
 import EditImportantNotice from '../_dashboard/pages/ImportantNotice/EditImportantNotice'
 import EditMediaPage from '../_dashboard/pages/Media/EditMediaPage'
 import EditBannerPage from '../_dashboard/pages/Banner/EditBannerPage'
+import AddEngineersPage from './../_dashboard/pages/Engineers/AddEngineersPage'
 
 const adminRoutes = [
     {
@@ -78,7 +78,7 @@ const adminRoutes = [
             },
             {
                 path: 'engineers/add',
-                element: <EngineersForm />,
+                element: <AddEngineersPage />,
             },
             {
                 path: 'team/add',
@@ -183,6 +183,10 @@ const adminRoutes = [
                 path: 'media/list',
                 element: <MediaList />,
             },
+            {
+                path: 'media/edit/:id',
+                element: <EditMediaPage />,
+            },
 
             {
                 path: 'phases/add',
@@ -228,10 +232,7 @@ const adminRoutes = [
                 path: 'property-dealers/edit/:id',
                 element: <EditPropertyDealerPage />,
             },
-            {
-                path: 'engineers/add',
-                element: <EngineersForm />,
-            },
+
             {
                 path: 'engineers/list',
                 element: <EngineersList />,
@@ -296,12 +297,11 @@ const adminRoutes = [
                 path: 'profile',
                 element: <UserDetailPage />,
             },
-
-            {
-                path: '*',
-                element: <NotFoundPage />,
-            },
         ],
+    },
+    {
+        path: '*',
+        element: <NotFoundPage />,
     },
     {
         path: '/not-authorized',
