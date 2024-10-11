@@ -1,12 +1,14 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import uploadImage from "../../../helpers/imageUpload";
 import uploadVideo from "../../../helpers/videoUpload";
 import { useCreateBannerMutation } from "../../../redux/slices/bannerSlice";
 import InputField from "../../_components/shared/InputField";
 
 const AddBannerPage = () => {
+	const navigate = useNavigate(); // Initialize navigate
 	const [createBanner, { isLoading }] = useCreateBannerMutation();
 
 	const {
@@ -79,6 +81,9 @@ const AddBannerPage = () => {
 			reset();
 			setImagePreview(null);
 			setMediaFile(null);
+
+			// Navigate to the banners list page after successful submission
+			navigate("/banners/list"); // Add this line for navigation
 		} catch (error) {
 			console.error("Error creating banner:", error);
 			toast.error("Error creating banner.");

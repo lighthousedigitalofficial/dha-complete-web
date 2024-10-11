@@ -4,8 +4,10 @@ import InputField from "../../_components/shared/InputField";
 import { useCreateMediaMutation } from "../../../redux/slices/mediaApiSlice";
 import { useGetBannersQuery } from "../../../redux/slices/bannerSlice";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AddMediaPage = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [createMedia] = useCreateMediaMutation();
   const { data: banners, isLoading: bannersLoading } = useGetBannersQuery();
@@ -27,6 +29,9 @@ const AddMediaPage = () => {
       toast.success("Media created successfully");
       reset();
       setMediaBanner("");
+
+      // Navigate to media/list after successful submission
+      navigate("/media/list"); // Update this route if needed
     } catch (error) {
       console.error("Failed to create media:", error);
     }

@@ -53,6 +53,8 @@ import EditImportantNotice from '../_dashboard/pages/ImportantNotice/EditImporta
 import EditMediaPage from '../_dashboard/pages/Media/EditMediaPage'
 import EditBannerPage from '../_dashboard/pages/Banner/EditBannerPage'
 import AddEngineersPage from './../_dashboard/pages/Engineers/AddEngineersPage'
+import UserDetails from '../_dashboard/pages/User/UserDetails'
+import UserView from '../_dashboard/pages/User/UserView'
 
 const adminRoutes = [
     {
@@ -199,6 +201,14 @@ const adminRoutes = [
             {
                 path: 'users/list',
                 element: <UserList />,
+            },
+            {
+                path: 'user-details/:id',
+                element: <UserDetails />,
+            },
+            {
+                path: 'user-view/:id',
+                element: <UserView />,
             },
             {
                 path: 'portal-guide/add',

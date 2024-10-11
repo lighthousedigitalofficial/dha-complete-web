@@ -4,10 +4,12 @@ import { useState } from "react";
 import uploadimage from "../../../helpers/imageUpload";
 import toast from "react-hot-toast";
 import { useCreateEventMutation } from "../../../redux/slices/event";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AddEventPage = () => {
   const methods = useForm();
   const [createEvent, { isLoading }] = useCreateEventMutation(); // Use createEvent mutation from RTK Query
+  const navigate = useNavigate(); // Initialize navigate
 
   const [uploading, setUploading] = useState(false);
   const [imagePreviews, setImagePreviews] = useState([]); // State for multiple image previews
@@ -35,9 +37,13 @@ const AddEventPage = () => {
       // Call the mutation to create an event
       await createEvent(eventData).unwrap();
       toast.success("Event created successfully!");
+      
       methods.reset(); // Reset form after submission
       setImagePreviews([]); // Clear image previews
       setUploadedImages([]); // Clear uploaded images
+
+      // Navigate to events/list after successful submission
+      navigate("/events/list"); // Redirect to events/list
     } catch (error) {
       setUploading(false);
       console.error("Error creating event:", error);

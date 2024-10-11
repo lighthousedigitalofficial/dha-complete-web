@@ -1,11 +1,12 @@
 import { useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useCreateNoticeMutation } from "../../../redux/slices/noticesApiSlice";
 import uploadImage from "../../../helpers/imageUpload";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AddImportantNoticePage = () => {
+	const navigate = useNavigate(); // Initialize navigate function
 	const [createNotice] = useCreateNoticeMutation();
 
 	const [imageFile, setImageFile] = useState(null); // Store the actual image file
@@ -31,9 +32,6 @@ const AddImportantNoticePage = () => {
 	// Form submit logic
 	const onSubmit = async (data) => {
 		try {
-			console.log(data);
-			console.log(imageFile);
-
 			let url = null;
 			// Check if an image file is selected and upload it to Cloudinary
 			if (imageFile) {
@@ -54,6 +52,9 @@ const AddImportantNoticePage = () => {
 			toast.success("Notice created successfully");
 			reset();
 			setImagePreview(null); // Clear image preview
+
+			// Navigate to the important notices list after successful submission
+			navigate('/important-notices/list'); 
 		} catch (error) {
 			toast.error("Error creating notice");
 		}

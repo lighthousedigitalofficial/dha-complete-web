@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom"; // Import Link
 
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
@@ -12,9 +13,7 @@ import { toast } from "react-hot-toast"; // Optional for notifications
 
 const UserList = () => {
   const { data: users, isLoading, refetch } = useGetUsersQuery({});
-
-  console.log(users);
-
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false); // State for delete action
@@ -42,18 +41,12 @@ const UserList = () => {
         toast.error("Failed to delete the user."); // Show error notification
         console.error("Delete error:", error);
       } finally {
-        setIsDeleting(false); // Reset delete loading state
-        setIsModalOpen(false); // Close modal
-        setSelectedUserId(null); // Clear selected user ID
+        setIsDeleting(false); 
+        setIsModalOpen(false); 
+        setSelectedUserId(null); 
       }
     }
   };
-
-  const handleEdit = (record) => {
-    // Handle the edit functionality (implement this based on your requirements)
-    console.log("Editing user:", record);
-  };
-
 
   const columns = [
     {
@@ -64,22 +57,22 @@ const UserList = () => {
     },
     {
       title: "Name",
-      dataIndex: "firstName", // Assuming firstName contains the person's name
+      dataIndex: "firstName", 
       key: "firstName",
     },
     {
       title: "Email",
-      dataIndex: "email", // Assuming email contains the user's email
+      dataIndex: "email", 
       key: "email",
     },
     {
       title: "Phone",
-      dataIndex: "phone", // Assuming phone contains the user's phone number
+      dataIndex: "phone", 
       key: "phone",
     },
     {
       title: "Role",
-      dataIndex: "role", // Assuming role contains the user's role
+      dataIndex: "role", 
       key: "role",
     },
     {
@@ -87,12 +80,18 @@ const UserList = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center px-2">
-          <a
-            onClick={() => handleEdit(record)} // Trigger edit action
+          <Link
+            to={`/user-view/${record._id}`} // Link to user details page
             className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
           >
-           	<FaEye />
-          </a>
+            <FaEye />
+          </Link>
+          <Link
+            to={`/user-details/${record._id}`} // Link to user edit page
+            className="border p-2 hover:text-white hover:bg-blue-500 rounded-md border-primary-500 text-blue-500"
+          >
+            <FaEdit />
+          </Link>
           <a
             onClick={() => handleDeleteClick(record._id)} // Trigger delete confirmation
             className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
@@ -120,9 +119,9 @@ const UserList = () => {
       <ConfirmationModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onConfirm={handleConfirmDelete} // Confirm deletion
+        onConfirm={handleConfirmDelete} 
         title="Confirm Deletion"
-        message="Are you sure you want to delete this user?" // Modal message correction
+        message="Are you sure you want to delete this user?" 
       />
     </div>
   );

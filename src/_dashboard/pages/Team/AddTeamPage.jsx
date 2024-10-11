@@ -1,21 +1,24 @@
 import { useForm, FormProvider } from "react-hook-form";
 import InputField from "../../_components/shared/InputField";
 import { useCreateTeamMutation } from "../../../redux/slices/teamsApiSlice";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const TeamForm = () => {
-
 	const methods = useForm();
-	const [createTeam, { isLoading, isError, isSuccess, error }] =
-		useCreateTeamMutation();
-
+	const [createTeam, { isLoading, isError, isSuccess, error }] = useCreateTeamMutation();
+	const navigate = useNavigate(); // Initialize useNavigate
 
 	const handleFormSubmit = async (data) => {
 		try {
 			// Call the mutation and pass form data
 			const response = await createTeam(data).unwrap();
 			console.log("Team added successfully:", response);
+			toast.success("Team member added successfully!"); // Show success toast
+			navigate('/events/list'); // Navigate to events/list on success
 		} catch (err) {
 			console.error("Failed to add team:", err);
+			toast.error(error?.data?.message || "Failed to add team member."); // Show error toast
 		}
 	};
 
