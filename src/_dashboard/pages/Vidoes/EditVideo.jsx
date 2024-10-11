@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, FormProvider } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import uploadVideo from '../../../helpers/videoUpload' // For uploading videos
+import uploadVideo from '../../../helpers/videoUpload'
 import {
     useUpdateVideoMutation,
     useGetVideoQuery,
@@ -17,15 +17,14 @@ const EditVideoPage = () => {
     const methods = useForm()
 
     const { data: video, isLoading: isVideoLoading } = useGetVideoQuery(id)
-    const { isLoading: isMediasLoading } = useGetMediaQuery()
+    const { data: medias, isLoading: isMediasLoading } = useGetMediaQuery()
     const [updateVideo, { isLoading: isUpdating }] = useUpdateVideoMutation()
 
     const [videoPreview, setVideoPreview] = useState(null)
+    const [initialValues, setInitialValues] = useState(null)
     const [uploading, setUploading] = useState(false)
-    const [mediaFile, setMediaFile] = useState(null) // Store the actual file
-    const [initialValues, setInitialValues] = useState({})
+    const [mediaFile, setMediaFile] = useState(null)
 
-    // Load initial video data when component mounts
     useEffect(() => {
         if (video?.doc) {
             const initialFormValues = {
@@ -39,113 +38,155 @@ const EditVideoPage = () => {
         }
     }, [video, methods])
 
-    const handleVideoChange = (event) => {
-        const file = event.target.files[0]
-        if (file) {
-            setMediaFile(file) // Store the actual file
-            setVideoPreview(URL.createObjectURL(file)) // Create a preview for the video
-        }
-    }
-
     const handleFormSubmit = async (data) => {
         try {
             setUploading(true)
             let videoUrl = video.doc.url
 
-            // Check if a new video file is selected
+            // If a new video file is selected, upload it
             if (mediaFile) {
                 videoUrl = await uploadVideo(mediaFile, 'video_uploads')
             }
 
-            // Prepare the updated video data
             const videoData = {
                 title: data.title,
                 url: videoUrl,
                 mediaId: data.media,
             }
 
-            // Call the API to update the video
             await updateVideo({ id, ...videoData }).unwrap()
             toast.success('Video updated successfully!')
             navigate('/videos/list')
         } catch (error) {
-            console.error('Error updating video:', error)
             toast.error('Failed to update the video. Please try again.')
         } finally {
             setUploading(false)
         }
     }
 
+    const handleVideoChange = (event) => {
+        const file = event.target.files[0]
+        if (file) {
+            const videoURL = URL.createObjectURL(file)
+            setVideoPreview(videoURL)
+            setMediaFile(file) // Store the selected file
+        }
+    }
+
+    const resetForm = () => {
+        methods.reset(initialValues) // Reset form to initial values
+        setVideoPreview(initialValues?.video || null)
+        setMediaFile(null) // Clear the selected file
+    }
+
+    // Clean up URL object after the preview is no longer needed
+    useEffect(() => {
+        return () => {
+            if (videoPreview) {
+                URL.revokeObjectURL(videoPreview)
+            }
+        }
+    }, [videoPreview])
+
     if (isVideoLoading || isMediasLoading) {
         return <Loader />
     }
 
-    return (
-        <div className="p-4 rounded-md shadow-md m-5">
-            <h2 className="text-2xl font-semibold mb-6">Edit Video</h2>
-
-            <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
-                <div className="mb-4">
-                    <InputField
-                        label="Title"
-                        name="title"
-                        register={methods.register}
-                        required
-                        errors={methods.formState.errors}
-                        errorMessage="Title is required"
-                    />
-                </div>
-
-                {/* Media File Upload */}
-                <div className="mt-4 w-full">
-                    <label
-                        className="block text-[1rem] font-medium mb-2"
-                        htmlFor="video-upload"
-                    >
-                        Choose Video
-                    </label>
-                    <input
-                        type="file"
-                        id="video-upload"
-                        accept="video/*"
-                        onChange={handleVideoChange}
-                        className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md cursor-pointer p-2"
-                    />
-                </div>
-
-                {/* Video Preview Section */}
-                <div className="mt-4">
-                    <h3 className="font-semibold mb-2">Video Preview</h3>
-                    {videoPreview ? (
-                        <video
-                            src={videoPreview}
-                            controls
-                            className="h-72 object-cover w-full rounded-md"
+    return isVideoLoading ? (
+        <Loader />
+    ) : video && video?.doc ? (
+        <FormProvider {...methods}>
+            <div className="p-4 rounded-md shadow-md m-5 bg-white">
+                <h2 className="text-2xl font-semibold mb-6">Update Video</h2>
+                <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Title Input */}
+                        <InputField
+                            label="Title"
+                            name="title"
+                            register={methods.register}
+                            required
+                            errors={methods.formState.errors}
+                            errorMessage="Title is required"
                         />
-                    ) : (
-                        <p>No video selected</p>
-                    )}
-                </div>
 
-                {/* Action Buttons */}
-                <div className="flex justify-end mt-6 gap-2">
-                    <button
-                        type="button"
-                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-                        onClick={() => methods.reset(initialValues)}
-                    >
-                        Reset
-                    </button>
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-primary-500 text-white rounded-md"
-                        disabled={uploading || isUpdating}
-                    >
-                        {uploading || isUpdating ? 'Uploading...' : 'Update'}
-                    </button>
-                </div>
-            </form>
-        </div>
+                        {/* Select Media */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Select Media
+                            </label>
+                            <select
+                                {...methods.register('media', {
+                                    required: 'Media is required',
+                                })}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            >
+                                <option value="">Select Media</option>
+                                {medias?.doc?.map((media) => (
+                                    <option key={media._id} value={media._id}>
+                                        {media.title}
+                                    </option>
+                                ))}
+                            </select>
+                            {methods.formState.errors.media && (
+                                <p className="text-red-500 text-sm">
+                                    {methods.formState.errors.media.message}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Video Upload */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Upload Video
+                            </label>
+                            <input
+                                type="file"
+                                accept="video/*"
+                                {...methods.register('video')}
+                                onChange={handleVideoChange}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            />
+                        </div>
+
+                        {/* Video Preview */}
+                        {videoPreview && (
+                            <div className="flex flex-col items-center">
+                                <div className="border-2 border-gray-300 rounded-md w-full md:w-64 h-64 flex items-center justify-center">
+                                    <video
+                                        className="object-cover h-full w-full rounded-md"
+                                        controls
+                                        src={videoPreview}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex justify-end mt-6 gap-2">
+                        <button
+                            type="reset"
+                            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+                            onClick={resetForm}
+                        >
+                            Reset
+                        </button>
+                        <button
+                            type="submit"
+                            className="bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500 mr-2"
+                            disabled={uploading || isUpdating}
+                        >
+                            {uploading || isUpdating
+                                ? 'Updating...'
+                                : 'Update Video'}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </FormProvider>
+    ) : (
+        <p>Video data not found.</p>
     )
 }
 
