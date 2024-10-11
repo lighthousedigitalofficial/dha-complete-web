@@ -21,11 +21,13 @@ export const apiSlice = createApi({
 	baseQuery,
 	credentials: "include",
 	tagTypes: [
+		"Dashboard",
 		"AssociatesWebsite",
 		"Phases",
 		"Events",
 		"Facilities",
 		"Affiliates",
+		"PropertyDealer",
 		"Banners",
 		"Notices",
 		"Videos",
@@ -36,6 +38,7 @@ export const apiSlice = createApi({
 		"PortalGuides",
 		"SaleProperties",
 		"Engineers",
+		"Teams",
 	],
 	endpoints: (builder) => ({}),
 });

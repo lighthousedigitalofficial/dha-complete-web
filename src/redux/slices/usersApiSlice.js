@@ -8,17 +8,25 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 				url: `${USERS_URL}/login`,
 				method: "POST",
 				body: data,
+				// credentials: "include", // Include credentials (cookies) in the request
 			}),
 		}),
 		createUser: builder.mutation({
 			query: (userData) => ({
-				url: USERS_URL, // Use the full URL or relative path as defined in constants
+				url: USERS_URL,
+				method: "POST",
+				body: userData,
+			}),
+		}),
+		userRegister: builder.mutation({
+			query: (userData) => ({
+				url: `${USERS_URL}/register`,
 				method: "POST",
 				body: userData,
 			}),
 		}),
 
-		logout: builder.mutation({
+		userLogout: builder.mutation({
 			query: (token) => ({
 				url: `${USERS_URL}/logout`,
 				method: "POST",
@@ -53,13 +61,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			}),
 			keepUnusedDataFor: 5,
 		}),
-
-		getAllUserDetails: builder.query({
-			query: (id) => ({
-				url: `${USERS_URL}/all/${id}`,
-			}),
-			keepUnusedDataFor: 5,
-		}),
 		updateUser: builder.mutation({
 			query: (data) => ({
 				url: `${USERS_URL}/${data.id}`,
@@ -68,23 +69,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ["User"],
 		}),
-
-		getUserById: builder.query({
-			query: (id) => ({
-				url: `${USERS_URL}/${id}`,
-			}),
-		}),
 	}),
 });
 
 export const {
 	useLoginMutation,
-	useLogoutMutation,
+	useUserLogoutMutation,
+	useUserRegisterMutation,
 	useCreateUserMutation,
 	useProfileMutation,
 	useGetUsersQuery,
 	useDeleteUserMutation,
 	useUpdateUserMutation,
 	useGetUserDetailsQuery,
-	useGetUserByIdQuery,
 } = usersApiSlice;

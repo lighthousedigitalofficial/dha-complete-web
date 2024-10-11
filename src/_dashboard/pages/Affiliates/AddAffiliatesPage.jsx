@@ -1,21 +1,27 @@
-import { useForm } from 'react-hook-form';
-import { useCreateAffiliateMutation } from '../../../redux/slices/affiliates';
+import { useForm } from "react-hook-form";
+import { useCreateAffiliateMutation } from "../../../redux/slices/affiliates";
 // import { useCreateAffiliateMutation } from '../features/affiliates/affiliatesApi'; // Adjust the import based on your file structure
 
 const AddAffiliatesPage = ({ initialData = {} }) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       name: initialData.name || "",
-      status: initialData.status || "active"
-    }
+      status: initialData.status || "active",
+    },
   });
 
-  const [createAffiliate, { isLoading, isSuccess, isError }] = useCreateAffiliateMutation();
+  const [createAffiliate, { isLoading, isSuccess, isError }] =
+    useCreateAffiliateMutation();
 
   const onSubmit = async (data) => {
     try {
       await createAffiliate(data).unwrap();
-      alert("Affiliate form submitted!");
+      toast.success("Affiliate form submitted!");
       reset(); // Reset the form after successful submission
     } catch (error) {
       console.error("Failed to save the affiliate:", error);
@@ -34,7 +40,10 @@ const AddAffiliatesPage = ({ initialData = {} }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Name Field */}
           <div className="mb-4">
-            <label className="block text-[1rem] font-semibold mb-2" htmlFor="name">
+            <label
+              className="block text-[1rem] font-semibold mb-2"
+              htmlFor="name"
+            >
               Name
             </label>
             <input
@@ -42,14 +51,21 @@ const AddAffiliatesPage = ({ initialData = {} }) => {
               id="name"
               {...register("name", { required: "Affiliate name is required." })}
               placeholder="Enter Affiliate Name"
-              className={`block w-full border border-gray-300 p-2 rounded-md ${errors.name ? 'border-red-500' : ''}`}
+              className={`block w-full border border-gray-300 p-2 rounded-md ${
+                errors.name ? "border-red-500" : ""
+              }`}
             />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            )}
           </div>
 
           {/* Status Field */}
           <div className="mb-4">
-            <label className="block text-[1rem] font-semibold mb-2" htmlFor="status">
+            <label
+              className="block text-[1rem] font-semibold mb-2"
+              htmlFor="status"
+            >
               Status
             </label>
             <select
@@ -73,16 +89,24 @@ const AddAffiliatesPage = ({ initialData = {} }) => {
             </button>
             <button
               type="submit"
-              className={`bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500 mr-2 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`bg-primary-700 text-white px-4 py-2 rounded-md hover:bg-primary-500 mr-2 ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               disabled={isLoading}
             >
-              {isLoading ? 'Adding...' : 'Add'}
+              {isLoading ? "Adding..." : "Add"}
             </button>
           </div>
 
           {/* Success/Error Messages */}
-          {isSuccess && <p className="text-green-500 mt-4">Affiliate added successfully!</p>}
-          {isError && <p className="text-red-500 mt-4">Failed to add affiliate. Please try again.</p>}
+          {isSuccess && (
+            <p className="text-green-500 mt-4">Affiliate added successfully!</p>
+          )}
+          {isError && (
+            <p className="text-red-500 mt-4">
+              Failed to add affiliate. Please try again.
+            </p>
+          )}
         </form>
       </div>
     </div>

@@ -4,11 +4,15 @@ import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import DataTable from "../../_components/shared/DataTable";
 import Loader from "../../../components/shared/Loader";
 import { toast } from "react-hot-toast";
+// import {
+// 	useDeleteFacilitiesMutation,
+// 	useGetFacilitiesQuery,
+// } from "../../../redux/slices/facilities";
+import ConfirmationModal from "../../_components/shared/ConfirmationModal";
 import {
   useDeleteFacilitiesMutation,
   useGetFacilitiesQuery,
-} from "../../../redux/slices/facilities";
-import ConfirmationModal from "../../_components/shared/ConfirmationModal";
+} from "../../../redux/slices/facilitiesApiSlice";
 
 const FacilitiesList = () => {
   const { data: Facilities, isLoading, refetch } = useGetFacilitiesQuery({});
@@ -88,7 +92,6 @@ const FacilitiesList = () => {
         <div className="flex gap-2 items-center px-2">
           <a onClick={() => handleEdit(record)}>
             <FaEye />
-
           </a>
           {/* Delete button */}
           <a
