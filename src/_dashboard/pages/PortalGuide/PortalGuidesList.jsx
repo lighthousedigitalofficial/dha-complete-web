@@ -5,14 +5,14 @@ import DataTable from '../../_components/shared/DataTable'
 import Loader from '../../../components/shared/Loader'
 import {
     useDeleteGuideMutation,
-    useGetGuideQuery,
+    useGetGuidesQuery,
 } from '../../../redux/slices/guidesSlice'
 import ConfirmationModal from '../../_components/shared/ConfirmationModal'
 import { toast } from 'react-hot-toast' // Optional for notifications
 import { Link } from 'react-router-dom'
 
-const PortGuidesList = ({ onEdit }) => {
-    const { data: PortalGuides, isLoading, refetch } = useGetGuideQuery({})
+const PortGuidesList = () => {
+    const { data: PortalGuides, isLoading, refetch } = useGetGuidesQuery({})
 
     console.log(PortalGuides)
 
@@ -50,10 +50,6 @@ const PortGuidesList = ({ onEdit }) => {
         }
     }
 
-    const handleEdit = (record) => {
-        onEdit(record) // Call parent onEdit function for editing logic
-    }
-
     const columns = [
         {
             title: 'S.No',
@@ -62,14 +58,14 @@ const PortGuidesList = ({ onEdit }) => {
             render: (text, record, index) => index + 1, // Generate serial number
         },
         {
-            title: 'Name',
-            dataIndex: 'name', // Assuming `name` contains the guide name
-            key: 'name',
+            title: 'Title',
+            dataIndex: 'title', // Assuming `name` contains the guide name
+            key: 'title',
         },
         {
-            title: 'Designation',
-            dataIndex: 'designation', // Assuming `designation` contains the designation/title
-            key: 'designation',
+            title: 'Author',
+            dataIndex: 'author', // Assuming `designation` contains the designation/title
+            key: 'author',
         },
         {
             title: 'Status',
@@ -78,24 +74,27 @@ const PortGuidesList = ({ onEdit }) => {
             render: (status) => (
                 <span
                     className={`px-2 py-1 rounded-full text-white ${
-                        status === 'active' ? 'bg-green-500' : 'bg-red-500'
+                        status === 'draft' ? 'bg-red-500' : 'bg-primary-500'
                     }`}
                 >
                     {status.charAt(0).toUpperCase() + status.slice(1)}
                 </span>
             ),
         },
+
         {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
                 <div className="flex gap-2 items-center px-2">
-                    <a
-                        onClick={() => handleEdit(record)} // Trigger edit action
+                    <Link
+                        // onClick={() => handleEdit(record)}
+
+                        to={`/portal-guide/edit/${record._id}`} // Trigger edit action
                         className="border p-2 hover:text-white hover:bg-primary-300 rounded-md border-primary-500"
                     >
                         <FaEdit />
-                    </a>
+                    </Link>
                     <a
                         onClick={() => handleDeleteClick(record._id)} // Trigger delete confirmation
                         className={`border p-2 rounded-md text-red-500 hover:text-white hover:bg-red-500 border-primary-500 ${
